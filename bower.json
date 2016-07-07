@@ -1,0 +1,19 @@
+{
+  "name": "MuShare",
+  "homepage": "https://github.com/Mushare/Mushare",
+  "authors": [
+    "leeif <geeklyf92610@gmail.com>"
+  ],
+  "description": "",
+  "main": "views/index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/components/",
+    "test",
+    "tests"
+  ]
+}
