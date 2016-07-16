@@ -1,0 +1,29 @@
+{
+  "name": "mushare_server",
+  "version": "1.0.0",
+  "description": "Server for the music share project",
+  "main": "app.go",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-sass": "^2.1.0"
+  },
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp sass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuShare/MuShare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MuShare/MuShare/issues"
+  },
+  "homepage": "https://github.com/MuShare/MuShare#readme"
+}

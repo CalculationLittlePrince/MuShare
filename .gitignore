@@ -40,3 +40,5 @@ Thumbs.db
 log
 .idea
 MuShare.iml
+node_modules
+static/components

@@ -54,6 +54,4 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Get("/:id")
     r.Put("update")
   })
-
-
 }
