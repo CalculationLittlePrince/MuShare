@@ -1,0 +1,6 @@
+{
+  "directory": "static/components",
+  "analytics": false,
+  "timeout": 120000,
+  "allow_root": true
+}

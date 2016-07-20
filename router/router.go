@@ -70,4 +70,8 @@ func includeMusicApi(m *martini.ClassicMartini) {
     r.Put("/update", audio.SheetMigration)
   }, RetrieveBody(reflect.TypeOf(music.SheetMigration{})), TokenAuth)
 
+  m.Group("/api/user/profile", func(r martini.Router) {
+    r.Get("/:id")
+    r.Put("update")
+  }, RetrieveBody(reflect.TypeOf(user.Profile{})), TokenAuth)
 }

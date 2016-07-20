@@ -1,0 +1,38 @@
+.header {
+
+  border-style: solid;
+
+  border-width: 0 0 1px 0;
+
+  border-color: rgba(246, 246, 246, 100);
+
+  background-color: #ffffff;
+
+  padding: 12px 0px;
+
+  .logo {
+  }
+
+  .top-menu {
+    li {
+      float: left;
+      list-style-type: none;
+      font-weight: lighter;
+      font-size: 18px;
+      color: rgba(153, 153, 153, 60);
+    }
+    .search {
+      width: 25%;
+    }
+    .more {
+      width: 25%;
+    }
+    .favourite {
+      width: 25%;
+    }
+
+    .login {
+      width: 25%;
+    }
+  }
+}
