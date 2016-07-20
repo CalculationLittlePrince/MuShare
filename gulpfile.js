@@ -4,7 +4,8 @@ var $    = require('gulp-load-plugins')();
 var sassPaths = [
   'static/components/foundation-sites/scss',
   'static/components/motion-ui/src',
-  'static/components/highlightjs/styles/'
+  'static/components/Ionicons/scss',
+  'static/components/slick-carousel/slick'
 ];
 
 gulp.task('sass', function() {

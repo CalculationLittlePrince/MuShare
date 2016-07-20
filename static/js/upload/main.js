@@ -8,8 +8,8 @@ require.config({
   }
 });
 
-require(['./upload', 'jquery'], function(upload, $){
-  $(document).ready(function(){
+require(['./upload', 'jquery'], function(upload, $) {
+  $(document).ready(function() {
     upload.upload();
   });
 });
