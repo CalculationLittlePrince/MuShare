@@ -22,10 +22,17 @@ type App  struct {
   Host string
 }
 
+type OSS struct {
+  AccessKeyId string
+  SecretKey   string
+  RoleArn     string
+}
+
 type Conf struct {
   Mysql Mysql
   Redis Redis
   App   App
+  OSS   OSS
 }
 
 type All  struct {

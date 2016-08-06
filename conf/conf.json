@@ -13,6 +13,11 @@
     "App": {
       "Port": "7080",
       "Host": "localhost"
+    },
+    "OSS": {
+      "AccessKeyId": "TAluP4Bc6PI3PX1f",
+      "SecretKEy": "gCX79f8Gwsot6jpI8SQvdMZ9rWIMPV",
+      "RoleArn": "acs:ram::1580315265284207:role/musharereadonly"
     }
   },
   "Test": {
@@ -29,6 +34,11 @@
     "App": {
       "Port": "8080",
       "Host": "localhost"
+    },
+    "OSS": {
+      "AccessKeyId": "TAluP4Bc6PI3PX1f",
+      "SecretKEy": "gCX79f8Gwsot6jpI8SQvdMZ9rWIMPV",
+      "RoleArn": "acs:ram::1580315265284207:role/musharereadonly"
     }
   },
   "Production": {
@@ -45,6 +55,11 @@
     "App": {
       "Port": "6000",
       "Host": "mushare.cn"
+    },
+    "OSS": {
+      "AccessKeyId": "TAluP4Bc6PI3PX1f",
+      "SecretKEy": "gCX79f8Gwsot6jpI8SQvdMZ9rWIMPV",
+      "RoleArn": "acs:ram::1580315265284207:role/musharereadonly"
     }
   }
 }

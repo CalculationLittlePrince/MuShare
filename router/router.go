@@ -13,17 +13,19 @@ import (
   "MuShare/controllers/api/music/audio"
   "MuShare/controllers/api/user/profile"
   "MuShare/controllers/api/user/search"
+  "MuShare/controllers/api/oss/sts"
+  "MuShare/datatype/request/oss"
 )
 
 func Include(m *martini.ClassicMartini) {
   includePages(m)
   includeUserApi(m)
   includeMusicApi(m)
+  includeOSSApi(m)
 }
 
 func includePages(m *martini.ClassicMartini) {
   m.Get("/", pages.Index)
-  m.Get("/test", pages.TestPage)
 }
 
 func includeUserApi(m *martini.ClassicMartini) {
@@ -48,6 +50,11 @@ func includeUserApi(m *martini.ClassicMartini) {
   m.Group("/api/user/search", func(r martini.Router) {
     r.Get("/stranger", search.Stranger)
   }, RetrieveBody(reflect.TypeOf(user.Search{})), TokenAuth)
+
+  m.Group("/api/user/profile", func(r martini.Router) {
+    r.Get("/:id", profile.GetProfile)
+    r.Put("update", profile.UpdateProfile)
+  }, RetrieveBody(reflect.TypeOf(user.Profile{})), TokenAuth)
 }
 
 func includeMusicApi(m *martini.ClassicMartini) {
@@ -69,9 +76,10 @@ func includeMusicApi(m *martini.ClassicMartini) {
   m.Group("/api/music/migration", func(r martini.Router) {
     r.Put("/update", audio.SheetMigration)
   }, RetrieveBody(reflect.TypeOf(music.SheetMigration{})), TokenAuth)
+}
 
-  m.Group("/api/user/profile", func(r martini.Router) {
-    r.Get("/:id")
-    r.Put("update")
-  }, RetrieveBody(reflect.TypeOf(user.Profile{})), TokenAuth)
+func includeOSSApi(m *martini.ClassicMartini) {
+  m.Group("/api/oss/sts", func(r martini.Router) {
+    r.Get("/get", sts.GetSTS)
+  }, RetrieveBody(reflect.TypeOf(oss.OSS{})), TokenAuth)
 }
