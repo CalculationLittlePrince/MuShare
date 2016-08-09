@@ -6838,9 +6838,12 @@ table.hover tr:nth-of-type(even):hover {
   width: 1100px;
   margin: 0 auto; }
 
+.column, .columns {
+  padding: 0; }
+
 .header {
   border-style: solid;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 2.2px 0;
   border-color: #f6f6f6;
   background-color: #ffffff;
   padding: 12px 0px; }
@@ -6945,27 +6948,132 @@ table.hover tr:nth-of-type(even):hover {
       background: url("../image/banner_menu_info.png") no-repeat;
       background-size: cover;
       margin-left: 2.5%; }
-  .index .week-hot {
-    padding-top: 20px;
-    padding-bottom: 10px; }
-    .index .week-hot .top {
-      position: relative;
-      width: 100%; }
-      .index .week-hot .top .title {
-        color: #333333;
+  .index .middle-container {
+    padding: 30px 0;
+    position: relative; }
+    .index .middle-container .audio-player {
+      position: absolute;
+      top: 30px;
+      left: 0;
+      width: 540px;
+      height: 240px;
+      background: #fefefe; }
+      .index .middle-container .audio-player .left-container {
+        float: left;
+        width: 40%;
+        height: 100%; }
+        .index .middle-container .audio-player .left-container .cover {
+          height: 100%; }
+          .index .middle-container .audio-player .left-container .cover img {
+            width: 100%;
+            height: 100%; }
+      .index .middle-container .audio-player .right-container {
+        padding-left: 20px;
+        padding-right: 40px;
+        float: left;
+        width: 60%;
+        height: 100%; }
+        .index .middle-container .audio-player .right-container .belong {
+          padding-top: 40px; }
+          .index .middle-container .audio-player .right-container .belong .title {
+            font-size: 24px;
+            color: #333333; }
+          .index .middle-container .audio-player .right-container .belong .artist {
+            font-size: 12px;
+            color: #999999; }
+          .index .middle-container .audio-player .right-container .belong .album {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #0054c1; }
+        .index .middle-container .audio-player .right-container .middle {
+          padding-top: 3px; }
+          .index .middle-container .audio-player .right-container .middle .progress {
+            height: 3px;
+            margin: 0; }
+          .index .middle-container .audio-player .right-container .middle .duration {
+            font-size: 12px;
+            color: #999999; }
+            .index .middle-container .audio-player .right-container .middle .duration span {
+              float: right; }
+        .index .middle-container .audio-player .right-container .bottom {
+          font-size: 30px;
+          text-align: right; }
+          .index .middle-container .audio-player .right-container .bottom .grey {
+            color: #999999; }
+          .index .middle-container .audio-player .right-container .bottom .red {
+            color: #ff8989; }
+    .index .middle-container .mushare-recommend {
+      padding-left: 20px;
+      padding-bottom: 30px; }
+      .index .middle-container .mushare-recommend .top {
         font-size: 14px;
-        width: 60px;
-        padding-bottom: 10px;
-        border-style: solid;
-        border-width: 0 0 2px 0;
-        border-color: #333333; }
-      .index .week-hot .top .more {
-        position: absolute;
-        right: 0px;
-        top: 35%;
-        font-size: 12px; }
-        .index .week-hot .top .more a {
-          color: #999999; }
+        color: #999999; }
+      .index .middle-container .mushare-recommend .main .title {
+        padding: 20px 0;
+        font-size: 20px;
+        color: #333333; }
+      .index .middle-container .mushare-recommend .main .content {
+        font-size: 14px;
+        color: #999999; }
+    .index .middle-container .sheet-category {
+      padding-top: 60px;
+      padding-right: 20px; }
+      .index .middle-container .sheet-category .main {
+        padding: 10px;
+        margin-top: 25px;
+        background: #fefefe;
+        border-radius: 3px; }
+        .index .middle-container .sheet-category .main .item {
+          padding: 5px;
+          display: block;
+          float: left;
+          width: 20%; }
+          .index .middle-container .sheet-category .main .item .tag {
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+            font-weight: bold;
+            display: block;
+            margin: 0 auto; }
+    .index .middle-container .origin-music {
+      background: #f6f6f6; }
+      .index .middle-container .origin-music .left-container {
+        padding-top: 60px;
+        padding-left: 20px;
+        padding-right: 20px; }
+        .index .middle-container .origin-music .left-container .main {
+          font-size: 12px;
+          color: #999999;
+          margin-top: 20px; }
+      .index .middle-container .origin-music .right-container {
+        padding: 30px 30px 10px 20px; }
+        .index .middle-container .origin-music .right-container .audio {
+          margin-bottom: 20px;
+          height: 80px;
+          background-color: #fefefe;
+          padding: 10px; }
+          .index .middle-container .origin-music .right-container .audio .cover {
+            width: 60px;
+            heigth: 60px; }
+            .index .middle-container .origin-music .right-container .audio .cover img {
+              width: 100%;
+              height: 100%; }
+          .index .middle-container .origin-music .right-container .audio .title {
+            font-size: 24px; }
+          .index .middle-container .origin-music .right-container .audio .belong {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #999999; }
+          .index .middle-container .origin-music .right-container .audio .play-icon {
+            height: 60px;
+            font-size: 30px;
+            color: #999999; }
+            .index .middle-container .origin-music .right-container .audio .play-icon .ion-play {
+              margin: 9px;
+              vertical-align: middle; }
+  .index .week-hot {
+    padding-top: 30px;
+    padding-bottom: 20px; }
     .index .week-hot .hot-sheet {
       position: relative;
       float: left;
@@ -7017,6 +7125,67 @@ table.hover tr:nth-of-type(even):hover {
         .index .week-hot .hot-sheet .bottom .comm {
           float: left;
           margin-right: 30px; }
+  .index .music-info {
+    padding-top: 30px;
+    padding-bottom: 20px; }
+    .index .music-info .left-container {
+      float: left; }
+      .index .music-info .left-container .info {
+        padding-top: 20px; }
+        .index .music-info .left-container .info .title {
+          color: #333333;
+          font-size: 20px; }
+        .index .music-info .left-container .info .content {
+          padding-bottom: 10px;
+          padding-top: 10px;
+          color: #999999;
+          font-size: 12px; }
+        .index .music-info .left-container .info .divider {
+          height: 1px; }
+    .index .music-info .right-container {
+      float: left;
+      padding-left: 15px; }
+      .index .music-info .right-container .image {
+        border-radius: 3px;
+        position: relative;
+        width: 100%;
+        height: 334px;
+        overflow: hidden; }
+        .index .music-info .right-container .image img {
+          position: absolute;
+          left: -10%;
+          top: -2%;
+          display: block;
+          height: 105%;
+          width: 130%;
+          max-width: 130%; }
+        .index .music-info .right-container .image .title {
+          border-radius: 3px;
+          width: 100%;
+          background-color: rgba(9, 9, 9, 0.4);
+          padding: 10px 15px;
+          position: absolute;
+          bottom: 0px;
+          color: #fefefe;
+          font-size: 20px; }
   .index .divider {
     height: 2px;
     background: #bbbbbb; }
+  .index .sheet-category .top, .index .origin-music .left-container .top, .index .week-hot .top, .index .music-info .left-container .top {
+    position: relative;
+    width: 100%; }
+    .index .sheet-category .top .title, .index .origin-music .left-container .top .title, .index .week-hot .top .title, .index .music-info .left-container .top .title {
+      color: #333333;
+      font-size: 14px;
+      width: 60px;
+      padding-bottom: 10px;
+      border-style: solid;
+      border-width: 0 0 2px 0;
+      border-color: #333333; }
+    .index .sheet-category .top .more, .index .origin-music .left-container .top .more, .index .week-hot .top .more, .index .music-info .left-container .top .more {
+      position: absolute;
+      right: 0px;
+      top: 35%;
+      font-size: 12px; }
+      .index .sheet-category .top .more a, .index .origin-music .left-container .top .more a, .index .week-hot .top .more a, .index .music-info .left-container .top .more a {
+        color: #999999; }
