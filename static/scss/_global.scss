@@ -1,5 +1,16 @@
 .page-width{
-  width: 1100px;
+  @include breakpoint(large) {
+    width: 1100px;
+  }
+
+  @include breakpoint(medium) {
+    width: 900px;
+  }
+
+  @include breakpoint(small) {
+    width: 700px;
+  }
+
   margin: 0 auto;
 }
 

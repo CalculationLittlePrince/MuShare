@@ -62,7 +62,7 @@
         position: absolute;
         top: 27%;
         font-size: 16px;
-        right: 55px;
+        right: 18%;
       }
     }
     .recommend {
@@ -100,9 +100,18 @@
     position: relative;
     .audio-player {
       position: absolute;
+      @include breakpoint(small) {
+        display: none;
+      }
+      @include breakpoint(medium) {
+        display: none;
+      }
+      @include breakpoint(large) {
+        display: block;
+      }
       top: 30px;
       left: 0;
-      width: 540px;
+      width: 50%;
       height: 240px;
       background: $white;
       .left-container {
@@ -237,9 +246,11 @@
             }
           }
           .title {
-            font-size: 24px;
+            font-size: 20px;
+            padding-left: 5px;
           }
           .belong {
+            padding-left: 5px;
             margin-top: 5px;
             font-size: 12px;
             color: rgba(153, 153, 153, 1);
@@ -248,9 +259,10 @@
             height: 60px;
             font-size: 30px;
             color: rgba(153, 153, 153, 1);
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 20px;
             .ion-play {
-              margin: 9px;
-              vertical-align: middle;
             }
           }
         }
