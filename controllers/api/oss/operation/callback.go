@@ -5,13 +5,13 @@ import (
   "net/http"
   "encoding/json"
   "MuShare/datatype"
-  "MuShare/datatype/request/oss"
-	"MuShare/manager/oss/operation"
+  "fmt"
 )
 
-func UploadCallback(db *gorm.DB, body *oss.Callback, rw http.ResponseWriter){
-  oss := operation.OSSOperation{DB:db}
-  res := oss.UploadCallback(body)
+func UploadCallback(db *gorm.DB, req http.Request, rw http.ResponseWriter){
+  res := datatype.Response{}
+  fmt.Println(req.Body)
+  fmt.Println(req.Form)
   Response(res, rw)
 }
 
