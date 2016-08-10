@@ -8,8 +8,8 @@ import (
 	"MuShare/controllers/api/user/friend"
 )
 
-func AddAudio(db *gorm.DB, body *music.Audio, rw http.ResponseWriter) {
+func AddEmptyAudio(db *gorm.DB, body *music.Audio, rw http.ResponseWriter) {
   music := audio.Audio{DB:db}
-  res := music.AddAudio(body)
+  res := music.AddEmptyAudio(body)
   friend.Response(res, rw)
 }

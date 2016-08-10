@@ -5,5 +5,6 @@ type OSS struct {
 }
 
 type Callback struct {
+  CallbackUrl  string
   CallBackBody string
 }
