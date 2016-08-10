@@ -26,6 +26,8 @@ type OSS struct {
   AccessKeyId string
   SecretKey   string
   RoleArn     string
+  EndPoint    string
+  Bucket      string
 }
 
 type Conf struct {

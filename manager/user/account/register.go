@@ -3,35 +3,36 @@ package account
 import (
 	"MuShare/datatype"
 	"MuShare/db/models"
-	"net/http"
 	"time"
 	"regexp"
   "MuShare/datatype/request/user"
 	"strconv"
 	"MuShare/utils"
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"strings"
+	"MuShare/conf"
+	"fmt"
 )
 
-func (this *Account) Register(body *user.Account)  datatype.Response{
-	var res datatype.Response
+func (this *Account) Register(body *user.Account, ossConf conf.OSS)  datatype.Response{
 	//check mail
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
 	sel := [...]bool{true, true, true}
 	u := models.User{}
 	sheet := models.Sheet{}
 	salt := models.Salts{}
-	flag := 0
   // begin transaction
   tx := this.DB.Begin()
   if (body.Password == "") {
-    goto BadRequest
+    return badRequest("null password")
   }
 
-  if body.Name == "" || body.Mail == "" || body.Phone == "" {
-    goto BadRequest
+  if body.Name == "" || (body.Mail == "" && body.Phone == "") {
+    return badRequest("null username/mail/phone")
   }
 
   if reg.FindAllString(body.Mail, -1) == nil {
-    goto BadRequest
+    return badRequest("wrong mail address")
   }
 	if body.Name != "" {
     tx.Where("name=?", body.Name).First(&u)
@@ -46,12 +47,21 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 		sel[2] = checkUser(u)
   }
 
+	var resText string
 	for i, v := range sel{
 		if v {
-			flag = i
-			goto Forbidden
+			switch i {
+			case 0:
+				resText = "Name existed"
+			case 1:
+				resText = "Mail existed"
+			case 2:
+				resText = "Phone existed"
+     	}
+			return forbidden(resText)
 		}
 	}
+
 
 	CreateUser(&u, &salt, body)
 	tx.Create(&u)
@@ -66,36 +76,26 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	// transaction commit
 	salt.UserID = u.ID
 	tx.Create(&salt)
-
 	tx.Commit()
 
-	res = datatype.Response{
-		Status: http.StatusOK,
-		Body:u,
-	}
-	return res
+	client, err := oss.New(ossConf.EndPoint, ossConf.AccessKeyId, ossConf.SecretKey)
+	fmt.Println(ossConf.EndPoint+" "+ ossConf.Bucket)
 
-	BadRequest:
-	res = datatype.Response{
-    Status: http.StatusBadRequest,
-  }
-  return res
+	if err != nil {
+	}
 
-	Forbidden:
-	var resText string
-	switch flag {
-	case 0:
-		resText = "Name existed"
-	case 1:
-		resText = "Mail existed"
-	case 2:
-		resText = "Phone existed"
+	bucket, err := client.Bucket(ossConf.Bucket)
+	if err != nil {
+		fmt.Println(err)
 	}
-	res = datatype.Response{
-		Status:http.StatusForbidden,
-		ResponseText: resText,
+
+	err = bucket.PutObject(strconv.Itoa(u.ID)+"/", strings.NewReader(""))
+	if err != nil {
+		fmt.Println(err)
 	}
-	return res
+
+	return ok("register success", u)
+
 }
 
 func checkUser(user models.User) bool{
