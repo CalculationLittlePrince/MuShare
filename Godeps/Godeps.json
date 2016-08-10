@@ -1,8 +1,13 @@
 {
 	"ImportPath": "MuShare",
 	"GoVersion": "go1.6",
-	"GodepVersion": "v62",
+	"GodepVersion": "v63",
 	"Deps": [
+		{
+			"ImportPath": "github.com/aliyun/aliyun-oss-go-sdk/oss",
+			"Comment": "V1.1.0",
+			"Rev": "fdc47f84ab1d56288ba770c7b1a5c1b58b3c89f4"
+		},
 		{
 			"ImportPath": "github.com/boj/redistore",
 			"Comment": "v1.2",
