@@ -6,6 +6,7 @@ import (
   "encoding/json"
   "MuShare/datatype"
   "fmt"
+  "strconv"
 )
 
 func UploadCallback(db *gorm.DB, req *http.Request, rw http.ResponseWriter){
@@ -25,7 +26,8 @@ func Response(res datatype.Response, rw http.ResponseWriter){
     panic(err.Error())
   }
   //send json response
-  rw.Header().Set("content-Type", "application/json; charset=utf-8")
+  rw.Header().Set("Content-Type", "application/json; charset=utf-8")
+  rw.Header().Set("Content-Length", strconv.Itoa(len(string(resJson))))
   rw.WriteHeader(res.Status)
   rw.Write(resJson)
 }
