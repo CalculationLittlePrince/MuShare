@@ -9,7 +9,9 @@ import (
 )
 
 func UploadCallback(db *gorm.DB, req http.Request, rw http.ResponseWriter){
-  res := datatype.Response{}
+  res := datatype.Response{
+    Status: http.StatusOK,
+  }
   fmt.Println(req.Body)
   fmt.Println(req.Form)
   Response(res, rw)
