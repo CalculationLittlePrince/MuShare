@@ -27,5 +27,5 @@ func (this *OSSOperation) UploadCallback(body *oss.OSSCallback) datatype.Respons
 	}
 	tx.Save(&audio)
 	tx.Commit()
-	return ok("",nil)
+	return ok("", audio)
 }
