@@ -6835,14 +6835,13 @@ table.hover tr:nth-of-type(even):hover {
   content: ""; }
 
 .page-width {
-  width: 700px;
   margin: 0 auto; }
   @media screen and (min-width: 64em) {
     .page-width {
-      width: 1100px; } }
-  @media screen and (min-width: 40em) {
+      width: 1024px; } }
+  @media screen and (max-width: 63.9375em) {
     .page-width {
-      width: 900px; } }
+      width: 640px; } }
 
 .column, .columns {
   padding: 0; }
@@ -6904,6 +6903,8 @@ table.hover tr:nth-of-type(even):hover {
     overflow: hidden; }
     .index .img-carousel .item {
       display: none; }
+      .index .img-carousel .item img {
+        width: 100%; }
     .index .img-carousel .item:first-child {
       display: block; }
     .index .img-carousel .slick-dots {
@@ -6919,22 +6920,40 @@ table.hover tr:nth-of-type(even):hover {
     .index .banner-menu .recommend, .index .banner-menu .category, .index .banner-menu .origin, .index .banner-menu .hot, .index .banner-menu .info {
       float: left;
       width: 18%;
-      height: 50px;
       border-radius: 3px;
-      padding: 10px 45px;
       color: white;
       position: relative; }
+      @media screen and (min-width: 64em) {
+        .index .banner-menu .recommend, .index .banner-menu .category, .index .banner-menu .origin, .index .banner-menu .hot, .index .banner-menu .info {
+          padding: 10px 45px;
+          height: 50px; } }
+      @media screen and (max-width: 63.9375em) {
+        .index .banner-menu .recommend, .index .banner-menu .category, .index .banner-menu .origin, .index .banner-menu .hot, .index .banner-menu .info {
+          padding: 10px 20px;
+          height: 40px; } }
       .index .banner-menu .recommend .icon, .index .banner-menu .category .icon, .index .banner-menu .origin .icon, .index .banner-menu .hot .icon, .index .banner-menu .info .icon {
         position: absolute;
         top: 25%;
-        display: inline-block;
         font-size: 20px; }
+        @media screen and (min-width: 64em) {
+          .index .banner-menu .recommend .icon, .index .banner-menu .category .icon, .index .banner-menu .origin .icon, .index .banner-menu .hot .icon, .index .banner-menu .info .icon {
+            display: inline-block; } }
+        @media screen and (max-width: 63.9375em) {
+          .index .banner-menu .recommend .icon, .index .banner-menu .category .icon, .index .banner-menu .origin .icon, .index .banner-menu .hot .icon, .index .banner-menu .info .icon {
+            display: none; } }
       .index .banner-menu .recommend .menu-words, .index .banner-menu .category .menu-words, .index .banner-menu .origin .menu-words, .index .banner-menu .hot .menu-words, .index .banner-menu .info .menu-words {
-        font-weight: bold;
-        position: absolute;
-        top: 27%;
-        font-size: 16px;
-        right: 18%; }
+        font-weight: bold; }
+        @media screen and (min-width: 64em) {
+          .index .banner-menu .recommend .menu-words, .index .banner-menu .category .menu-words, .index .banner-menu .origin .menu-words, .index .banner-menu .hot .menu-words, .index .banner-menu .info .menu-words {
+            font-size: 16px;
+            position: absolute;
+            top: 27%;
+            right: 24%; } }
+        @media screen and (max-width: 63.9375em) {
+          .index .banner-menu .recommend .menu-words, .index .banner-menu .category .menu-words, .index .banner-menu .origin .menu-words, .index .banner-menu .hot .menu-words, .index .banner-menu .info .menu-words {
+            font-size: 13px;
+            display: block;
+            text-align: center; } }
     .index .banner-menu .recommend {
       background: url("../image/banner_menu_recommend.png") no-repeat;
       background-size: cover; }
@@ -6959,13 +6978,12 @@ table.hover tr:nth-of-type(even):hover {
     position: relative; }
     .index .middle-container .audio-player {
       position: absolute;
-      display: none;
       top: 30px;
       left: 0;
       width: 50%;
       height: 240px;
       background: #fefefe; }
-      @media screen and (min-width: 40em) {
+      @media screen and (max-width: 63.9375em) {
         .index .middle-container .audio-player {
           display: none; } }
       @media screen and (min-width: 64em) {
@@ -7071,9 +7089,20 @@ table.hover tr:nth-of-type(even):hover {
             .index .middle-container .origin-music .right-container .audio .cover img {
               width: 100%;
               height: 100%; }
+            @media screen and (min-width: 64em) {
+              .index .middle-container .origin-music .right-container .audio .cover {
+                display: block; } }
+            @media screen and (max-width: 63.9375em) {
+              .index .middle-container .origin-music .right-container .audio .cover {
+                display: none; } }
           .index .middle-container .origin-music .right-container .audio .title {
-            font-size: 20px;
             padding-left: 5px; }
+            @media screen and (min-width: 64em) {
+              .index .middle-container .origin-music .right-container .audio .title {
+                font-size: 20px; } }
+            @media screen and (max-width: 63.9375em) {
+              .index .middle-container .origin-music .right-container .audio .title {
+                font-size: 15px; } }
           .index .middle-container .origin-music .right-container .audio .belong {
             padding-left: 5px;
             margin-top: 5px;
@@ -7094,12 +7123,17 @@ table.hover tr:nth-of-type(even):hover {
       float: left;
       background-color: white;
       margin-top: 10px;
-      height: 290px;
-      width: 200px;
-      padding: 10px;
-      margin-left: 15px; }
+      width: 19%;
+      margin-left: 1%;
+      padding: 10px; }
+      @media screen and (min-width: 64em) {
+        .index .week-hot .hot-sheet {
+          height: 290px; } }
+      @media screen and (max-width: 63.9375em) {
+        .index .week-hot .hot-sheet {
+          height: 200px; } }
       .index .week-hot .hot-sheet .cover {
-        height: 170px;
+        height: 60%;
         position: relative; }
         .index .week-hot .hot-sheet .cover img {
           display: block;
@@ -7118,9 +7152,15 @@ table.hover tr:nth-of-type(even):hover {
           height: 100%;
           z-index: 2; }
       .index .week-hot .hot-sheet .name {
-        margin-top: 20px;
-        font-size: 24px;
         text-align: center; }
+        @media screen and (min-width: 64em) {
+          .index .week-hot .hot-sheet .name {
+            margin-top: 20px;
+            font-size: 24px; } }
+        @media screen and (max-width: 63.9375em) {
+          .index .week-hot .hot-sheet .name {
+            margin-top: 10px;
+            font-size: 18px; } }
         .index .week-hot .hot-sheet .name p {
           margin: 0; }
       .index .week-hot .hot-sheet .author {
@@ -7132,14 +7172,21 @@ table.hover tr:nth-of-type(even):hover {
       .index .week-hot .hot-sheet .bottom {
         font-size: 12px;
         color: #999999;
-        position: absolute;
-        bottom: 10px; }
-        .index .week-hot .hot-sheet .bottom .fav {
-          float: left;
-          margin-right: 30px; }
-        .index .week-hot .hot-sheet .bottom .comm {
-          float: left;
-          margin-right: 30px; }
+        position: absolute; }
+        @media screen and (min-width: 64em) {
+          .index .week-hot .hot-sheet .bottom {
+            bottom: 10px; } }
+        @media screen and (max-width: 63.9375em) {
+          .index .week-hot .hot-sheet .bottom {
+            bottom: 5px; } }
+        .index .week-hot .hot-sheet .bottom .fav, .index .week-hot .hot-sheet .bottom .comm {
+          float: left; }
+          @media screen and (min-width: 64em) {
+            .index .week-hot .hot-sheet .bottom .fav, .index .week-hot .hot-sheet .bottom .comm {
+              margin-right: 30px; } }
+          @media screen and (max-width: 63.9375em) {
+            .index .week-hot .hot-sheet .bottom .fav, .index .week-hot .hot-sheet .bottom .comm {
+              margin-right: 15px; } }
   .index .music-info {
     padding-top: 30px;
     padding-bottom: 20px; }
@@ -7158,14 +7205,19 @@ table.hover tr:nth-of-type(even):hover {
         .index .music-info .left-container .info .divider {
           height: 1px; }
     .index .music-info .right-container {
-      float: left;
       padding-left: 15px; }
       .index .music-info .right-container .image {
         border-radius: 3px;
         position: relative;
-        width: 100%;
         height: 334px;
         overflow: hidden; }
+        @media screen and (min-width: 64em) {
+          .index .music-info .right-container .image {
+            width: 100%; } }
+        @media screen and (max-width: 63.9375em) {
+          .index .music-info .right-container .image {
+            width: 70%;
+            margin: 20px auto; } }
         .index .music-info .right-container .image img {
           position: absolute;
           left: -10%;
