@@ -8,11 +8,13 @@ import (
   "fmt"
 )
 
-func UploadCallback(db *gorm.DB, req http.Request, rw http.ResponseWriter){
+func UploadCallback(db *gorm.DB, req *http.Request, rw http.ResponseWriter){
   res := datatype.Response{
     Status: http.StatusOK,
   }
-  fmt.Println(req.Body)
+  b := make([]byte, 1024)
+  req.Body.Read(b)
+  fmt.Println(string(b))
   fmt.Println(req.Form)
   Response(res, rw)
 }
