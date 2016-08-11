@@ -4,7 +4,9 @@ type OSS struct {
   UserID int
 }
 
-type Callback struct {
-  CallbackUrl  string
-  CallBackBody string
+type OSSCallback struct {
+  Bucket   string
+  Object   string
+  AudioID  string
+  MimeType string
 }

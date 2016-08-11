@@ -15,10 +15,7 @@ import (
   "MuShare/controllers/api/oss/operation"
   "MuShare/controllers/api/user/Search"
   "MuShare/controllers/api/oss/sts"
-
   "MuShare/datatype/request/oss"
-
-
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -88,6 +85,6 @@ func includeOSSApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(oss.OSS{})), TokenAuth)
   m.Group("/api/oss/operation", func(r martini.Router) {
     r.Post("/upload", operation.UploadCallback)
-  })
+  },RetrieveBody(reflect.TypeOf(oss.OSSCallback{})))
 
 }
