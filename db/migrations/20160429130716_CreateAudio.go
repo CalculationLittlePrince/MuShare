@@ -6,7 +6,7 @@ import (
 
 // Up is executed when this migration is applied
 func Up_20160429130716(txn *sql.Tx) {
-  var sql string = "create table if not exists music ( " +
+  var sql string = "create table if not exists audio ( " +
     "id int(10) unsigned not null auto_increment, " +
     "created_at int(13) unsigned not null, " +
     "updated_at int(13) unsigned not null, " +
