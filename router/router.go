@@ -88,6 +88,6 @@ func includeOSSApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(oss.OSS{})), TokenAuth)
   m.Group("/api/oss/operation", func(r martini.Router) {
     r.Post("/upload", operation.UploadCallback)
-  }, TokenAuth)
+  })
 
 }
