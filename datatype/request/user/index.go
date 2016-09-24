@@ -16,7 +16,6 @@ type Profile struct {
   UserID      int
   FriendID    int
   Name        interface{}
-  Avatar      interface{}
   Gender      interface{}
   Birth       interface{}
   Phone       interface{}

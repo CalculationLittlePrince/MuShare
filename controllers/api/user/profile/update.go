@@ -9,7 +9,7 @@ import (
   "MuShare/datatype"
 )
 
-func UpdateProfile(db *gorm.DB, body *user.Profile, rw http.ResponseWriter){
+func UpdateProfile(db *gorm.DB, body *user.Profile, rw http.ResponseWriter) {
   profile := Profile{DB:db}
   res := profile.UpdateProfile(body)
   Response(res, rw)

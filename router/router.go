@@ -12,8 +12,8 @@ import (
   "MuShare/datatype/request/music"
   "MuShare/controllers/api/music/audio"
   "MuShare/controllers/api/user/profile"
-  "MuShare/controllers/api/oss/operation"
-  "MuShare/controllers/api/user/Search"
+  "MuShare/controllers/api/oss/upload"
+  "MuShare/controllers/api/user/search"
   "MuShare/controllers/api/oss/sts"
   "MuShare/datatype/request/oss"
 )
@@ -27,6 +27,7 @@ func Include(m *martini.ClassicMartini) {
 
 func includePages(m *martini.ClassicMartini) {
   m.Get("/", pages.Index)
+  m.Get("/profile", pages.Profile)
 }
 
 func includeUserApi(m *martini.ClassicMartini) {
@@ -83,8 +84,8 @@ func includeOSSApi(m *martini.ClassicMartini) {
   m.Group("/api/oss/sts", func(r martini.Router) {
     r.Get("/get", sts.GetSTS)
   }, RetrieveBody(reflect.TypeOf(oss.OSS{})), TokenAuth)
-  m.Group("/api/oss/operation", func(r martini.Router) {
-    r.Post("/upload", operation.UploadCallback)
-  },RetrieveBody(reflect.TypeOf(oss.OSSCallback{})))
-
+  m.Group("/api/oss/upload", func(r martini.Router) {
+    r.Post("/audio", RetrieveBody(reflect.TypeOf(oss.OSSAudioCallback{})), upload.UploadAudio)
+    r.Post("/avatar", RetrieveBody(reflect.TypeOf(oss.OSSAvatarCallback{})), upload.UploadAvatar)
+  })
 }

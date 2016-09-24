@@ -17,20 +17,14 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
     update["name"] = body.Name
   }
 
-  if body.Avatar != nil {
-    if gender[body.Avatar.(string)] == "" {
-      update["avatar"] = gender[body.Avatar.(string)]
-    } else {
-      update["avatar"] = gender["Male"]
+  if body.Gender != nil {
+    if gender[body.Gender.(string)] != "" {
+      update["avatar"] = gender[body.Gender.(string)]
     }
   }
 
   if body.Birth != nil {
     update["birth"] = body.Birth
-  }
-
-  if body.Gender != nil {
-    update["gender"] = body.Gender
   }
 
   if body.Phone != nil {

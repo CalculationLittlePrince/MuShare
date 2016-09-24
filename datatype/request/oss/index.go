@@ -4,9 +4,19 @@ type OSS struct {
   UserID int
 }
 
-type OSSCallback struct {
+type OSSAudioCallback struct {
   Bucket   string
   Object   string
   AudioID  string
+  UserID   string
   MimeType string
+  Token    string
+}
+
+type OSSAvatarCallback struct {
+  Bucket   string
+  Object   string
+  UserID   string
+  MimeType string
+  Token    string
 }
