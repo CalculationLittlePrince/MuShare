@@ -8,7 +8,7 @@ type OSSAudioCallback struct {
   Bucket   string
   Object   string
   AudioID  string
-  UserID   string
+  UserID   int
   MimeType string
   Token    string
 }
@@ -16,7 +16,7 @@ type OSSAudioCallback struct {
 type OSSAvatarCallback struct {
   Bucket   string
   Object   string
-  UserID   string
+  UserID   int
   MimeType string
   Token    string
 }

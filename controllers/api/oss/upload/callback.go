@@ -8,6 +8,8 @@ import (
   "strconv"
   "MuShare/datatype/request/oss"
   "MuShare/manager/oss/upload"
+  "gopkg.in/redis.v3"
+  "MuShare/conf"
 )
 
 func UploadAudio(db *gorm.DB, body *oss.OSSAudioCallback, rw http.ResponseWriter) {
@@ -16,9 +18,10 @@ func UploadAudio(db *gorm.DB, body *oss.OSSAudioCallback, rw http.ResponseWriter
   Response(res, rw)
 }
 
-func UploadAvatar(db *gorm.DB, body *oss.OSSAvatarCallback, rw http.ResponseWriter) {
+func UploadAvatar(db *gorm.DB, body *oss.OSSAvatarCallback, redis *redis.Client,
+config *conf.Conf, rw http.ResponseWriter) {
   operation := upload.OSSOperation{DB:db}
-  res := operation.UploadAvatarCallback(body)
+  res := operation.UploadAvatarCallback(body, redis, config)
   Response(res, rw)
 }
 

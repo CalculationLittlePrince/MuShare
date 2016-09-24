@@ -4,7 +4,10 @@ import (
   "MuShare/datatype"
   "MuShare/datatype/request/oss"
   "MuShare/db/models"
-  "fmt"
+  "MuShare/utils"
+  "gopkg.in/redis.v3"
+  "MuShare/conf"
+  "strconv"
 )
 
 func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback) datatype.Response {
@@ -31,7 +34,23 @@ func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback) dataty
   return ok("", audio)
 }
 
-func (this *OSSOperation) UploadAvatarCallback(body *oss.OSSAvatarCallback) datatype.Response {
-  fmt.Println(body)
+func (this *OSSOperation) UploadAvatarCallback(body *oss.OSSAvatarCallback, redis *redis.Client, config *conf.Conf) datatype.Response {
+  auth, userId := utils.TokenAuth(body.Token, redis, config)
+  intValue, err1 := strconv.Atoi(userId)
+  if auth && err1 == nil{
+    body.UserID = intValue
+  } else {
+    return forbidden("Token Auth Failed")
+  }
+  tx := this.DB.Begin()
+  user := models.User{}
+  user.ID = body.UserID
+  err2 := tx.Model(&user).Update("avatar", body.Object).Error
+
+  if err2 != nil {
+    panic(err2.Error())
+  }
+
+  tx.Commit()
   return ok("", nil)
 }

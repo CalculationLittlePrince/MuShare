@@ -1,5 +1,10 @@
 package models
 
+import (
+  "time"
+  "github.com/jinzhu/gorm"
+)
+
 type User struct {
   Model
   Name        string      `gorm:"" json:"name"`
@@ -21,4 +26,15 @@ type User struct {
 
 func (User) TableName() string {
   return "users"
+}
+
+func (user *User) BeforeCreate(scope *gorm.Scope) (err error) {
+  scope.SetColumn("created_at", time.Now().Unix())
+  scope.SetColumn("updated_at", time.Now().Unix())
+  return
+}
+
+func (user *User) BeforeUpdate(scope *gorm.Scope) (err error) {
+  scope.SetColumn("updated_at", time.Now().Unix())
+  return
 }
