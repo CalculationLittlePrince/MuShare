@@ -12,6 +12,7 @@ import (
   "MuShare/datatype/request/user"
   "MuShare/datatype"
   "MuShare/conf"
+  "github.com/martini-contrib/sessions"
 )
 
 func Login(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter) {
@@ -30,10 +31,14 @@ func Login(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseW
   Response(res, rw)
 }
 
-func LoginSetToken(redis *redis.Client, user models.User, config *conf.Conf) {
+func LoginSetToken(redis *redis.Client, user models.User, config *conf.Conf, session sessions.Session) {
   hSetKey := config.Redis.Prefix + "_token"
   mapKey := "user_" + strconv.Itoa(user.ID)
   redis.HSet(hSetKey, mapKey, string(user.Token)).Result()
+
+  //set session
+  session.Set("login", true)
+  session.Set("token", user.Token)
 }
 
 func Response(res datatype.Response, rw http.ResponseWriter) {
