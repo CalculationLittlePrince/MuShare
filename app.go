@@ -36,5 +36,5 @@ func main() {
   //routers
   router.Include(m)
   //start server
-  m.RunOnAddr(conf.App.Host + ":" + conf.App.Port)
+  m.RunOnAddr(":" + conf.App.Port)
 }

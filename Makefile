@@ -1,7 +1,7 @@
 install:
 	go install
 
-run-prod:	npm-install
+run-prod: npm-install
 	MARTINI_ENV=production go run app.go
 
 run-dev:	npm-install-dev
