@@ -5,7 +5,6 @@
 *.exe
 *.o
 *.so
-*.json
 
 # Packages #
 ############
@@ -43,3 +42,4 @@ log
 MuShare.iml
 node_modules
 static/components
+conf/conf.json
