@@ -29,6 +29,8 @@ func Login(rw http.ResponseWriter, req *http.Request) {
     Preview:preview,
   }
   dir, _ := os.Getwd()
-  t := template.Must(template.ParseFiles(path.Join(dir, "views", "login.html")))
+  t := template.Must(template.ParseFiles(path.Join(dir, "views", "login.html"),
+    path.Join(dir, "views/header", "default_header.html"),
+    path.Join(dir, "views/footer", "default_footer.html")))
   t.Execute(rw, data)
 }

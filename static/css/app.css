@@ -6846,6 +6846,9 @@ table.hover tr:nth-of-type(even):hover {
 .column, .columns {
   padding: 0; }
 
+body {
+  min-height: 600px; }
+
 .header {
   border-style: solid;
   border-width: 0 0 2.2px 0;
@@ -7256,3 +7259,21 @@ table.hover tr:nth-of-type(even):hover {
       font-size: 12px; }
       .index .sheet-category .top .more a, .index .origin-music .left-container .top .more a, .index .week-hot .top .more a, .index .music-info .left-container .top .more a {
         color: #999999; }
+
+.player .pl-container {
+  position: relative;
+  height: 90%;
+  min-height: 600px; }
+  .player .pl-container .pl-container-inner {
+    height: 100%; }
+    .player .pl-container .pl-container-inner .wrapper {
+      height: 60%;
+      background: #ee66ee; }
+  .player .pl-container .pl-control {
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    bottom: 100px; }
+    .player .pl-container .pl-control .wrapper {
+      height: 100%;
+      background: #000; }
