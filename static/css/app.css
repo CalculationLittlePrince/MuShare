@@ -7269,11 +7269,21 @@ body {
     .player .pl-container .pl-container-inner .wrapper {
       height: 60%;
       background: #ee66ee; }
+      .player .pl-container .pl-container-inner .wrapper .song-list {
+        height: 100%;
+        overflow: scroll;
+        overflow-x: hidden; }
+        .player .pl-container .pl-container-inner .wrapper .song-list .item {
+          margin-top: 5px;
+          margin-bottom: 5px;
+          height: 50px;
+          background: #fefefe; }
   .player .pl-container .pl-control {
     position: absolute;
     height: 100px;
     width: 100%;
     bottom: 100px; }
     .player .pl-container .pl-control .wrapper {
+      padding-top: 40px;
       height: 100%;
       background: #000; }
