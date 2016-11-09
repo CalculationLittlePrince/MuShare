@@ -7122,6 +7122,7 @@ body {
     padding-top: 30px;
     padding-bottom: 20px; }
     .index .week-hot .hot-sheet {
+      cursor: pointer;
       position: relative;
       float: left;
       background-color: white;
@@ -7260,30 +7261,100 @@ body {
       .index .sheet-category .top .more a, .index .origin-music .left-container .top .more a, .index .week-hot .top .more a, .index .music-info .left-container .top .more a {
         color: #999999; }
 
+.player .header {
+  width: 100%;
+  position: absolute;
+  top: 0px; }
+
 .player .pl-container {
   position: relative;
-  height: 90%;
-  min-height: 600px; }
+  height: 100%;
+  display: block;
+  min-height: 600px;
+  padding-top: 70px; }
   .player .pl-container .pl-container-inner {
     height: 100%; }
     .player .pl-container .pl-container-inner .wrapper {
-      height: 60%;
-      background: #ee66ee; }
+      height: 60%; }
+      .player .pl-container .pl-container-inner .wrapper .title {
+        padding: 10px 0;
+        margin-bottom: 20px;
+        border-style: solid;
+        border-width: 0 0 2px 0;
+        border-color: #bbbbbb; }
       .player .pl-container .pl-container-inner .wrapper .song-list {
         height: 100%;
         overflow: scroll;
         overflow-x: hidden; }
         .player .pl-container .pl-container-inner .wrapper .song-list .item {
-          margin-top: 5px;
-          margin-bottom: 5px;
+          width: 98%;
+          padding: 10px;
+          border-style: solid;
+          border-width: 0 0 2px 0;
+          border-color: #eeeeee;
           height: 50px;
           background: #fefefe; }
+      .player .pl-container .pl-container-inner .wrapper .right-container .wrapper {
+        width: 60%;
+        margin: 0 auto; }
+        .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .cover, .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .author, .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .album {
+          margin: 0 auto;
+          text-align: center; }
+        .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .cover {
+          border-radius: 5px;
+          width: 200px;
+          height: 200px;
+          background: #000; }
+          .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .cover img {
+            display: block;
+            width: 100%;
+            height: 100%; }
+        .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .author {
+          padding: 20px 0;
+          font-size: 24px;
+          color: #333333; }
+        .player .pl-container .pl-container-inner .wrapper .right-container .wrapper .album {
+          font-size: 14px;
+          color: #999999; }
   .player .pl-container .pl-control {
     position: absolute;
     height: 100px;
     width: 100%;
-    bottom: 100px; }
+    bottom: 0px;
+    background: #eeeeee; }
     .player .pl-container .pl-control .wrapper {
-      padding-top: 40px;
-      height: 100%;
-      background: #000; }
+      padding-top: 25px;
+      height: 100%; }
+      .player .pl-container .pl-control .wrapper .mod1 .song-title {
+        width: auto;
+        float: left;
+        font-size: 20px; }
+      .player .pl-container .pl-control .wrapper .mod1 .time {
+        float: right;
+        font-size: 14px;
+        color: #999999; }
+      .player .pl-container .pl-control .wrapper .mod1 .progress {
+        margin-top: 5px;
+        height: 3px;
+        cursor: pointer; }
+        .player .pl-container .pl-control .wrapper .mod1 .progress .progress-player {
+          height: 3px;
+          background: #4e403a;
+          width: 40%; }
+      .player .pl-container .pl-control .wrapper .mod2 {
+        padding: 15px 0px 15px 40px; }
+        .player .pl-container .pl-control .wrapper .mod2 .btn-mode, .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
+          cursor: pointer; }
+        .player .pl-container .pl-control .wrapper .mod2 .btn-mode {
+          display: inline-block;
+          font-size: 23px; }
+        .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
+          margin-left: 20px;
+          display: inline-block;
+          font-size: 25px; }
+      .player .pl-container .pl-control .wrapper .mod3 {
+        padding: 10px 0px 15px 40px; }
+        .player .pl-container .pl-control .wrapper .mod3 .btn-preview, .player .pl-container .pl-control .wrapper .mod3 .btn-playpause, .player .pl-container .pl-control .wrapper .mod3 .btn-next {
+          color: #0a0a0a;
+          font-size: 30px;
+          padding: 0 15px; }

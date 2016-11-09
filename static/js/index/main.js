@@ -20,14 +20,19 @@ require.config({
 });
 
 
-require(['jquery', 'slick'], function($){
+require(['jquery', 'slick', '../util/utils'], function($, _, utils){
   $(document).ready(function(){
     $('.img-carousel').slick({
       arrows: false,
       infinite: true,
       dots: true,
       autoplay: true,
-      autoplaySpeed: 4000,
+      autoplaySpeed: 3000,
+    });
+
+    $('.week-hot .hot-sheet').click(function(){
+      console.log('click');
+      utils.openPlayer({});
     });
   });
 });

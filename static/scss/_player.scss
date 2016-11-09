@@ -1,22 +1,68 @@
 .player {
+  .header {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+  }
   .pl-container {
     position: relative;
-    height: 90%;
+    height: 100%;
+    display: block;
     min-height: 600px;
+    padding-top: 70px;
     .pl-container-inner {
       height: 100%;
       .wrapper {
         height: 60%;
-        background: #ee66ee;
+        .title {
+          padding: 10px 0;
+          margin-bottom: 20px;
+          border-style: solid;
+          border-width: 0 0 2px 0;
+          border-color: rgba(187, 187, 187, 100);
+        }
         .song-list {
           height: 100%;
           overflow: scroll;
           overflow-x: hidden;
           .item {
-            margin-top: 5px;
-            margin-bottom: 5px;
+            width: 98%;
+            padding: 10px;
+            border-style: solid;
+            border-width: 0 0 2px 0;
+            border-color: rgba(238, 238, 238, 100);
             height: 50px;
             background: $white;
+          }
+        }
+        .right-container {
+          .wrapper {
+            width: 60%;
+            margin: 0 auto;
+            .cover, .author, .album {
+              margin: 0 auto;
+              text-align: center;
+            }
+            .cover {
+              border-radius: 5px;
+              width: 200px;
+              height: 200px;
+              background: #000;
+              img {
+                display: block;
+                width: 100%;
+                height: 100%;
+              }
+            }
+            .author {
+              padding: 20px 0;
+              font-size: 24px;
+              color: rgba(51, 51, 51, 100);
+            }
+            .album {
+              font-size: 14px;
+              color: rgba(153, 153, 153, 100);
+            }
           }
         }
       }
@@ -25,11 +71,56 @@
       position: absolute;
       height: 100px;
       width: 100%;
-      bottom: 100px;
+      bottom: 0px;
+      background: rgba(238, 238, 238, 100);
       .wrapper {
-        padding-top: 40px;
+        padding-top: 25px;
         height: 100%;
-        background: #000;
+        .mod1 {
+          .song-title {
+            width: auto;
+            float: left;
+            font-size: 20px;
+          }
+          .time {
+            float: right;
+            font-size: 14px;
+            color: rgba(153, 153, 153, 100);
+          }
+          .progress {
+            margin-top: 5px;
+            height: 3px;
+            cursor: pointer;
+            .progress-player {
+              height: 3px;
+              background: rgba(78, 64, 58, 100);
+              width: 40%;
+            }
+          }
+        }
+        .mod2 {
+          padding: 15px 0px 15px 40px;
+          .btn-mode, .btn-volume {
+            cursor: pointer;
+          }
+          .btn-mode {
+            display: inline-block;
+            font-size: 23px;
+          }
+          .btn-volume {
+            margin-left: 20px;
+            display: inline-block;
+            font-size: 25px;
+          }
+        }
+        .mod3 {
+          padding: 10px 0px 15px 40px;
+          .btn-preview, .btn-playpause, .btn-next {
+            color: $black;
+            font-size: 30px;
+            padding: 0 15px;
+          }
+        }
       }
     }
   }
