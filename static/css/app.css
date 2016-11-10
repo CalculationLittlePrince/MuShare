@@ -7340,9 +7340,9 @@ body {
         .player .pl-container .pl-control .wrapper .mod1 .progress .progress-player {
           height: 3px;
           background: #4e403a;
-          width: 40%; }
+          width: 0%; }
       .player .pl-container .pl-control .wrapper .mod2 {
-        padding: 15px 0px 15px 40px; }
+        padding: 15px 0px 15px 70px; }
         .player .pl-container .pl-control .wrapper .mod2 .btn-mode, .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
           cursor: pointer; }
         .player .pl-container .pl-control .wrapper .mod2 .btn-mode {
