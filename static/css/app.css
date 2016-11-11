@@ -7286,14 +7286,43 @@ body {
         height: 100%;
         overflow: scroll;
         overflow-x: hidden; }
-        .player .pl-container .pl-container-inner .wrapper .song-list .item {
+        .player .pl-container .pl-container-inner .wrapper .song-list .row {
+          margin: 0px; }
+        .player .pl-container .pl-container-inner .wrapper .song-list .song {
           width: 98%;
           padding: 10px;
           border-style: solid;
-          border-width: 0 0 2px 0;
-          border-color: #eeeeee;
+          border-width: 0 0 1px 0;
+          border-color: gainsboro;
           height: 50px;
-          background: #fefefe; }
+          background: #fefefe;
+          color: #999999; }
+          .player .pl-container .pl-container-inner .wrapper .song-list .song .song-title {
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0px;
+            padding: 0px; }
+          .player .pl-container .pl-container-inner .wrapper .song-list .song .song-author {
+            margin-top: 5px;
+            font-size: 15px;
+            cursor: pointer; }
+          .player .pl-container .pl-container-inner .wrapper .song-list .song .song-option .close {
+            margin-right: 5px;
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            display: inline-block; }
+          .player .pl-container .pl-container-inner .wrapper .song-list .song .song-option .share {
+            margin-left: 10px;
+            display: inline-block;
+            font-size: 20px;
+            cursor: pointer; }
+        .player .pl-container .pl-container-inner .wrapper .song-list .song:hover {
+          background: #eeeeee;
+          color: #646464; }
+        .player .pl-container .pl-container-inner .wrapper .song-list .playing {
+          background: #eeeeee;
+          color: #646464; }
       .player .pl-container .pl-container-inner .wrapper .right-container .wrapper {
         width: 60%;
         margin: 0 auto; }
@@ -7328,8 +7357,11 @@ body {
       .player .pl-container .pl-control .wrapper .mod1 .song-title {
         width: auto;
         float: left;
-        font-size: 20px; }
+        font-size: 20px;
+        font-weight: 500;
+        color: #333333; }
       .player .pl-container .pl-control .wrapper .mod1 .time {
+        margin-top: 8px;
         float: right;
         font-size: 14px;
         color: #999999; }
@@ -7341,19 +7373,21 @@ body {
           height: 3px;
           background: #4e403a;
           width: 0%; }
-      .player .pl-container .pl-control .wrapper .mod2 {
-        padding: 15px 0px 15px 70px; }
-        .player .pl-container .pl-control .wrapper .mod2 .btn-mode, .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
-          cursor: pointer; }
-        .player .pl-container .pl-control .wrapper .mod2 .btn-mode {
-          display: inline-block;
-          font-size: 23px; }
-        .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
-          margin-left: 20px;
-          display: inline-block;
-          font-size: 25px; }
+      .player .pl-container .pl-control .wrapper .mod2 .row {
+        margin: 0px; }
+      .player .pl-container .pl-control .wrapper .mod2 .btn-mode, .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
+        cursor: pointer; }
+      .player .pl-container .pl-control .wrapper .mod2 .btn-mode {
+        margin-top: 18px;
+        margin-left: 30px;
+        display: inline-block;
+        font-size: 23px; }
+      .player .pl-container .pl-control .wrapper .mod2 .btn-volume {
+        margin-top: 14px;
+        display: inline-block;
+        font-size: 27px; }
       .player .pl-container .pl-control .wrapper .mod3 {
-        padding: 10px 0px 15px 40px; }
+        padding: 15px 0px 15px 40px; }
         .player .pl-container .pl-control .wrapper .mod3 .btn-preview, .player .pl-container .pl-control .wrapper .mod3 .btn-playpause, .player .pl-container .pl-control .wrapper .mod3 .btn-next {
           color: #0a0a0a;
           font-size: 30px;

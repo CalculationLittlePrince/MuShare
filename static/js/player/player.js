@@ -6,11 +6,17 @@
 define([], function () {
   function MPlayer(option) {
     this.songList = option.songList ? option.songList : [];
+    //use in song index in list
+    this.compare = option.compare;
+    this.mode = option.mode;
     this.audio = null;
     this.currentSong = null;
     this.listener = {};
-    this.compare = option.compare;
   }
+
+  MPlayer.prototype.setOnSongLoadListener = function (listener) {
+    this.listener.onSongLoad = listener;
+  };
 
   MPlayer.prototype.setOnPlayPauseListener = function (listener) {
     this.listener.onPlayPause = listener;
@@ -24,6 +30,10 @@ define([], function () {
     this.listener.onMetaLoaded = listener;
   };
 
+  MPlayer.prototype.setOnSongRemoveListener = function (listener) {
+    this.listener.onSongRemove = listener;
+  };
+
   MPlayer.prototype.setOnSongListChangeListener = function (listener) {
     this.listener.onSongListChange = listener;
   };
@@ -34,13 +44,24 @@ define([], function () {
 
   MPlayer.prototype.insertSongList = function (list) {
     var i;
-    for(i = list.length - 1; i >= 0; i--) {
+    for (i = list.length - 1; i >= 0; i--) {
       this.songList.unshift(list[i]);
+    }
+    if (this.listener.onSongListChange) {
+      this.listener.onSongListChange(this.songList);
     }
     //play first song in list
     this.load();
-    if (this.listener.onSongListChange) {
-      this.listener.onSongListChange(this.songList);
+  };
+
+  MPlayer.prototype.removeSong = function (mid) {
+    var position = this.compare({mid: mid}, this.songList);
+    if (mid == this.currentSong.mid && this.songList.length > 1) {
+      this.next();
+    }
+    this.songList.splice(position, 1);
+    if(this.listener.onSongRemove) {
+      this.listener.onSongRemove(this.currentSong, this.songList);
     }
   };
 
@@ -49,17 +70,25 @@ define([], function () {
     if (this.songList.length == 0) {
       return;
     }
-    this.currentSong = song ? song : this.songList[0];
+    if (typeof song === 'number') {
+      var index = this.compare({mid: song}, this.songList);
+      this.currentSong = index != -1 ? this.songList[index] : this.songList[0];
+    } else {
+      this.currentSong = song ? song : this.songList[0];
+    }
     if (this.audio && !this.audio.paused) {
       //stop current song
       this.audio.pause();
       this.audio = null;
-      if(this.listener.onEnded) {
+      if (this.listener.onEnded) {
         this.listener.onEnded();
       }
     }
     this.audio = new Audio(this.currentSong.url);
     this.setAudioListener();
+    if (this.listener.onSongLoad) {
+      this.listener.onSongLoad(this.currentSong);
+    }
     this.playpause();
   };
 
@@ -89,8 +118,8 @@ define([], function () {
       }
     };
 
-    this.audio.onended = function() {
-      if(self.listener.onEnded) {
+    this.audio.onended = function () {
+      if (self.listener.onEnded) {
         self.listener.onEnded();
       }
       self.next();
@@ -98,7 +127,6 @@ define([], function () {
   };
 
   MPlayer.prototype.playpause = function () {
-    console.log('playpause');
     if (this.listener.onPlayPause) {
       this.listener.onPlayPause(this.audio.paused);
     }
@@ -116,7 +144,6 @@ define([], function () {
     if (this.compare) {
       nextIndex = (this.compare(this.currentSong, this.songList) + 1) % this.songList.length;
     }
-    console.log(nextIndex);
     this.load(this.songList[nextIndex]);
   };
 
@@ -128,12 +155,11 @@ define([], function () {
     if (previewIndex < 0) {
       previewIndex = this.songList.length - 1;
     }
-    console.log(previewIndex);
     this.load(this.songList[previewIndex]);
   };
 
   MPlayer.prototype.seek = function (percent) {
-    if(this.audio) {
+    if (this.audio) {
       this.audio.currentTime = this.audio.duration * percent;
     }
   };
