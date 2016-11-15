@@ -8,9 +8,11 @@ import (
   "gopkg.in/redis.v3"
   "MuShare/conf"
   "strconv"
+  "fmt"
 )
 
-func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback) datatype.Response {
+func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback,
+redis *redis.Client, config *conf.Conf) datatype.Response {
   tx := this.DB.Begin()
   audio := models.Audio{}
   if body.Object == "" || body.AudioID == "" {
@@ -22,9 +24,11 @@ func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback) dataty
     return badRequest("")
   }
 
-  if body.MimeType == "pic" {
+  fmt.Println(body.MimeType)
+
+  if body.MimeType == "" {
     audio.ImageUrl = body.Object
-  }else if body.MimeType == "music" {
+  }else if body.MimeType == "" {
     audio.AudioUrl = body.Object
   }else {
     return badRequest("")
@@ -34,14 +38,16 @@ func (this *OSSOperation) UploadAudioCallback(body *oss.OSSAudioCallback) dataty
   return ok("", audio)
 }
 
-func (this *OSSOperation) UploadAvatarCallback(body *oss.OSSAvatarCallback, redis *redis.Client, config *conf.Conf) datatype.Response {
+func (this *OSSOperation) UploadAvatarCallback(body *oss.OSSAvatarCallback,
+redis *redis.Client, config *conf.Conf) datatype.Response {
   auth, userId := utils.TokenAuth(body.Token, redis, config)
   intValue, err1 := strconv.Atoi(userId)
-  if auth && err1 == nil{
+  if auth && err1 == nil {
     body.UserID = intValue
   } else {
     return forbidden("Token Auth Failed")
   }
+  fmt.Println(body.MimeType)
   tx := this.DB.Begin()
   user := models.User{}
   user.ID = body.UserID

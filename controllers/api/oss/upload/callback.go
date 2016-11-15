@@ -12,9 +12,10 @@ import (
   "MuShare/conf"
 )
 
-func UploadAudio(db *gorm.DB, body *oss.OSSAudioCallback, rw http.ResponseWriter) {
+func UploadAudio(db *gorm.DB, body *oss.OSSAudioCallback, redis *redis.Client,
+config *conf.Conf, rw http.ResponseWriter) {
   operation := upload.OSSOperation{DB:db}
-  res := operation.UploadAudioCallback(body)
+  res := operation.UploadAudioCallback(body, redis, config)
   Response(res, rw)
 }
 

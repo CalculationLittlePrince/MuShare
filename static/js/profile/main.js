@@ -10,7 +10,7 @@ require.config({
 
 require(['jquery', '../upload/upload'], function($, upload){
   $(document).ready(function(){
-    document.getElementById('file').addEventListener('change', function (e) {
+    document.getElementById('avatar').addEventListener('change', function (e) {
       upload.uploadAvatar('test.jpg', e.target.files[0], {
         token: $('#token').val()
       }, function*(p){
@@ -20,6 +20,9 @@ require(['jquery', '../upload/upload'], function($, upload){
       }).catch(function(err){
         console.log(err);
       });
+    });
+    document.getElementById('audio').addEventListener('change', function(e) {
+      upload.uploadAudio();
     });
   });
 });
