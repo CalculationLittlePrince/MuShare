@@ -136,3 +136,32 @@ Unified Authorization Method
    + description: change the sheet id from a list of audioId.
    + method: PUT
    + body:  {"idList":[](int), "toSheetID":(int)}
+   
+# MuShare Demands
+用户系统（User System）
+----
+    
+  1. 注册：邮箱/用户名（唯一）/手机号（可选）/密码（6位以上，数字，英文）
+  2. 登陆（邮箱/用户名）
+  3. 找回密码（邮箱/手机验证码）
+  4. 个人页面（头像，用户名， 级别， 简介， 性别， 年龄， 生日, 设置歌单）
+
+音乐功能
+----
+
+  1. 上传音乐
+  2. 播放音乐（歌手， 专辑封面，专辑名称，歌曲名称，歌曲长度）
+  3. 音乐列表， 歌单列表， 订阅列表
+  4. subscribe和fork
+
+好友功能
+----
+
+  1. 好友列表，添加，删除
+  2. 设置自己音乐的分享权限（歌单为单位）所有人或者好友或者指定好友可见
+  3. 好友推荐
+
+搜索
+----
+  1. 关键词，歌曲， 歌单。
+  2. 自己的歌，好友的歌，public
