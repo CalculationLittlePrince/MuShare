@@ -1,6 +1,3 @@
-/**
- * Created by lee on 16/9/25.
- */
 
 require.config({
   "baseUrl": "js/lib",

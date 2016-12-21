@@ -8,8 +8,14 @@ define(['jquery'], function($){
     window.location = url;
   };
 
+  var emailValidate = function(email) {
+    var patten = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
+    return patten.test(email);
+  }
+
   return {
     redirectTo: redirectTo,
-    openPlayer: openPlayer
+    openPlayer: openPlayer,
+    emailValidate: emailValidate
   }
 });

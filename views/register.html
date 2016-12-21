@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Register</title>
+        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="/components/semantic/dist/semantic.min.css">
+        <script data-main="js/register/main" src="js/require.js"></script>
+    </head>
+    <body class="register">
+        {{template "header"}}
+        <div class="ui container">
+            <div class="ui four grid">
+                <div id="register-form" class="ui form">
+                    <div class="field">
+                        <label>Mail</label>
+                        <div class="ui left icon input">
+                            <input id="register-mail" type="text" placeholder="Your Email">
+                            <i class="mail icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Name</label>
+                        <div class="ui left icon input">
+                            <input id="register-name" type="text" placeholder="Your Name">
+                            <i class="user icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                        <div class="ui left icon input">
+                            <input id="register-password" type="text" placeholder="Your Password">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+                    <div id="register-submit" class="ui green fluid button login">Login</div>
+                </div>
+            </div>
+        </div>
+        {{template "footer"}}
+    </body>
 </html>
