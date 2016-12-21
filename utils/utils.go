@@ -86,4 +86,10 @@ func TokenAuth(token string, redis *redis.Client, config *conf.Conf) (bool, stri
   }
 }
 
+func IsImage() bool {
+  result := true
+
+  return result
+}
+
 

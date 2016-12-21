@@ -26,28 +26,23 @@ define(['oss', '../upload/sts'], function(oss, sts){
 
   var uploadAudio = function(objectKeyId, file, callbackVar, progress){
     console.log("uploadAudio");
-    return getSts(callbackVar.token).then(function(data){
-      var client = new oss.Wrapper({
-        region: 'oss-cn-qingdao',
-        accessKeyId: data.body.accessKeyId,
-        accessKeySecret: data.body.accessKeySecret,
-        stsToken: data.body.securityToken,
-        bucket: 'mushare'
+      return sts.getSts(callbackVar.token).then(function (client) {
+        if(client != null) {
+          return client.multipartUpload(objectKeyId, file, {
+            headers: {
+              'x-oss-callback': window.btoa(JSON.stringify({
+                'callbackUrl': 'test.mushare.cn/api/oss/upload/audio',
+                'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
+                'callbackBodyType': 'application/json'
+              })),
+              'x-oss-callback-var': window.btoa(JSON.stringify({
+                'x:token': callbackVar.token
+              }))
+            },
+            progress: progress
+          });
+        }
       });
-      return client.multipartUpload(objectKeyId, file, {
-        headers: {
-          'x-oss-callback': window.btoa(JSON.stringify({
-            'callbackUrl': 'test.mushare.cn/api/oss/upload/avatar',
-            'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-            'callbackBodyType': 'application/json'
-          })),
-          'x-oss-callback-var': window.btoa(JSON.stringify({
-            'x:token': callbackVar.token
-          }))
-        },
-        progress: progress
-      });
-    });
   };
 
   return {

@@ -42,6 +42,7 @@ require(['jquery', '../player/player'], function ($, M) {
         album: 'zhao zi '
       }];
       var mplayer = new M.MPlayer(option);
+      //set listener
       mplayer.setOnMetaLoadedListener(function (meta) {
         $('.pl-container-inner .right-container .author').text(meta.author);
         $('.pl-container-inner .right-container .album').text(meta.album);
