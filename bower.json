@@ -11,7 +11,8 @@
     "foundation-sites": "~6.1.0",
     "motion-ui": "~1.1.0",
     "Ionicons": "ionicons#^2.0.1",
-    "slick-carousel": "^1.6.0"
+    "slick-carousel": "^1.6.0",
+    "semantic": "semantic-ui#^2.2.6"
   },
   "private": true,
   "ignore": [

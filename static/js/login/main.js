@@ -7,7 +7,15 @@ require.config({
 
   "paths": {
     "jquery": "https://code.jquery.com/jquery-3.1.0.min",
+    "semantic": "/components/semantic/dist/semantic.min"
   },
+
+  "shim": {
+    "semantic": {
+      deps: [ 'jquery' ],
+      exports: 'jQuery.fn.semantic'
+    }
+  }
 });
 
 require(['jquery'], function ($) {
@@ -24,15 +32,14 @@ require(['jquery'], function ($) {
   };
 
   $(document).ready(function () {
-    $('.form .login').click(function () {
-      console.log('login');
-      var mail = $('.form .mail').val();
-      var password = $('.form .password').val();
+    $('#login-submit').click(function () {
+      var mail = $('#login-mail').val();
+      var password = $('#login-password').val();
       login(mail, password).done(function(){
-        console.log($('#preview-page').val());
         window.location.href = $('#preview-page').val();
       }).fail(function(){
-        alert('Login Failed')
+        console.log($("#login-mail, #login-password").parent(".field"))
+        $("#login-mail, #login-password").parents(".field").addClass('error');
       });
     });
   });
