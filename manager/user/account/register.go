@@ -17,7 +17,7 @@ import (
 func (this *Account) Register(body *user.Account, ossConf conf.OSS)  datatype.Response{
 	//check mail
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
-	sel := [...]bool{true, true, true}
+	sel := [...]bool{true, true}
 	u := models.User{}
 	sheet := models.Sheet{}
 	salt := models.Salts{}
@@ -27,8 +27,8 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS)  datatype.Re
     return badRequest("null password")
   }
 
-  if body.Name == "" || (body.Mail == "" && body.Phone == "") {
-    return badRequest("null username/mail/phone")
+  if body.Name == "" || body.Mail == "" {
+    return badRequest("null username/mail")
   }
 
   if reg.FindAllString(body.Mail, -1) == nil {
@@ -42,10 +42,6 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS)  datatype.Re
     tx.Where("mail=?", body.Mail).First(&u)
 		sel[1] = checkUser(u)
   }
-	if body.Phone != "" {
-    tx.Where("phone=?", body.Phone).First(&u)
-		sel[2] = checkUser(u)
-  }
 
 	var resText string
 	for i, v := range sel{
@@ -55,8 +51,6 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS)  datatype.Re
 				resText = "Name existed"
 			case 1:
 				resText = "Mail existed"
-			case 2:
-				resText = "Phone existed"
      	}
 			return forbidden(resText)
 		}
