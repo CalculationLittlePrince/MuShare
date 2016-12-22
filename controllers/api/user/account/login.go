@@ -39,6 +39,7 @@ func LoginSetToken(redis *redis.Client, user models.User, config *conf.Conf, ses
   //set session
   session.Set("login", true)
   session.Set("token", user.Token)
+  session.Set("userId", user.ID)
 }
 
 func Response(res datatype.Response, rw http.ResponseWriter) {
