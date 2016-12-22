@@ -15,12 +15,13 @@ require.config({
     }
 });
 
-require(['jquery', '../util/utils'], function ($, utils) {
+require(['jquery', '../util/utils', 'semantic'], function ($, utils) {
     var register = function (mail, name, password) {
-
-        return $.post("/api/user/account/register", {
-
-        });
+        return $.post("/api/user/account/register", JSON.stringify({
+            mail: mail,
+            name: name,
+            password: password
+        }));
     };
 
     $(document).ready(function () {
@@ -47,6 +48,18 @@ require(['jquery', '../util/utils'], function ($, utils) {
             } else {
                 $("#register-mail").parents(".field").removeClass("error");
             }
+            if (!validate) {
+                return;
+            }
+            $(this).attr("disabled", "disabled");
+            register(mail, name, password).done(function () {
+                $('#register-success').dimmer('show');
+                setTimeout(function () {
+                    location.href = "/login";
+                }, 5000);
+            }).fail(function () {
+                $('#register-submit').removeAttr("disabled", "disabled");
+            });
         });
     });
 });
