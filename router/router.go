@@ -37,6 +37,7 @@ func includeUserApi(m *martini.ClassicMartini) {
   m.Group("/api/user/account", func(r martini.Router) {
     r.Post("/login", account.Login, account.LoginSetToken)
     r.Post("/register", account.Register)
+    r.Post("/logout", account.Logout)
   }, RetrieveBody(reflect.TypeOf(user.Account{})))
 
   m.Group("/api/user/friend", func(r martini.Router) {
