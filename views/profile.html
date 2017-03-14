@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="css/app.css">
-        <link rel="stylesheet" href="/components/semantic/dist/semantic.min.css">
-        <script data-main="js/profile/main" src="js/require.js"></script>
-        <title>Profile</title>
-    </head>
-    <body class="profile">
-        {{template "header"}}
-        <div class="ui container">
-            <div class="ui grid">
-                <div class="four wide column">
-                    <div class="ui card">
-                        <div class="image">
-                            <img src="/image/avatar.png">
-                            <input type="file" id="avatar">
-                        </div>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/components/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script data-main="js/profile/main" src="js/require.js"></script>
+    <title>Profile</title>
+</head>
+<body class="profile">
+{{template "header"}}
+<div class="ui middle">
+    <div class="ui container grid">
+        <div class="four wide column">
+            <div class="ui card">
+                <div class="image">
+                    <img src="/image/avatar.png">
+                    <input type="file" id="avatar">
+                </div>
+                <div class="content">
+                    <a class="header">Kristy</a>
+                    <div class="meta">
+                        <span class="date">Joined in 2013</span>
+                    </div>
+                    <div class="description">Kristy is an art director living in
+                        New York.
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a><i class="user icon"></i> 22 Friends </a>
+                </div>
+            </div>
+        </div>
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="ui transparent icon input">
+                        <input type="text" placeholder="Search playlist...">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+                <a class="item">Inbox
+                    <div class="ui teal left pointing label">1</div>
+                </a>
+                <a class="item">Spam
+                    <div class="ui label">51</div>
+                </a>
+                <a class="item">Updates
+                    <div class="ui label">1</div>
+                </a>
+            </div>
+        </div>
+        <div class="eight wide column">
+            <div class="ui piled segment">
+                <h3 class="ui dividing header">Playelist 1</h3>
+                <div id="music-list" class="ui very relaxed list">
+                    <div class="item">
+                        <img class="ui avatar image cover"
+                             src="/image/elliot.jpg">
                         <div class="content">
-                            <a class="header">Kristy</a>
-                            <div class="meta">
-                                <span class="date">Joined in 2013</span>
+                            <a class="header">Daniel Louise</a>
+                            <div class="description">Last seen watching <a><b>Arrested
+                                Development</b></a> just now.
                             </div>
-                            <div class="description">Kristy is an art director living in New York. </div>
-                        </div>
-                        <div class="extra content">
-                            <a><i class="user icon"></i> 22 Friends </a>
                         </div>
                     </div>
-                </div>
-                <div class="four wide column">
-                    <div class="ui vertical menu">
-                        <div class="item">
-                            <div class="ui transparent icon input">
-                                <input type="text" placeholder="Search playlist...">
-                                <i class="search icon"></i>
+                    <div class="item">
+                        <img class="ui avatar image cover"
+                             src="/image/elliot.jpg">
+                        <div class="content">
+                            <a class="header">Stevie Feliciano</a>
+                            <div class="description">Last seen watching <a><b>Bob's
+                                Burgers</b></a> 10 hours ago.
                             </div>
                         </div>
-                        <a class="item">Inbox <div class="ui teal left pointing label">1</div>
-                        </a>
-                        <a class="item">Spam <div class="ui label">51</div>
-                        </a>
-                        <a class="item">Updates <div class="ui label">1</div>
-                        </a>
                     </div>
-                </div>
-                <div class="eight wide column">
-                    <div class="ui piled segment">
-                        <h3 class="ui dividing header">Playelist 1</h3>
-                        <div id="music-list" class="ui very relaxed list">
-                            <div class="item">
-                                <img class="ui avatar image cover" src="/image/elliot.jpg">
-                                <div class="content">
-                                    <a class="header">Daniel Louise</a>
-                                    <div class="description">Last seen watching <a><b>Arrested Development</b></a> just now.</div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img class="ui avatar image cover" src="/image/elliot.jpg">
-                                <div class="content">
-                                    <a class="header">Stevie Feliciano</a>
-                                    <div class="description">Last seen watching <a><b>Bob's Burgers</b></a> 10 hours ago.</div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img class="ui avatar image cover" src="/image/elliot.jpg">
-                                <div class="content">
-                                    <a class="header">Elliot Fu</a>
-                                    <div class="description">Last seen watching <a><b>The Godfather Part 2</b></a> yesterday.</div>
-                                </div>
+                    <div class="item">
+                        <img class="ui avatar image cover"
+                             src="/image/elliot.jpg">
+                        <div class="content">
+                            <a class="header">Elliot Fu</a>
+                            <div class="description">Last seen watching <a><b>The
+                                Godfather Part 2</b></a> yesterday.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <input type="file" id="audio">
-        <input type="hidden" value="{{.Token}}" id="token">
-        {{template "footer"}}
-    </body>
+    </div>
+</div>
+<input type="file" id="audio">
+<input type="hidden" value="{{.Token}}" id="token">
+{{template "footer"}}
+</body>
 </html>

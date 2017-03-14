@@ -25,6 +25,12 @@ redis *redis.Client, config *conf.Conf) datatype.Response {
   }
 
   fmt.Println(body.MimeType)
+  if body.MimeType != "audio/wav" &&
+     body.MimeType != "audio/mpeg3" &&
+     body.MimeType != "audio/aac" {
+    return forbidden("File type should only be mp3, wav or aac")
+  }
+
 
   if body.MimeType == "" {
     audio.ImageUrl = body.Object
@@ -48,6 +54,9 @@ redis *redis.Client, config *conf.Conf) datatype.Response {
     return forbidden("Token Auth Failed")
   }
   fmt.Println(body.MimeType)
+  if body.MimeType != "image/png" && body.MimeType != "image/jpeg" {
+    return forbidden("File type should only be png or jpeg")
+  }
   tx := this.DB.Begin()
   user := models.User{}
   user.ID = body.UserID

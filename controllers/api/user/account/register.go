@@ -10,7 +10,7 @@ import (
 )
 
 func Register(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter, conf *conf.Conf) {
-	if (db == nil) {
+  if (db == nil) {
     panic("db is not exist")
   }
   account := Account{DB:db}

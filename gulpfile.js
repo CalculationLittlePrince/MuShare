@@ -5,7 +5,8 @@ var sassPaths = [
   'static/components/foundation-sites/scss',
   'static/components/motion-ui/src',
   'static/components/Ionicons/scss',
-  'static/components/slick-carousel/slick'
+  'static/components/slick-carousel/slick',
+  'static/components/semantic/dist'
 ];
 
 gulp.task('sass', function() {

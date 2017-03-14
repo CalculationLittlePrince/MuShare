@@ -1,6 +1,17 @@
 .profile {
-  .container {
-    padding-top: 20px;
+  .middle {
+    .container {
+      padding-top: 20px;
+      @include breakpoint(large up) {
+        width: 1024px;
+      }
+
+      @include breakpoint(medium down) {
+        width: 640px;
+      }
+
+      margin: 0 auto;
+    }
   }
 
   .ui.vertical.menu {
