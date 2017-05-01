@@ -13,6 +13,6 @@ func UserSessionAuth(session sessions.Session, rw http.ResponseWriter, req *http
     fmt.Println("login")
   } else {
     fmt.Println("not login")
-    http.Redirect(rw, req, "/login?preview="+base64.URLEncoding.EncodeToString([]byte(req.URL.Path)), http.StatusFound)
+    //http.Redirect(rw, req, "/login?preview="+base64.URLEncoding.EncodeToString([]byte(req.URL.Path)), http.StatusFound)
   }
 }
