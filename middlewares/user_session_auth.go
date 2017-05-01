@@ -4,7 +4,6 @@ import (
   "github.com/martini-contrib/sessions"
   "fmt"
   "net/http"
-  "encoding/base64"
 )
 
 func UserSessionAuth(session sessions.Session, rw http.ResponseWriter, req *http.Request) {
