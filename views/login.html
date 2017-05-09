@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Login</title>
-        <link rel="stylesheet" href="css/app.css">
-        <link rel="stylesheet" href="/components/semantic/dist/semantic.min.css">
-        <script data-main="js/login/main" src="js/require.js"></script>
-    </head>
-    <body class="login">
-        {{template "header"}}
-        <div class="ui container">
-            <div class="ui four grid">
-                <div id="login-form" class="ui form">
-                    <div class="field">
-                        <label>Mail</label>
-                        <div class="ui left icon input">
-                            <input id="login-mail" type="text" placeholder="Your Email / Phone / Name">
-                            <i class="user icon"></i>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>Password</label>
-                        <div class="ui left icon input">
-                            <input id="login-password" type="password" placeholder="Your Password">
-                            <i class="lock icon"></i>
-                        </div>
-                    </div>
-                    <div id="login-submit" class="ui green fluid button login">Sign in</div>
-                    <a href="/register" class="ui teal fluid basic button">Sign up</a>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/components/semantic/dist/semantic.min.css">
+    <script data-main="js/login/main" src="js/require.js"></script>
+</head>
+<body class="login">
+{{template "header"}}
+<div class="ui container">
+    <div class="ui four grid">
+        <div id="login-form" class="ui form">
+            <div class="field">
+                <label>Mail</label>
+                <div class="ui left icon input">
+                    <input id="login-mail" type="text"
+                           placeholder="Your Email / Phone / Name">
+                    <i class="user icon"></i>
                 </div>
             </div>
+            <div class="field">
+                <label>Password</label>
+                <div class="ui left icon input">
+                    <input id="login-password" type="password"
+                           placeholder="Your Password">
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+            <div id="login-submit" class="ui green fluid button login">Sign in
+            </div>
+            <a href="/register" class="ui teal fluid basic button">Sign up</a>
         </div>
-        <input type="hidden" value="{{.Preview}}" id="preview-page">
-        {{template "footer"}}
-    </body>
+    </div>
+</div>
+<input type="hidden" value="{{.Preview}}" id="preview-page">
+{{template "footer"}}
+</body>
 </html>
