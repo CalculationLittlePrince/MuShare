@@ -1,38 +1,39 @@
-/**
- *
- * Created by lee on 16/7/20.
- */
-
-require.config({
-  "baseUrl": "js/lib",
-
-  "paths": {
-    "jquery": "https://code.jquery.com/jquery-3.1.0.min",
-    "slick": "//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min"
-  },
-
-  "shim": {
-    "slick": {
-      deps: [ 'jquery' ],
-      exports: 'jQuery.fn.slick'
-    }
-  }
+var $ = require('jquery');
+require('../vendor/bootstrap');
+$(document).ready(function ($) {
+  $(".scroll").click(function (event) {
+    event.preventDefault();
+    $('html,body').animate({
+      scrollTop: $(this.hash).offset().top
+    }, 1000);
+  });
 });
 
+require('../vendor/jarallax');
+require('../vendor/SmoothScroll.min');
 
-require(['jquery', 'slick', '../util/utils'], function($, _, utils){
-  $(document).ready(function(){
-    $('.img-carousel').slick({
-      arrows: false,
-      infinite: true,
-      dots: true,
-      autoplay: true,
-      autoplaySpeed: 3000,
-    });
+$('.jarallax').jarallax({
+  speed: 0.5,
+  imgWidth: 1366,
+  imgHeight: 768
+})
 
-    $('.week-hot .hot-sheet').click(function(){
-      console.log('click');
-      utils.openPlayer({});
-    });
+require('../vendor/responsiveslides.min');
+require('../vendor/move-top');
+require('../vendor/easing');
+
+$(document).ready(function () {
+  /*
+   var defaults = {
+   containerID: 'toTop', // fading element id
+   containerHoverID: 'toTopHover', // fading element hover id
+   scrollSpeed: 1200,
+   easingType: 'linear'
+   };
+   */
+
+  $().UItoTop({
+    easingType: 'easeOutQuart'
   });
+
 });

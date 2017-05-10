@@ -1,4 +1,4 @@
-webpackJsonp([0,2],[
+webpackJsonp([0,3],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13,6 +13,10 @@ webpackJsonp([0,2],[
 	var _reactDom = __webpack_require__(36);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _jquery = __webpack_require__(183);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,7 +47,6 @@ webpackJsonp([0,2],[
 	          null,
 	          'Hello React'
 	        ),
-	        _react2.default.createElement('img', { src: logo }),
 	        _react2.default.createElement(
 	          'p',
 	          null,
@@ -58,7 +61,7 @@ webpackJsonp([0,2],[
 	  return Hello;
 	}(_react2.default.Component);
 
-	_reactDom2.default.render(_react2.default.createElement(Hello, null), document.getElementById('root'));
+	_reactDom2.default.render(_react2.default.createElement(Hello, null), (0, _jquery2.default)('#root')[0]);
 
 /***/ })
 ]);

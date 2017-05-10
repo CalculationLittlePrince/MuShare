@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import $ from 'jquery';
 
 class Hello extends React.Component {
   render() {
@@ -7,7 +8,6 @@ class Hello extends React.Component {
       <div
         className="container">
         <h1>Hello React</h1>
-        <img src={logo}/>
         <p>Guangzhou, China <br/> chenbin92</p>
       </div>
     );
@@ -18,5 +18,5 @@ class Hello extends React.Component {
 ReactDOM.render(
   <Hello
   />,
-  document.getElementById('root')
+  $('#root')[0]
 );
