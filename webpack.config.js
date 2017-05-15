@@ -28,6 +28,11 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery'
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
   ],
   module: {
     loaders: [
@@ -38,7 +43,7 @@ module.exports = {
       },
       {
         test: /(\.css|\.scss)$/,
-        loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+        loaders: ["style", "css", "sass"]
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -46,6 +51,10 @@ module.exports = {
           'url?limit=10000&name=img/[hash:8].[name].[ext]',
           'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
         ]
+      },
+      {
+        test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader : 'file-loader'
       }
     ]
   },

@@ -1,22 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './header';
 import $ from 'jquery';
-
-class Hello extends React.Component {
-  render() {
-    return (
-      <div
-        className="container">
-        <h1>Hello React</h1>
-        <p>Guangzhou, China <br/> chenbin92</p>
-      </div>
-    );
-  }
-}
 
 
 ReactDOM.render(
-  <Hello
+  <Header
   />,
-  $('#root')[0]
+  $('#app')[0]
 );

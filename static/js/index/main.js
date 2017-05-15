@@ -13,7 +13,7 @@ require('../vendor/jarallax');
 require('../vendor/SmoothScroll.min');
 
 $('.jarallax').jarallax({
-  speed: 0.5,
+  speed: 0.3,
   imgWidth: 1366,
   imgHeight: 768
 })
