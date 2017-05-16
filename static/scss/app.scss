@@ -1,27 +1,158 @@
 #app {
-  .segment {
-    box-shadow: none;
-    border: none;
-  }
-
-  .grid, .column {
-    padding: 0;
-    margin: 0;
-  }
   .header {
-    .top {
+    .icon {
+      margin: 0;
+    }
+    .segment {
+      box-shadow: none;
+      border: none;
+    }
+
+    .grid, .column {
+      padding: 0;
+      margin: 0;
+    }
+
+    .header-top {
+      .item {
+        padding-top: 0.1em;
+        padding-bottom: 0.1em;
+      }
+      .icon-home, .icon-user {
+        border-color: #E6E6E6;
+        border-style: solid;
+        border-width: 0 1px;
+        border-radius: 0;
+      }
+      .icon-home i:hover, .icon-user .dropdown:hover {
+        color: #535353;
+      }
     }
     .divider {
-      border-width: 2px;
+      border-width: 1px;
       margin: 0;
     }
     .navigation {
+      border-bottom-color: #E6E6E6;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
       .menu {
         box-shadow: none;
         border-top: none;
         border-bottom: none;
         border-radius: 0;
       }
+      .item a {
+        color: #181818;
+        font-weight: 500;
+      }
     }
+  }
+
+  .home {
+    .carousel {
+      background-color: rgb(42, 42, 42);
+    }
+    .exhibition_hall {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .exhibition_hall h4 {
+      font-size: 30px;
+      text-align: center;
+      margin: 0px auto;
+      padding-top: 50px;
+      color: #000;
+    }
+    .tline {
+      color: #dedede;
+    }
+    .roundabout_box {
+      width: 100%;
+    }
+    .roundabout_box ul {
+    }
+    .roundabout_box img {
+      width: 100%;
+    }
+    /**********roundabout**********/
+    .roundabout_box {
+      height: 430px;
+      width: 100%;
+      margin: 0px auto 20px auto;
+    }
+    .roundabout-holder {
+      list-style: none;
+      width: 500px;
+      height: 425px;
+      margin: 0px auto;
+    }
+    .roundabout-moveable-item {
+      font-size: 12px !important;
+      height: 425px;
+      width: 650px;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+    .roundabout-moveable-item img {
+      height: 100%;
+      width: 100%;
+      background-color: #FFFFFF;
+      margin: 0;
+    }
+    .roundabout-in-focus {
+      cursor: auto;
+    }
+    .roundabout-in-focus000:hover {
+      -webkit-box-shadow: 0px 0px 20px #787878;
+      -moz-box-shadow: 0px 0px 20px #787878;
+      background: #f9f9f9;
+    }
+    .roundabout-holder .text {
+      color: #999;
+    }
+    .roundabout-in-focus000:hover span {
+      display: inline;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      padding: 8px 20px;
+      background: #f9f9f9;
+      color: #3366cc;
+      z-index: 999;
+      -webkit-border-top-left-radius: 5px;
+      -moz-border-radius-topLeft: 5px;
+      border-left: 1px solid #aaaaaa;
+      border-top: 1px solid #aaaaaa;
+    }
+    .roundabout a:active, .roundabout a:focus, .roundabout a:visited {
+      outline: none;
+      text-decoration: none;
+    }
+    .roundabout li {
+      margin: 0
+    }
+
+    .container {
+      padding: 1em 2em 1em 2em;
+    }
+  }
+
+  .recommend {
+
+  }
+
+  .original {
+
+  }
+
+  .community {
+
+  }
+
+  .footer.segment {
+    padding: 3em 0em;
+
   }
 }
