@@ -12,11 +12,11 @@ module.exports = {
     path: path.resolve(__dirname, './static/dist')
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     NODE_ENV: JSON.stringify('production')
+    //   }
+    // }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module) {
@@ -58,9 +58,15 @@ module.exports = {
         ]
       },
       {
-        test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        loader : 'file-loader'
-      }
+        test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader'
+      },
+      {
+        test: /\.ico$/,
+        include: /(images)/,
+        loader: "url-loader?limit=10000&mimetype=image/x-icon"
+      },
+
     ]
   },
 };

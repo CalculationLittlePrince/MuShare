@@ -1,10 +1,13 @@
+'use strict';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {HashRouter as Router, Route} from 'react-router-dom';
 import Header from './header';
-import Home from './home';
 import Footer from './footer';
-import _ from '../../semantic/dist/semantic.min.js';
-
+import Home from './home';
+import Hot from './hot';
+import '../../scss/app.scss'
 
 class App extends React.Component {
 
@@ -12,27 +15,18 @@ class App extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
-      <div id="app">
-        <Header
-        />
-        <Home
-        />
-        <Footer
-        />
-      </div>
+      <Router basename="">
+        <div id="app">
+          <Header/>
+          <Route exact path="/" component={Home}/>
+          <Route path="/hot" component={Hot}/>
+          <Footer/>
+        </div>
+      </Router>
     );
   }
+
 }
-
-
-ReactDOM.render(
-  <App
-  />,
-  $('#react-root')[0]
-)
-;
+ReactDOM.render(<App/>, $('#react-root')[0]);

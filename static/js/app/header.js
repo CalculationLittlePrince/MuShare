@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import '../../scss/app.scss'
+import {Link} from 'react-router-dom';
 import logo from '../../image/logo.png';
-import _ from '../../semantic/dist/semantic.min.js';
+import '../../semantic/dist/semantic.min.js';
 
 class Top extends React.Component {
   constructor(props) {
@@ -21,7 +20,7 @@ class Top extends React.Component {
             <div className="ui segment">
               <div className="ui secondary menu">
                 <div className="icon-home item">
-                  <i className="home icon big link"></i>
+                  <Link to="/"><i className="home icon big link"></i></Link>
                 </div>
               </div>
             </div>
@@ -85,18 +84,18 @@ class Navigation extends React.Component {
       <div className="navigation">
         <div className="ui container">
           <div className="ui four item menu">
-            <a className="item">
+            <Link to="/hot" className="item">
               本周热门
-            </a>
-            <a className="item">
+            </Link>
+            <Link to="/recommend" className="item">
               木屑推荐
-            </a>
-            <a className="item">
+            </Link>
+            <Link to="/original" className="item">
               最新原创
-            </a>
-            <a className="item">
+            </Link>
+            <Link to="/community" className="item">
               音乐社区
-            </a>
+            </Link>
           </div>
         </div>
       </div>
