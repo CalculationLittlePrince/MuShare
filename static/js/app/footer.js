@@ -24,7 +24,7 @@ class Footer extends React.Component {
                 <a href="#" className="item">常用链接</a>
               </div>
             </div>
-            <div className="seven wide column">
+            <div className="three wide column">
               <h4 className="ui inverted header">版权所有</h4>
               <p>&copy;2017 MuShare Group</p>
             </div>

@@ -21,70 +21,70 @@ class Hot extends React.Component {
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>
             <div className="column">
               <div className="ui piled segment">
                 <div className="ui image">
-                  <img src="image/avatar.png"/>
+                  <img src="/image/avatar.png"/>
                 </div>
               </div>
             </div>

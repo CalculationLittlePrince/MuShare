@@ -31,7 +31,7 @@ func includePages(m *martini.ClassicMartini) {
   m.Get("/login", pages.Login)
   m.Get("/player", pages.Player)
   m.Get("/register", pages.Register)
-  m.Get("/app", pages.App)
+  m.Get("/app**", pages.App)
 }
 
 func includeUserApi(m *martini.ClassicMartini) {
@@ -60,7 +60,7 @@ func includeUserApi(m *martini.ClassicMartini) {
 
   m.Group("/api/user/profile", func(r martini.Router) {
     r.Get("/:id", profile.GetProfile)
-    r.Put("update", profile.UpdateProfile)
+    r.Put("/update", profile.UpdateProfile)
   }, RetrieveBody(reflect.TypeOf(user.Profile{})), TokenAuth)
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import logo from '../../image/logo.png';
 import '../../semantic/dist/semantic.min.js';
 
@@ -9,7 +9,9 @@ class Top extends React.Component {
   }
 
   componentDidMount() {
-    $('.ui .dropdown').dropdown();
+    $('.ui .dropdown').dropdown({
+      action: 'hide'
+    });
   }
 
   render() {
@@ -51,7 +53,7 @@ class Top extends React.Component {
                       <i className="user icon large"></i>
                       <i className="dropdown icon"></i>
                       <div className="menu">
-                        <div className="item">个人中心</div>
+                        <Link to="/personal" className="item">个人中心</Link>
                         <div className="divider"></div>
                         <div className="item">设置</div>
                         <div className="item">注销</div>
@@ -84,18 +86,18 @@ class Navigation extends React.Component {
       <div className="navigation">
         <div className="ui container">
           <div className="ui four item menu">
-            <Link to="/hot" className="item">
+            <NavLink to="/hot" activeClassName="active" className="item">
               本周热门
-            </Link>
-            <Link to="/recommend" className="item">
+            </NavLink>
+            <NavLink to="/recommend" activeClassName="active" className="item">
               木屑推荐
-            </Link>
-            <Link to="/original" className="item">
+            </NavLink>
+            <NavLink to="/original" activeClassName="active" className="item">
               最新原创
-            </Link>
-            <Link to="/community" className="item">
+            </NavLink>
+            <NavLink to="/community" activeClassName="active" className="item">
               音乐社区
-            </Link>
+            </NavLink>
           </div>
         </div>
       </div>
