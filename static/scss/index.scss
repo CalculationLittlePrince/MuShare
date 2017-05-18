@@ -1,0 +1,25 @@
+#index {
+  .grid, .column {
+    padding: 0;
+    margin: 0;
+  }
+  .header {
+    a {
+      color: black;
+    }
+    .icon {
+      margin: 0;
+    }
+    .segment {
+      box-shadow: none;
+      border: none;
+    }
+
+    .header-top {
+      .item {
+        padding-top: 0.1em;
+        padding-bottom: 0.1em;
+      }
+    }
+  }
+}

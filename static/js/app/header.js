@@ -53,6 +53,7 @@ class Top extends React.Component {
                       <i className="user icon large"></i>
                       <i className="dropdown icon"></i>
                       <div className="menu">
+                        <div className="item">个人主页</div>
                         <Link to="/personal" className="item">个人中心</Link>
                         <div className="divider"></div>
                         <div className="item">设置</div>

@@ -12,7 +12,8 @@ import Original from './original';
 import Community from './community/main';
 import Personal from './profile/main';
 import Chat from './chat/main';
-import '../../scss/app.scss'
+import '../../scss/app.scss';
+import '../../semantic/dist/semantic.min.js';
 
 class App extends React.Component {
 

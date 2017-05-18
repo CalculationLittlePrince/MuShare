@@ -41,6 +41,9 @@
       .icon-home i:hover, .icon-user .dropdown:hover {
         color: #535353;
       }
+      .dropdown .menu {
+        z-index: 200;
+      }
     }
     .divider {
       border-width: 1px;
@@ -182,7 +185,34 @@
       padding: 1em 2em 1em 2em;
     }
     .profile {
-
+      .form {
+        padding: 0 6em 0 0;
+      }
+    }
+    .sheets {
+      .public-sheet, .private-sheet {
+        padding: 0 6em 2em 0;
+        .content {
+          .description {
+            text-align: center;
+          }
+        }
+      }
+    }
+    .subscription {
+      .subs-sheet {
+        padding: 0 6em 2em 0;
+        .content {
+          .description {
+            text-align: center;
+          }
+        }
+      }
+    }
+    .friends {
+      .friends-list {
+        padding: 0 12em 2em 0;
+      }
     }
   }
 

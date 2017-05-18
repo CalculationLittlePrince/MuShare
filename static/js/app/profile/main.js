@@ -22,7 +22,7 @@ class Personal extends React.Component {
               <div className="four wide column">
                 <div className="ui secondary vertical pointing menu">
                   <NavLink to="/profile" activeClassName="active" className="item">
-                    个人主页
+                    个人信息
                   </NavLink>
                   <NavLink to="/sheets" activeClassName="active" className="item">
                     我的歌单
