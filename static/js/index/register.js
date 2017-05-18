@@ -7,12 +7,10 @@ class Register extends React.Component {
     super(props);
   }
 
-  component
-
   render() {
     return (
-      <div className="ui modal register">
-        <div className="ui middle aligned center aligned grid">
+      <div className="ui register modal" id="register">
+        <div className="ui middle center aligned grid">
           <div className="column">
             <h2 className="ui teal image header">
               <img src={logo} className="image"/>
