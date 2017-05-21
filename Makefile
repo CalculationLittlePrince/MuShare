@@ -24,9 +24,7 @@ test:
 
 npm-install:
 	npm install --producation
-	bower install
 
 npm-install-dev:
 	npm install
-	bower install
 

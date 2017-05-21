@@ -4,6 +4,7 @@ import (
   "github.com/martini-contrib/sessions"
   "fmt"
   "net/http"
+  "encoding/base64"
 )
 
 func UserSessionAuth(session sessions.Session, rw http.ResponseWriter, req *http.Request) {
@@ -12,6 +13,6 @@ func UserSessionAuth(session sessions.Session, rw http.ResponseWriter, req *http
     fmt.Println("login")
   } else {
     fmt.Println("not login")
-    //http.Redirect(rw, req, "/login?preview="+base64.URLEncoding.EncodeToString([]byte(req.URL.Path)), http.StatusFound)
+    http.Redirect(rw, req, "/?preview=" + base64.URLEncoding.EncodeToString([]byte(req.URL.Path)), http.StatusFound)
   }
 }

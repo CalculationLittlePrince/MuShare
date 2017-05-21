@@ -1,7 +1,7 @@
 {
 	"ImportPath": "MuShare",
-	"GoVersion": "go1.6",
-	"GodepVersion": "v63",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v62",
 	"Deps": [
 		{
 			"ImportPath": "github.com/aliyun/aliyun-oss-go-sdk/oss",

@@ -13,6 +13,7 @@ import (
   "MuShare/datatype"
   "MuShare/conf"
   "github.com/martini-contrib/sessions"
+  "fmt"
 )
 
 func Login(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter) {
@@ -40,6 +41,7 @@ func LoginSetToken(redis *redis.Client, user models.User, config *conf.Conf, ses
   session.Set("login", true)
   session.Set("token", user.Token)
   session.Set("userId", user.ID)
+  fmt.Println(session)
 }
 
 func Response(res datatype.Response, rw http.ResponseWriter) {

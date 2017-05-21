@@ -13,7 +13,7 @@ func main() {
   m := martini.Classic()
   conf := config.LoadConf(martini.Env)
   //create new session middleware
-  store := sessions.NewCookieStore([]byte("MushareSecret"))
+  store := sessions.NewCookieStore([]byte("musharesecret"))
   store.Options(sessions.Options{
     Path: "/",
     Domain: conf.App.Host,
@@ -26,8 +26,8 @@ func main() {
     middlewares.LogOutput,
     middlewares.Recovery(),
     martini.Logger(),
-    sessions.Sessions("_session", store),
     martini.Static("static", martini.StaticOptions{}),
+    sessions.Sessions("mushare_session", store),
     middlewares.InjectRedis(),
     middlewares.InjectDB(),
   )

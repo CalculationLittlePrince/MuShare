@@ -11,7 +11,7 @@ func (this *Profile) GetProfile(body *user.Profile) datatype.Response {
   user := models.User{}
 
   if body.FriendID == 0 {
-    return badRequest("")
+    body.FriendID = body.UserID
   }
 
   tx.Where("id=?", body.FriendID).Find(&user)
