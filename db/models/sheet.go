@@ -9,6 +9,6 @@ type Sheet struct {
   Audios    []Audio  `gorm:"ForeignKey:SheetID" json:"audio,omitempty"`
 }
 
-func (Sheet) TableName() string{
+func (Sheet) TableName() string {
   return "sheets"
 }

@@ -2837,7 +2837,7 @@ webpackJsonp([0,3],{
 /***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -2849,6 +2849,10 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(241);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2857,183 +2861,136 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Sheets = function (_React$Component) {
-	  _inherits(Sheets, _React$Component);
+	var SheetCards = function (_MuComponent) {
+	  _inherits(SheetCards, _MuComponent);
 
-	  function Sheets() {
+	  function SheetCards(props) {
+	    _classCallCheck(this, SheetCards);
+
+	    return _possibleConstructorReturn(this, (SheetCards.__proto__ || Object.getPrototypeOf(SheetCards)).call(this, props));
+	  }
+
+	  _createClass(SheetCards, [{
+	    key: 'render',
+	    value: function render() {
+	      var cards = this.props.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'card' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', { src: '/image/avatar.png' })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui four link cards' },
+	        cards
+	      );
+	    }
+	  }]);
+
+	  return SheetCards;
+	}(_mushareReactComponent2.default);
+
+	var Sheets = function (_MuComponent2) {
+	  _inherits(Sheets, _MuComponent2);
+
+	  function Sheets(props) {
 	    _classCallCheck(this, Sheets);
 
-	    return _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).call(this, props));
+
+	    _this2.state = {
+	      privateSheet: [],
+	      publicSheet: []
+	    };
+	    return _this2;
 	  }
 
 	  _createClass(Sheets, [{
-	    key: "render",
+	    key: 'loadSheet',
+	    value: function loadSheet() {
+	      var self = this;
+	      fetch('/api/music/sheet/list', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        var sheets = data.body;
+	        var privateSheet = sheets.filter(function (sheet) {
+	          return sheet.privilege === 'private';
+	        });
+	        var publicSheet = sheets.filter(function (sheet) {
+	          return sheet.privilege === 'public' || sheet.privilege === 'friend';
+	        });
+	        console.log(privateSheet);
+	        console.log(publicSheet);
+	        self.setState({
+	          privateSheet: privateSheet,
+	          publicSheet: publicSheet
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadSheet();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "sheets" },
+	        'div',
+	        { className: 'sheets' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "ui medium header" },
-	          "\u516C\u5F00\u6B4C\u5355"
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u516C\u5F00\u6B4C\u5355'
 	        ),
-	        _react2.default.createElement("div", { className: "ui divider" }),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "public-sheet" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "ui four link cards" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            )
-	          )
+	          'div',
+	          { className: 'public-sheet' },
+	          _react2.default.createElement(SheetCards, {
+	            sheets: this.state.publicSheet })
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "ui medium header" },
-	          "\u79C1\u6709\u6B4C\u5355"
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u79C1\u6709\u6B4C\u5355'
 	        ),
-	        _react2.default.createElement("div", { className: "ui divider" }),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "private-sheet" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "ui four link cards" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            )
-	          )
+	          'div',
+	          { className: 'private-sheet' },
+	          _react2.default.createElement(SheetCards, {
+	            sheets: this.state.privateSheet })
 	        )
 	      );
 	    }
 	  }]);
 
 	  return Sheets;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Sheets;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
 
 /***/ }),
 

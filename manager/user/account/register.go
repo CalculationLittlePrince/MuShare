@@ -62,7 +62,7 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Res
   tx.Where("mail=?", body.Mail).First(&u)
   sheet.UserID = u.ID
   sheet.Name = "default#" + strconv.Itoa(u.ID)
-  sheet.Privilege = "privacy"
+  sheet.Privilege = "private"
   sheet.CreatedAt = time.Now().Unix()
   sheet.UpdatedAt = time.Now().Unix()
   tx.Create(&sheet)
