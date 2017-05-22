@@ -3476,7 +3476,7 @@ webpackJsonp([0,3],{
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'ui huge header' },
-	                    'Sheet Name'
+	                    this.props.sheetName
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
@@ -3486,12 +3486,14 @@ webpackJsonp([0,3],{
 	                    _react2.default.createElement(
 	                      'a',
 	                      { href: '', className: 'username' },
-	                      'Username'
+	                      this.props.creator
 	                    ),
 	                    _react2.default.createElement(
 	                      'span',
-	                      { className: 'modify-date' },
-	                      '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A2017-7-10'
+	                      {
+	                        className: 'modify-date' },
+	                      '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A',
+	                      this.props.lastModified
 	                    )
 	                  )
 	                )
@@ -3518,6 +3520,45 @@ webpackJsonp([0,3],{
 	  _createClass(AudioList, [{
 	    key: 'render',
 	    value: function render() {
+
+	      var rows = this.props.audioList.map(function (audio, index) {
+	        return _react2.default.createElement(
+	          'tr',
+	          null,
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            index
+	          ),
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              audio.name
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'operations' },
+	              _react2.default.createElement('i', { className: 'folder icon' }),
+	              _react2.default.createElement('i', { className: 'folder icon' }),
+	              _react2.default.createElement('i', { className: 'folder icon' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            audio.artist
+	          ),
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            audio.duration
+	          )
+	        );
+	      });
+
 	      return _react2.default.createElement(
 	        'table',
 	        { className: 'ui striped table' },
@@ -3541,98 +3582,14 @@ webpackJsonp([0,3],{
 	            _react2.default.createElement(
 	              'th',
 	              null,
-	              '\u4E13\u8F91'
-	            ),
-	            _react2.default.createElement(
-	              'th',
-	              null,
-	              '\u65F6\u5E38'
+	              '\u65F6\u957F'
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'tbody',
 	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              '1'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              _react2.default.createElement(
-	                'span',
-	                null,
-	                'John Lilki'
-	              ),
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'operations' },
-	                _react2.default.createElement('i', { className: 'folder icon' }),
-	                _react2.default.createElement('i', { className: 'folder icon' }),
-	                _react2.default.createElement('i', { className: 'folder icon' })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'September 14, 2013'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'jhlilk22@yahoo.com'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'No'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              '2'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              _react2.default.createElement(
-	                'span',
-	                null,
-	                'Jamie Harington'
-	              ),
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'operations' },
-	                _react2.default.createElement('i', { className: 'folder icon' }),
-	                _react2.default.createElement('i', { className: 'folder icon' }),
-	                _react2.default.createElement('i', { className: 'folder icon' })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'January 11, 2014'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'jamieharingonton@yahoo.com'
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              null,
-	              'Yes'
-	            )
-	          )
+	          rows
 	        )
 	      );
 	    }
@@ -3675,7 +3632,8 @@ webpackJsonp([0,3],{
 	          'div',
 	          { className: 'ui bottom active attached tab segment audio-list',
 	            'data-tab': 'audioList' },
-	          _react2.default.createElement(AudioList, null)
+	          _react2.default.createElement(AudioList, {
+	            audioList: this.props.audioList })
 	        ),
 	        _react2.default.createElement('div', { className: 'ui bottom attached tab segment', 'data-tab': 'comments' })
 	      );
@@ -3691,7 +3649,18 @@ webpackJsonp([0,3],{
 	  function SheetPage(props) {
 	    _classCallCheck(this, SheetPage);
 
-	    return _possibleConstructorReturn(this, (SheetPage.__proto__ || Object.getPrototypeOf(SheetPage)).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, (SheetPage.__proto__ || Object.getPrototypeOf(SheetPage)).call(this, props));
+
+	    _this4.state = {
+	      sheetInfo: {
+	        sheetName: '',
+	        creator: '',
+	        lastModified: ''
+	      },
+	      audioList: []
+	    };
+
+	    return _this4;
 	  }
 
 	  _createClass(SheetPage, [{
@@ -3700,7 +3669,6 @@ webpackJsonp([0,3],{
 	      $('.sheet-page .audio-list .menu .item').tab();
 	      var self = this;
 	      var sheetId = this.props.match.params.sheetId;
-	      console.log(sheetId);
 	      var url = '/api/music/audio/list?sheetId=' + sheetId;
 	      fetch(url, {
 	        method: 'GET',
@@ -3709,7 +3677,25 @@ webpackJsonp([0,3],{
 	          'Authorization': $('#token').val()
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
-	        console.log(data);
+	        console.log(data.body);
+	        var sheetInfo = {
+	          sheetName: '',
+	          cover: '',
+	          creator: '',
+	          lastModified: ''
+	        };
+	        var audioList = data.body.audio.map(function (audio) {
+	          return {
+	            id: audio.id,
+	            name: audio.name,
+	            artist: audio.artist.name,
+	            duration: audio.duration
+	          };
+	        });
+	        self.setState({
+	          sheetInfo: sheetInfo,
+	          audioList: audioList
+	        });
 	      }).then(function (error) {});
 	    }
 	  }, {
@@ -3718,8 +3704,10 @@ webpackJsonp([0,3],{
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'sheet-page' },
-	        _react2.default.createElement(SheetInfo, null),
-	        _react2.default.createElement(AudioContent, null)
+	        _react2.default.createElement(SheetInfo, {
+	          sheetInfo: this.state.sheetInfo }),
+	        _react2.default.createElement(AudioContent, {
+	          audioList: this.state.audioList })
 	      );
 	    }
 	  }]);

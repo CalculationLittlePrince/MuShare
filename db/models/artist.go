@@ -2,13 +2,12 @@ package models
 
 type Artist struct {
   Model
-  name      string     `gorm:""`
-  privilege string     `gorm:""`
-  UserID    uint       `gorm:""`
-  User      User       `gorm:"ForeignKey:UserID"`
-  Music     []Music    `gorm:"ForeignKey:ArtistID"`
+  Name   string     `gorm:"" json:"name"`
+  UserID int        `gorm:"" json:"userId"`
+  User   User       `gorm:"ForeignKey:UserID" json:"user,omitempty"`
+  Audio  []Audio    `gorm:"ForeignKey:ArtistID" json:"audio,omitempty"`
 }
 
 func (Artist) TableName() string {
-  return "Artists"
+  return "artists"
 }
