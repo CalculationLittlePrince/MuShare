@@ -2997,7 +2997,7 @@ webpackJsonp([0,3],{
 /***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -3009,6 +3009,10 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(241);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3017,92 +3021,125 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Friends = function (_React$Component) {
-	  _inherits(Friends, _React$Component);
+	var FriendList = function (_MuComponent) {
+	  _inherits(FriendList, _MuComponent);
 
-	  function Friends() {
+	  function FriendList() {
+	    _classCallCheck(this, FriendList);
+
+	    return _possibleConstructorReturn(this, (FriendList.__proto__ || Object.getPrototypeOf(FriendList)).apply(this, arguments));
+	  }
+
+	  _createClass(FriendList, [{
+	    key: 'render',
+	    value: function render() {
+	      var friendList = this.props.friends.map(function (friend) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'item' },
+	          _react2.default.createElement('img', { className: 'ui avatar image', src: '/image/avatar.png' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'header' },
+	              friend.name
+	            )
+	          )
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui middle aligned animated divided large list' },
+	        friendList
+	      );
+	    }
+	  }]);
+
+	  return FriendList;
+	}(_mushareReactComponent2.default);
+
+	var Friends = function (_MuComponent2) {
+	  _inherits(Friends, _MuComponent2);
+
+	  function Friends(props) {
 	    _classCallCheck(this, Friends);
 
-	    return _possibleConstructorReturn(this, (Friends.__proto__ || Object.getPrototypeOf(Friends)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (Friends.__proto__ || Object.getPrototypeOf(Friends)).call(this, props));
+
+	    _this2.state = {
+	      friends: []
+	    };
+	    return _this2;
 	  }
 
 	  _createClass(Friends, [{
-	    key: "render",
+	    key: 'loadFriends',
+	    value: function loadFriends() {
+	      var self = this;
+	      fetch('/api/user/friend/list', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        var friends = data.body;
+	        self.setState({
+	          friends: friends
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadFriends();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "friends" },
+	        'div',
+	        { className: 'friends' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "ui medium header" },
-	          "\u597D\u53CB\u5217\u8868"
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u597D\u53CB\u8BF7\u6C42'
 	        ),
-	        _react2.default.createElement("div", { className: "ui divider" }),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
+	        _react2.default.createElement('div', { className: 'friends-list' }),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "friends-list" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "ui middle aligned animated divided large list" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "item" },
-	              _react2.default.createElement("img", { className: "ui avatar image", src: "/image/avatar.png" }),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "a",
-	                  { className: "header" },
-	                  "Helen"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "item" },
-	              _react2.default.createElement("img", { className: "ui avatar image", src: "/image/avatar.png" }),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "a",
-	                  { className: "header" },
-	                  "Christian"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "item" },
-	              _react2.default.createElement("img", { className: "ui avatar image", src: "/image/avatar.png" }),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "a",
-	                  { className: "header" },
-	                  "Daniel"
-	                )
-	              )
-	            )
-	          )
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u597D\u53CB\u5217\u8868'
+	        ),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'friends-list' },
+	          _react2.default.createElement(FriendList, {
+	            friends: this.state.friends })
 	        )
 	      );
 	    }
 	  }]);
 
 	  return Friends;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Friends;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
 
 /***/ }),
 
 /***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -3114,6 +3151,10 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(241);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3122,133 +3163,115 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Subscription = function (_React$Component) {
-	  _inherits(Subscription, _React$Component);
+	var SheetCards = function (_MuComponent) {
+	  _inherits(SheetCards, _MuComponent);
 
-	  function Subscription() {
+	  function SheetCards(props) {
+	    _classCallCheck(this, SheetCards);
+
+	    return _possibleConstructorReturn(this, (SheetCards.__proto__ || Object.getPrototypeOf(SheetCards)).call(this, props));
+	  }
+
+	  _createClass(SheetCards, [{
+	    key: 'render',
+	    value: function render() {
+	      var cards = this.props.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'card' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', { src: '/image/avatar.png' })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui four link cards' },
+	        cards
+	      );
+	    }
+	  }]);
+
+	  return SheetCards;
+	}(_mushareReactComponent2.default);
+
+	var Subscription = function (_MuComponent2) {
+	  _inherits(Subscription, _MuComponent2);
+
+	  function Subscription(props) {
 	    _classCallCheck(this, Subscription);
 
-	    return _possibleConstructorReturn(this, (Subscription.__proto__ || Object.getPrototypeOf(Subscription)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (Subscription.__proto__ || Object.getPrototypeOf(Subscription)).call(this, props));
+
+	    _this2.state = {
+	      sheets: []
+	    };
+	    return _this2;
 	  }
 
 	  _createClass(Subscription, [{
-	    key: "render",
+	    key: 'loadSheet',
+	    value: function loadSheet() {
+	      var self = this;
+	      fetch('/api/music/sheet/list/subscription', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        var sheets = data.body;
+	        console.log(sheets);
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadSheet();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "subscription" },
+	        'div',
+	        { className: 'subscription' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "ui medium header" },
-	          "\u6B4C\u5355"
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u6B4C\u5355'
 	        ),
-	        _react2.default.createElement("div", { className: "ui divider" }),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "subs-sheet" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "ui four link cards" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "The Name of Sheet"
-	                )
-	              )
-	            )
-	          )
+	          'div',
+	          { className: 'subs-sheet' },
+	          _react2.default.createElement(SheetCards, {
+	            sheets: this.state.sheets })
 	        )
 	      );
 	    }
 	  }]);
 
 	  return Subscription;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Subscription;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
 
 /***/ }),
 

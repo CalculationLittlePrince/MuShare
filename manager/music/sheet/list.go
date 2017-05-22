@@ -8,7 +8,7 @@ import (
 )
 
 const priFriend = "friend"
-const priPrivate = "privacy"
+const priPrivate = "private"
 const priPublic = "public"
 const stateAgree = "agree"
 
