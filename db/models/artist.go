@@ -9,6 +9,6 @@ type Artist struct {
   Music     []Music    `gorm:"ForeignKey:ArtistID"`
 }
 
-func (Artist) TableName() string{
+func (Artist) TableName() string {
   return "Artists"
 }

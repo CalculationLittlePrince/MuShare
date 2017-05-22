@@ -180,6 +180,32 @@
     }
   }
 
+  .sheet-page {
+    .container {
+      padding: 1em 2em 1em 2em;
+    }
+    .sheet-info {
+      .cover {
+        width: 220px;
+      }
+      .item .content .modify-date {
+        font-size: 12px;
+        margin-left: 5px;
+      }
+      .item .content .username {
+        font-size: 15px;
+        font-weight: bold;
+      }
+    }
+    .audio-content {
+      .audio-list {
+        table .operations {
+         margin-left: 10px;
+        }
+      }
+    }
+  }
+
   .personal {
     .container {
       padding: 1em 2em 1em 2em;
@@ -210,7 +236,7 @@
       }
     }
     .friends {
-      .friends-list {
+      .friends-list  {
         padding: 0 12em 2em 0;
       }
     }

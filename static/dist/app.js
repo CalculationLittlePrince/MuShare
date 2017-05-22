@@ -53,7 +53,11 @@ webpackJsonp([0,3],{
 
 	var _main6 = _interopRequireDefault(_main5);
 
-	__webpack_require__(246);
+	var _main7 = __webpack_require__(246);
+
+	var _main8 = _interopRequireDefault(_main7);
+
+	__webpack_require__(247);
 
 	__webpack_require__(226);
 
@@ -77,7 +81,9 @@ webpackJsonp([0,3],{
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      $('.ui.sidebar.chat').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+	      // $('.ui.sidebar.chat')
+	      //   .sidebar('setting', 'transition', 'overlay')
+	      //   .sidebar('toggle');
 	    }
 	  }, {
 	    key: 'render',
@@ -95,8 +101,9 @@ webpackJsonp([0,3],{
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/recommend', component: _recommends2.default }),
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/community', component: _main2.default }),
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/personal', component: _main4.default }),
+	          _react2.default.createElement(_reactRouterDom.Route, { path: '/sheet/:sheetId', component: _main6.default }),
 	          _react2.default.createElement(_footer2.default, null),
-	          _react2.default.createElement(_main6.default, null)
+	          _react2.default.createElement(_main8.default, null)
 	        )
 	      );
 	    }
@@ -3061,18 +3068,90 @@ webpackJsonp([0,3],{
 	  return FriendList;
 	}(_mushareReactComponent2.default);
 
-	var Friends = function (_MuComponent2) {
-	  _inherits(Friends, _MuComponent2);
+	function AcceptButton(props) {
+	  if (props.accept) {
+	    return _react2.default.createElement(
+	      'div',
+	      {
+	        className: 'ui button disabled',
+	        'data-friend-id': props.id },
+	      '\u5DF2\u63A5\u53D7'
+	    );
+	  } else {
+	    return _react2.default.createElement(
+	      'div',
+	      {
+	        className: 'ui button',
+	        'data-friend-id': props.id,
+	        onClick: props.acceptFriendRequest },
+	      '\u63A5\u53D7'
+	    );
+	  }
+	};
+
+	var FriendRequestList = function (_MuComponent2) {
+	  _inherits(FriendRequestList, _MuComponent2);
+
+	  function FriendRequestList() {
+	    _classCallCheck(this, FriendRequestList);
+
+	    return _possibleConstructorReturn(this, (FriendRequestList.__proto__ || Object.getPrototypeOf(FriendRequestList)).apply(this, arguments));
+	  }
+
+	  _createClass(FriendRequestList, [{
+	    key: 'render',
+	    value: function render() {
+	      var self = this;
+	      var friendList = this.props.friends.map(function (friend) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'item' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'right floated content' },
+	            _react2.default.createElement(AcceptButton, {
+	              id: friend.id,
+	              accept: friend.accept,
+	              acceptFriendRequest: self.props.acceptFriendRequest })
+	          ),
+	          _react2.default.createElement('img', { className: 'ui avatar image', src: '/image/avatar.png' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'header' },
+	              friend.name
+	            )
+	          )
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui middle aligned divided large list' },
+	        friendList
+	      );
+	    }
+	  }]);
+
+	  return FriendRequestList;
+	}(_mushareReactComponent2.default);
+
+	var Friends = function (_MuComponent3) {
+	  _inherits(Friends, _MuComponent3);
 
 	  function Friends(props) {
 	    _classCallCheck(this, Friends);
 
-	    var _this2 = _possibleConstructorReturn(this, (Friends.__proto__ || Object.getPrototypeOf(Friends)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (Friends.__proto__ || Object.getPrototypeOf(Friends)).call(this, props));
 
-	    _this2.state = {
-	      friends: []
+	    _this3.state = {
+	      friends: [],
+	      friendRequests: []
 	    };
-	    return _this2;
+	    _this3.acceptFriendRequest = _this3.acceptFriendRequest.bind(_this3);
+	    return _this3;
 	  }
 
 	  _createClass(Friends, [{
@@ -3095,9 +3174,60 @@ webpackJsonp([0,3],{
 	      });
 	    }
 	  }, {
+	    key: 'loadFriendRequests',
+	    value: function loadFriendRequests() {
+	      var self = this;
+	      fetch('/api/user/friend/request', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        var friendRequests = data.body.map(function (friendRequest) {
+	          friendRequest.accept = false;
+	          return friendRequest;
+	        });
+	        self.setState({
+	          friendRequests: friendRequests
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'acceptFriendRequest',
+	    value: function acceptFriendRequest(event) {
+	      var self = this;
+	      var friendId = $(event.target).data("friendId");
+	      fetch('/api/user/friend/request', {
+	        method: 'PUT',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        },
+	        body: JSON.stringify({
+	          friendId: friendId
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function () {
+	        var friendRequests = self.state.friendRequests.map(function (friendRequest) {
+	          if (friendRequest.id == friendId) {
+	            friendRequest.accept = true;
+	          }
+	          return friendRequest;
+	        });
+	        self.setState({
+	          friendRequests: friendRequests
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.loadFriends();
+	      this.loadFriendRequests();
 	    }
 	  }, {
 	    key: 'render',
@@ -3111,7 +3241,13 @@ webpackJsonp([0,3],{
 	          '\u597D\u53CB\u8BF7\u6C42'
 	        ),
 	        _react2.default.createElement('div', { className: 'ui divider' }),
-	        _react2.default.createElement('div', { className: 'friends-list' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'friends-list' },
+	          _react2.default.createElement(FriendRequestList, {
+	            friends: this.state.friendRequests,
+	            acceptFriendRequest: this.acceptFriendRequest })
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'ui medium header' },
@@ -3278,6 +3414,327 @@ webpackJsonp([0,3],{
 /***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _mushareReactComponent = __webpack_require__(241);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SheetInfo = function (_MuComponent) {
+	  _inherits(SheetInfo, _MuComponent);
+
+	  function SheetInfo() {
+	    _classCallCheck(this, SheetInfo);
+
+	    return _possibleConstructorReturn(this, (SheetInfo.__proto__ || Object.getPrototypeOf(SheetInfo)).apply(this, arguments));
+	  }
+
+	  _createClass(SheetInfo, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'sheet-info ui container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui two column centered grid' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'ui items' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'item' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'ui middle cover aligned image' },
+	                  _react2.default.createElement('img', { src: '/image/avatar.png', alt: '' })
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'middle aligned content' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'ui huge header' },
+	                    'Sheet Name'
+	                  ),
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'meta' },
+	                    _react2.default.createElement('img', { className: 'ui avatar image',
+	                      src: '/image/avatar.png' }),
+	                    _react2.default.createElement(
+	                      'a',
+	                      { href: '', className: 'username' },
+	                      'Username'
+	                    ),
+	                    _react2.default.createElement(
+	                      'span',
+	                      { className: 'modify-date' },
+	                      '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A2017-7-10'
+	                    )
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SheetInfo;
+	}(_mushareReactComponent2.default);
+
+	var AudioList = function (_MuComponent2) {
+	  _inherits(AudioList, _MuComponent2);
+
+	  function AudioList() {
+	    _classCallCheck(this, AudioList);
+
+	    return _possibleConstructorReturn(this, (AudioList.__proto__ || Object.getPrototypeOf(AudioList)).apply(this, arguments));
+	  }
+
+	  _createClass(AudioList, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'table',
+	        { className: 'ui striped table' },
+	        _react2.default.createElement(
+	          'thead',
+	          null,
+	          _react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement('th', null),
+	            _react2.default.createElement(
+	              'th',
+	              null,
+	              '\u97F3\u4E50\u6807\u9898'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              null,
+	              '\u6B4C\u624B'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              null,
+	              '\u4E13\u8F91'
+	            ),
+	            _react2.default.createElement(
+	              'th',
+	              null,
+	              '\u65F6\u5E38'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'tbody',
+	          null,
+	          _react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              '1'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'John Lilki'
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'operations' },
+	                _react2.default.createElement('i', { className: 'folder icon' }),
+	                _react2.default.createElement('i', { className: 'folder icon' }),
+	                _react2.default.createElement('i', { className: 'folder icon' })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'September 14, 2013'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'jhlilk22@yahoo.com'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'No'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'tr',
+	            null,
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              '2'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'Jamie Harington'
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'operations' },
+	                _react2.default.createElement('i', { className: 'folder icon' }),
+	                _react2.default.createElement('i', { className: 'folder icon' }),
+	                _react2.default.createElement('i', { className: 'folder icon' })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'January 11, 2014'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'jamieharingonton@yahoo.com'
+	            ),
+	            _react2.default.createElement(
+	              'td',
+	              null,
+	              'Yes'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AudioList;
+	}(_mushareReactComponent2.default);
+
+	var AudioContent = function (_MuComponent3) {
+	  _inherits(AudioContent, _MuComponent3);
+
+	  function AudioContent() {
+	    _classCallCheck(this, AudioContent);
+
+	    return _possibleConstructorReturn(this, (AudioContent.__proto__ || Object.getPrototypeOf(AudioContent)).apply(this, arguments));
+	  }
+
+	  _createClass(AudioContent, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'audio-content ui container' },
+	        _react2.default.createElement('div', { className: 'ui divider' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui top attached tabular menu' },
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'item active', 'data-tab': 'audioList' },
+	            '\u6B4C\u66F2\u5217\u8868'
+	          ),
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'item', 'data-tab': 'comments' },
+	            '\u8BC4\u8BBA'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui bottom active attached tab segment audio-list',
+	            'data-tab': 'audioList' },
+	          _react2.default.createElement(AudioList, null)
+	        ),
+	        _react2.default.createElement('div', { className: 'ui bottom attached tab segment', 'data-tab': 'comments' })
+	      );
+	    }
+	  }]);
+
+	  return AudioContent;
+	}(_mushareReactComponent2.default);
+
+	var SheetPage = function (_MuComponent4) {
+	  _inherits(SheetPage, _MuComponent4);
+
+	  function SheetPage(props) {
+	    _classCallCheck(this, SheetPage);
+
+	    return _possibleConstructorReturn(this, (SheetPage.__proto__ || Object.getPrototypeOf(SheetPage)).call(this, props));
+	  }
+
+	  _createClass(SheetPage, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $('.sheet-page .audio-list .menu .item').tab();
+	      var self = this;
+	      var sheetId = this.props.match.params.sheetId;
+	      console.log(sheetId);
+	      var url = '/api/music/audio/list?sheetId=' + sheetId;
+	      fetch(url, {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        console.log(data);
+	      }).then(function (error) {});
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'sheet-page' },
+	        _react2.default.createElement(SheetInfo, null),
+	        _react2.default.createElement(AudioContent, null)
+	      );
+	    }
+	  }]);
+
+	  return SheetPage;
+	}(_mushareReactComponent2.default);
+
+	exports.default = SheetPage;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(238)))
+
+/***/ }),
+
+/***/ 246:
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -3330,16 +3787,16 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 246:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(247);
+	var content = __webpack_require__(248);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(249)(content, {});
+	var update = __webpack_require__(250)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3357,15 +3814,15 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 247:
+/***/ 248:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(248)();
+	exports = module.exports = __webpack_require__(249)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

@@ -23,13 +23,66 @@ class FriendList extends MuComponent {
   }
 }
 
+
+function AcceptButton(props) {
+  if (props.accept) {
+    return (
+      <div
+        className="ui button disabled"
+        data-friend-id={props.id}>
+        已接受
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className="ui button"
+        data-friend-id={props.id}
+        onClick={props.acceptFriendRequest}>
+        接受
+      </div>
+    );
+  }
+};
+
+class FriendRequestList extends MuComponent {
+
+  render() {
+    var self = this;
+    var friendList = this.props.friends.map(function (friend) {
+      return (
+        <div className="item">
+          <div className="right floated content">
+            <AcceptButton
+              id={friend.id}
+              accept={friend.accept}
+              acceptFriendRequest={self.props.acceptFriendRequest}/>
+          </div>
+          <img className="ui avatar image" src="/image/avatar.png"/>
+          <div className="content">
+            <a className="header">{friend.name}</a>
+          </div>
+        </div>
+      );
+    });
+
+    return (
+      <div className="ui middle aligned divided large list">
+        {friendList}
+      </div>
+    );
+  }
+}
+
 class Friends extends MuComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-      friends: []
-    }
+      friends: [],
+      friendRequests: [],
+    };
+    this.acceptFriendRequest = this.acceptFriendRequest.bind(this);
   }
 
   loadFriends() {
@@ -54,8 +107,65 @@ class Friends extends MuComponent {
       });
   }
 
+  loadFriendRequests() {
+    var self = this;
+    fetch('/api/user/friend/request', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': $('#token').val()
+      },
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function (data) {
+        var friendRequests = data.body.map(function (friendRequest) {
+          friendRequest.accept = false;
+          return friendRequest;
+        });
+        self.setState({
+          friendRequests: friendRequests
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  acceptFriendRequest(event) {
+    var self = this;
+    var friendId = $(event.target).data("friendId");
+    fetch('/api/user/friend/request', {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': $('#token').val()
+      },
+      body: JSON.stringify({
+        friendId: friendId
+      })
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function () {
+        var friendRequests = self.state.friendRequests.map(function (friendRequest) {
+          if (friendRequest.id == friendId) {
+            friendRequest.accept = true;
+          }
+          return friendRequest;
+        });
+        self.setState({
+          friendRequests: friendRequests
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
     this.loadFriends();
+    this.loadFriendRequests();
   }
 
   render() {
@@ -66,6 +176,9 @@ class Friends extends MuComponent {
         </div>
         <div className="ui divider"></div>
         <div className="friends-list">
+          <FriendRequestList
+            friends={this.state.friendRequests}
+            acceptFriendRequest={this.acceptFriendRequest}/>
         </div>
         <div className="ui medium header">
           好友列表

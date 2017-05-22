@@ -2,9 +2,9 @@ package models
 
 type Album  struct {
   Model
-  Name   string `gorm:""`
-  Cover  string `gorm:""`
-  UserID uint   `gorm:""`
+  Name   string `gorm:"" json:"name"`
+  Cover  string `gorm:"" json:"cover"`
+  UserID uint   `gorm:"" json:"userId"`
   User   User   `gorm:"ForeignKey:UserID"`
 }
 
