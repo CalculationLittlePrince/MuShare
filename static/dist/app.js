@@ -49,15 +49,15 @@ webpackJsonp([0,3],{
 
 	var _main4 = _interopRequireDefault(_main3);
 
-	var _main5 = __webpack_require__(245);
+	var _main5 = __webpack_require__(246);
 
 	var _main6 = _interopRequireDefault(_main5);
 
-	var _main7 = __webpack_require__(246);
+	var _main7 = __webpack_require__(247);
 
 	var _main8 = _interopRequireDefault(_main7);
 
-	__webpack_require__(247);
+	__webpack_require__(248);
 
 	__webpack_require__(226);
 
@@ -243,7 +243,8 @@ webpackJsonp([0,3],{
 	                    _react2.default.createElement(
 	                      'div',
 	                      { className: 'ui floating top right pointing dropdown' },
-	                      _react2.default.createElement('i', { className: 'user icon large' }),
+	                      _react2.default.createElement('img', { className: 'ui avatar image',
+	                        src: '/image/avatar.png' }),
 	                      _react2.default.createElement('i', { className: 'dropdown icon' }),
 	                      _react2.default.createElement(
 	                        'div',
@@ -618,7 +619,7 @@ webpackJsonp([0,3],{
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'ui container' },
+	          { className: 'ui container hot' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui medium header' },
@@ -626,56 +627,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'ui four column grid' },
+	            { className: 'ui four link cards' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            )
@@ -683,7 +704,7 @@ webpackJsonp([0,3],{
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'ui container' },
+	          { className: 'ui container recommend' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui medium header' },
@@ -691,56 +712,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'ui four column grid' },
+	            { className: 'ui four link cards' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            )
@@ -748,7 +789,7 @@ webpackJsonp([0,3],{
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'ui container' },
+	          { className: 'ui container original' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui medium header' },
@@ -756,56 +797,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'ui four column grid' },
+	            { className: 'ui four link cards' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            )
@@ -1324,134 +1385,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'ui four column grid' },
+	            { className: 'ui four link cards' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'column' },
+	              { className: 'card' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
+	                { className: 'image' },
+	                _react2.default.createElement('img', { src: '/image/avatar.png' })
+	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui piled segment' },
+	                { className: 'content' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'column' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'ui piled segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png' })
+	                  { className: 'description' },
+	                  'test'
 	                )
 	              )
 	            )
@@ -1519,134 +1522,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            "div",
-	            { className: "ui four column grid" },
+	            { className: "ui four link cards" },
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            )
@@ -1714,134 +1659,76 @@ webpackJsonp([0,3],{
 	          ),
 	          _react2.default.createElement(
 	            "div",
-	            { className: "ui four column grid" },
+	            { className: "ui four link cards" },
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            ),
 	            _react2.default.createElement(
 	              "div",
-	              { className: "column" },
+	              { className: "card" },
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
+	                { className: "image" },
+	                _react2.default.createElement("img", { src: "/image/avatar.png" })
+	              ),
 	              _react2.default.createElement(
 	                "div",
-	                { className: "ui piled segment" },
+	                { className: "content" },
 	                _react2.default.createElement(
 	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "column" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "ui piled segment" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "ui image" },
-	                  _react2.default.createElement("img", { src: "/image/avatar.png" })
+	                  { className: "description" },
+	                  "test"
 	                )
 	              )
 	            )
@@ -2376,15 +2263,15 @@ webpackJsonp([0,3],{
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _sheets = __webpack_require__(242);
+	var _sheets = __webpack_require__(243);
 
 	var _sheets2 = _interopRequireDefault(_sheets);
 
-	var _friends = __webpack_require__(243);
+	var _friends = __webpack_require__(244);
 
 	var _friends2 = _interopRequireDefault(_friends);
 
-	var _subscription = __webpack_require__(244);
+	var _subscription = __webpack_require__(245);
 
 	var _subscription2 = _interopRequireDefault(_subscription);
 
@@ -2476,7 +2363,7 @@ webpackJsonp([0,3],{
 /***/ 237:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
+	/* WEBPACK VAR INJECTION */(function($, EventEmitter, fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -2488,7 +2375,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -2502,8 +2389,71 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var UpdateButton = function (_MuComponent) {
-	  _inherits(UpdateButton, _MuComponent);
+	var AvatarUploadModal = function (_MuComponent) {
+	  _inherits(AvatarUploadModal, _MuComponent);
+
+	  function AvatarUploadModal(props) {
+	    _classCallCheck(this, AvatarUploadModal);
+
+	    var _this = _possibleConstructorReturn(this, (AvatarUploadModal.__proto__ || Object.getPrototypeOf(AvatarUploadModal)).call(this, props));
+
+	    _this.updateProgress = _this.updateProgress.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(AvatarUploadModal, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('did mount');
+	      $('#avatar-upload-modal .progress').progress({
+	        percent: 0
+	      });
+	      this.props.eventEmitter.addListener('update-progress', this.updateProgress);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      console.log('did update');
+	    }
+	  }, {
+	    key: 'updateProgress',
+	    value: function updateProgress(percent) {
+	      console.log(percent);
+	      $('#avatar-upload-modal .progress').progress('set percent', percent);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui small login modal', id: 'avatar-upload-modal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui progress' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'bar' },
+	              _react2.default.createElement('div', { className: 'progress' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'label' },
+	              '\u6B63\u5728\u4E0A\u4F20...'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AvatarUploadModal;
+	}(_mushareReactComponent2.default);
+
+	var UpdateButton = function (_MuComponent2) {
+	  _inherits(UpdateButton, _MuComponent2);
 
 	  function UpdateButton(props) {
 	    _classCallCheck(this, UpdateButton);
@@ -2537,25 +2487,27 @@ webpackJsonp([0,3],{
 	  return UpdateButton;
 	}(_mushareReactComponent2.default);
 
-	var Profile = function (_MuComponent2) {
-	  _inherits(Profile, _MuComponent2);
+	var Profile = function (_MuComponent3) {
+	  _inherits(Profile, _MuComponent3);
 
 	  function Profile(props) {
 	    _classCallCheck(this, Profile);
 
-	    var _this2 = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
 
-	    _this2.state = {
+	    _this3.state = {
 	      name: '',
 	      gender: '',
 	      mail: '',
 	      description: '',
 	      updateButtonDisabled: true
 	    };
-	    _this2.handleChange = _this2.handleChange.bind(_this2);
-	    _this2.loadUserProfile = _this2.loadUserProfile.bind(_this2);
-	    _this2.handleUpdate = _this2.handleUpdate.bind(_this2);
-	    return _this2;
+	    _this3.eventEmitter = new EventEmitter();
+	    _this3.handleChange = _this3.handleChange.bind(_this3);
+	    _this3.loadUserProfile = _this3.loadUserProfile.bind(_this3);
+	    _this3.handleUpdate = _this3.handleUpdate.bind(_this3);
+	    _this3.uploadAvatar = _this3.uploadAvatar.bind(_this3);
+	    return _this3;
 	  }
 
 	  _createClass(Profile, [{
@@ -2611,11 +2563,20 @@ webpackJsonp([0,3],{
 	      });
 	    }
 	  }, {
+	    key: 'uploadAvatar',
+	    value: function uploadAvatar() {
+	      console.log('upload avatar');
+	      $('#avatar-upload-modal').modal('show');
+	      this.eventEmitter.emit('update-progress', 80);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'profile' },
+	        _react2.default.createElement(AvatarUploadModal, {
+	          eventEmitter: this.eventEmitter }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'ui medium header' },
@@ -2747,9 +2708,12 @@ webpackJsonp([0,3],{
 	                      _react2.default.createElement(
 	                        'div',
 	                        { className: 'center' },
+	                        _react2.default.createElement('input', { type: 'file', name: 'file', id: 'file',
+	                          className: 'avatarfile',
+	                          onChange: this.uploadAvatar }),
 	                        _react2.default.createElement(
-	                          'div',
-	                          { className: 'ui inverted button' },
+	                          'label',
+	                          { htmlFor: 'file' },
 	                          '\u66F4\u6362\u5934\u50CF'
 	                        )
 	                      )
@@ -2769,18 +2733,18 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Profile;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(238)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(238), __webpack_require__(239)))
 
 /***/ }),
 
-/***/ 240:
+/***/ 241:
 /***/ (function(module, exports) {
 
 	/* (ignored) */
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2841,7 +2805,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 242:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -2856,7 +2820,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -2997,11 +2961,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Sheets;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(239), __webpack_require__(1)))
 
 /***/ }),
 
-/***/ 243:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3016,7 +2980,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3268,11 +3232,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Friends;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(239), __webpack_require__(1)))
 
 /***/ }),
 
-/***/ 244:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3287,7 +3251,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3407,11 +3371,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Subscription;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238), __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(239), __webpack_require__(1)))
 
 /***/ }),
 
-/***/ 245:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
@@ -3426,7 +3390,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3716,11 +3680,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = SheetPage;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(238)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(239)))
 
 /***/ }),
 
-/***/ 246:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3775,16 +3739,16 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 247:
+/***/ 248:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(248);
+	var content = __webpack_require__(249);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(250)(content, {});
+	var update = __webpack_require__(251)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3802,15 +3766,15 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 248:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(249)();
+	exports = module.exports = __webpack_require__(250)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatarfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatarfile + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatarfile:focus + label,\n#app .personal .profile .avatar .avatarfile + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

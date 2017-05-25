@@ -15,74 +15,44 @@ class Original extends React.Component {
           <div className="ui medium header">
             最新原创
           </div>
-          <div className="ui four column grid">
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+          <div className="ui four link cards">
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
               </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>

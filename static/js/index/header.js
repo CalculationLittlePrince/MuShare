@@ -15,11 +15,19 @@ class Header extends React.Component {
   }
 
   showRegister() {
-    $('.ui.modal.register').modal('show');
+    $('.ui.modal.register')
+      .modal({
+        observeChanges: true
+      })
+      .modal('show');
   }
 
   showLogin() {
-    $('.ui.modal.login').modal('show');
+    $('.ui.modal.login')
+      .modal({
+        observeChanges: true
+      })
+      .modal('show');
   }
 
   render() {
@@ -47,7 +55,9 @@ class Header extends React.Component {
                 <div className="ui secondary menu">
                   <div className="right menu">
                     <div className="item">
-                      <div className="ui primary button" onClick={this.showRegister}>Sign up</div>
+                      <div className="ui primary button"
+                           onClick={this.showRegister}>Sign up
+                      </div>
                     </div>
                     <div className="item">
                       <div className="ui button" onClick={this.showLogin}>

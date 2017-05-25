@@ -10,6 +10,13 @@
   }
 }
 
+#avatar-upload-modal {
+  .container {
+    width: 80%;
+    padding: 2em;
+  }
+}
+
 #app {
   .grid, .column {
     padding: 0;
@@ -154,11 +161,27 @@
     .container {
       padding: 1em 2em 1em 2em;
     }
+    .hot, .recommend, .original {
+      .cards {
+        padding: 0 2em;
+        .description {
+          font-size: 20px;
+          text-align: center;
+        }
+      }
+    }
   }
 
   .hot {
     .container {
       padding: 1em 2em 1em 2em;
+    }
+    .cards {
+      padding: 0 2em;
+      .description {
+        font-size: 20px;
+        text-align: center;
+      }
     }
   }
 
@@ -166,11 +189,25 @@
     .container {
       padding: 1em 2em 1em 2em;
     }
+    .cards {
+      padding: 0 2em;
+      .description {
+        font-size: 20px;
+        text-align: center;
+      }
+    }
   }
 
   .original {
     .container {
       padding: 1em 2em 1em 2em;
+    }
+    .cards {
+      padding: 0 2em;
+      .description {
+        font-size: 20px;
+        text-align: center;
+      }
     }
   }
 
@@ -200,7 +237,7 @@
     .audio-content {
       .audio-list {
         table .operations {
-         margin-left: 10px;
+          margin-left: 10px;
         }
       }
     }
@@ -213,6 +250,30 @@
     .profile {
       .form {
         padding: 0 6em 0 0;
+      }
+      .avatar {
+        .avatarfile {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1;
+        }
+        .avatarfile + label {
+          cursor: pointer;
+          font-size: 18px;
+          font-weight: 500;
+          color: white;
+          padding: 0.625rem 1.25rem;
+          background-color: black;
+          display: inline-block;
+        }
+
+        .avatarfile:focus + label,
+        .avatarfile + label:hover {
+          background-color: red;
+        }
       }
     }
     .sheets {

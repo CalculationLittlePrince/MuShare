@@ -46,106 +46,142 @@ class Home extends React.Component {
           </div>
           <div class="clear"></div>
         </div>
-        <div className="ui container">
+        <div className="ui container hot">
           <div className="ui medium header">
             本周热门
           </div>
-          <div className="ui four column grid">
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+          <div className="ui four link cards">
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="ui container">
+        <div className="ui container recommend">
           <div className="ui medium header">
             木屑推荐
           </div>
-          <div className="ui four column grid">
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+          <div className="ui four link cards">
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="ui container">
+        <div className="ui container original">
           <div className="ui medium header">
             最新原创
           </div>
-          <div className="ui four column grid">
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+          <div className="ui four link cards">
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="ui piled segment">
-                <div className="ui image">
-                  <img src="/image/avatar.png"/>
+            <div className="card">
+              <div className="image">
+                <img src="/image/avatar.png"/>
+              </div>
+              <div className="content">
+                <div className="description">
+                  test
                 </div>
               </div>
             </div>

@@ -15,19 +15,20 @@ import (
   "MuShare/datatype"
   "encoding/json"
   "MuShare/datatype/request/oss"
+  "fmt"
 )
 
 func (this *OSS)GetSTS(body *oss.OSS, oss conf.OSS) datatype.Response {
   canonicalizedQueryString := Urlencoded("AccessKeyId") + "=" + Urlencoded(oss.AccessKeyId) + "&" +
-  Urlencoded("Action") + "=" + Urlencoded("AssumeRole") + "&" +
-  Urlencoded("Format") + "=" + Urlencoded("JSON") + "&" +
-  Urlencoded("RoleArn") + "=" + Urlencoded(oss.RoleArn) + "&" +
-  Urlencoded("RoleSessionName") + "=" + Urlencoded("client") + "&" +
-  Urlencoded("SignatureMethod") + "=" + Urlencoded("HMAC-SHA1") + "&" +
-  Urlencoded("SignatureNonce") + "=" + Urlencoded(RandomIntString()) + "&" +
-  Urlencoded("SignatureVersion") + "=" + Urlencoded("1.0") + "&" +
-  Urlencoded("Timestamp") + "=" + Urlencoded(time.Now().UTC().Format("2006-01-02T15:04:01Z")) + "&" +
-  Urlencoded("Version") + "=" + Urlencoded("2015-04-01")
+    Urlencoded("Action") + "=" + Urlencoded("AssumeRole") + "&" +
+    Urlencoded("Format") + "=" + Urlencoded("JSON") + "&" +
+    Urlencoded("RoleArn") + "=" + Urlencoded(oss.RoleArn) + "&" +
+    Urlencoded("RoleSessionName") + "=" + Urlencoded("client") + "&" +
+    Urlencoded("SignatureMethod") + "=" + Urlencoded("HMAC-SHA1") + "&" +
+    Urlencoded("SignatureNonce") + "=" + Urlencoded(RandomIntString()) + "&" +
+    Urlencoded("SignatureVersion") + "=" + Urlencoded("1.0") + "&" +
+    Urlencoded("Timestamp") + "=" + Urlencoded(time.Now().UTC().Format("2006-01-02T15:04:01Z")) + "&" +
+    Urlencoded("Version") + "=" + Urlencoded("2015-04-01")
   stringToSign := "GET" + "&" + Urlencoded("/") + "&" + Urlencoded(canonicalizedQueryString)
   signature := Signature(stringToSign, oss.SecretKey)
   query := canonicalizedQueryString + "&" + Urlencoded("Signature") + "=" + Urlencoded(signature)
@@ -48,6 +49,7 @@ func (this *OSS)GetSTS(body *oss.OSS, oss conf.OSS) datatype.Response {
   m := make(map[string]interface{})
   respBody := make(map[string]interface{})
   json.Unmarshal(ossResp, &m)
+  fmt.Println(m)
   c := m["Credentials"].(map[string]interface{})
   respBody["accessKeySecret"] = c["AccessKeySecret"]
   respBody["accessKeyId"] = c["AccessKeyId"]

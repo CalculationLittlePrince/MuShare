@@ -1,6 +1,47 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 
+
+class AvatarUploadModal extends MuComponent {
+
+  constructor(props) {
+    super(props);
+    this.updateProgress = this.updateProgress.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('did mount');
+    $('#avatar-upload-modal .progress').progress({
+      percent: 0
+    });
+    this.props.eventEmitter.addListener('update-progress', this.updateProgress);
+  }
+
+  componentDidUpdate() {
+    console.log('did update');
+  }
+
+  updateProgress(percent) {
+    console.log(percent);
+    $('#avatar-upload-modal .progress').progress('set percent', percent);
+  }
+
+  render() {
+    return (
+      <div className="ui small login modal" id="avatar-upload-modal">
+        <div className="ui container">
+          <div className="ui progress">
+            <div className="bar">
+              <div className="progress"></div>
+            </div>
+            <div className="label">正在上传...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 class UpdateButton extends MuComponent {
   constructor(props) {
     super(props);
@@ -36,11 +77,13 @@ class Profile extends MuComponent {
       gender: '',
       mail: '',
       description: '',
-      updateButtonDisabled: true
+      updateButtonDisabled: true,
     };
+    this.eventEmitter = new EventEmitter();
     this.handleChange = this.handleChange.bind(this);
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.uploadAvatar = this.uploadAvatar.bind(this);
   }
 
   componentDidMount() {
@@ -97,9 +140,17 @@ class Profile extends MuComponent {
       });
   }
 
+  uploadAvatar() {
+    console.log('upload avatar');
+    $('#avatar-upload-modal').modal('show');
+    this.eventEmitter.emit('update-progress', 80);
+  }
+
   render() {
     return (
       <div className="profile">
+        <AvatarUploadModal
+          eventEmitter={this.eventEmitter}/>
         <div className="ui medium header">
           公开信息
         </div>
@@ -143,12 +194,12 @@ class Profile extends MuComponent {
               <div className="field description">
                 <label>简介: </label>
                 <div className="description">
-                  <textarea
-                    placeholder="写点什么关于你自己"
-                    name="description"
-                    value={this.state.description}
-                    onChange={this.handleChange}>
-                  </textarea>
+        <textarea
+          placeholder="写点什么关于你自己"
+          name="description"
+          value={this.state.description}
+          onChange={this.handleChange}>
+        </textarea>
                 </div>
               </div>
               <UpdateButton
@@ -164,7 +215,10 @@ class Profile extends MuComponent {
                   <div className="ui dimmer">
                     <div className="content">
                       <div className="center">
-                        <div className="ui inverted button">更换头像</div>
+                        <input type="file" name="file" id="file"
+                               className="avatarfile"
+                               onChange={this.uploadAvatar}/>
+                        <label htmlFor="file">更换头像</label>
                       </div>
                     </div>
                   </div>

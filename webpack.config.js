@@ -33,7 +33,9 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       Promise: 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise',
-      fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
+      fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch',
+      oss: 'http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.0.min',
+      EventEmitter: 'wolfy87-eventemitter'
     }),
     // new webpack.optimize.UglifyJsPlugin({
     //   compress: {

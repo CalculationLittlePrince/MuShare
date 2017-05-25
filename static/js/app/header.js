@@ -50,7 +50,8 @@ class Top extends React.Component {
                   </div>
                   <div className="icon-user item">
                     <div className="ui floating top right pointing dropdown">
-                      <i className="user icon large"></i>
+                      <img className="ui avatar image"
+                           src="/image/avatar.png"/>
                       <i className="dropdown icon"></i>
                       <div className="menu">
                         <div className="item">个人主页</div>

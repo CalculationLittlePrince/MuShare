@@ -18,7 +18,8 @@
     "react-router-dom": "^4.1.1",
     "redux": "^3.5.2",
     "semantic-ui": "^2.2.10",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "wolfy87-eventemitter": "^5.1.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

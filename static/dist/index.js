@@ -55,11 +55,11 @@ webpackJsonp([1,3],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _header = __webpack_require__(251);
+	var _header = __webpack_require__(252);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	__webpack_require__(254);
+	__webpack_require__(255);
 
 	__webpack_require__(226);
 
@@ -109,14 +109,14 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 240:
+/***/ 241:
 /***/ (function(module, exports) {
 
 	/* (ignored) */
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -177,7 +177,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -196,11 +196,11 @@ webpackJsonp([1,3],{
 
 	var _logo2 = _interopRequireDefault(_logo);
 
-	var _login = __webpack_require__(252);
+	var _login = __webpack_require__(253);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _register = __webpack_require__(253);
+	var _register = __webpack_require__(254);
 
 	var _register2 = _interopRequireDefault(_register);
 
@@ -230,12 +230,16 @@ webpackJsonp([1,3],{
 	  _createClass(Header, [{
 	    key: 'showRegister',
 	    value: function showRegister() {
-	      $('.ui.modal.register').modal('show');
+	      $('.ui.modal.register').modal({
+	        observeChanges: true
+	      }).modal('show');
 	    }
 	  }, {
 	    key: 'showLogin',
 	    value: function showLogin() {
-	      $('.ui.modal.login').modal('show');
+	      $('.ui.modal.login').modal({
+	        observeChanges: true
+	      }).modal('show');
 	    }
 	  }, {
 	    key: 'render',
@@ -290,7 +294,8 @@ webpackJsonp([1,3],{
 	                      { className: 'item' },
 	                      _react2.default.createElement(
 	                        'div',
-	                        { className: 'ui primary button', onClick: this.showRegister },
+	                        { className: 'ui primary button',
+	                          onClick: this.showRegister },
 	                        'Sign up'
 	                      )
 	                    ),
@@ -321,7 +326,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -332,7 +337,7 @@ webpackJsonp([1,3],{
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _mushareReactComponent = __webpack_require__(241);
+	var _mushareReactComponent = __webpack_require__(242);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -547,11 +552,11 @@ webpackJsonp([1,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Login;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(238)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(239)))
 
 /***/ }),
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -658,16 +663,16 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 254:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(255);
+	var content = __webpack_require__(256);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(250)(content, {});
+	var update = __webpack_require__(251)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -685,10 +690,10 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 255:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(249)();
+	exports = module.exports = __webpack_require__(250)();
 	// imports
 
 
