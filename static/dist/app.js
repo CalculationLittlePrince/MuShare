@@ -2597,6 +2597,7 @@ webpackJsonp([0,3],{
 	  }, {
 	    key: 'uploadAvatar',
 	    value: function uploadAvatar(event) {
+	      var self = this;
 	      console.log('upload avatar');
 	      $('#avatar-upload-modal').modal('show');
 	      (0, _upload.uploadAvatar)('123', event.target.files[0], {
@@ -2607,7 +2608,7 @@ webpackJsonp([0,3],{
 	            switch (_context.prev = _context.next) {
 	              case 0:
 	                console.log(progress);
-	                this.eventEmitter.emit('update-progress', progress);
+	                self.eventEmitter.emit('update-progress', progress);
 
 	              case 2:
 	              case 'end':
