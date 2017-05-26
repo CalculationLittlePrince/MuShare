@@ -36,7 +36,7 @@ function getOssClient(token) {
       .then(parseJSON)
       .then(function (data) {
         OSSClient.expiration = data.body.expiration;
-        OSSClient.client = new oss.Wrapper({
+        OSSClient.client = new OSS.Wrapper({
           region: 'oss-cn-hangzhou',
           accessKeyId: data.body.accessKeyId,
           accessKeySecret: data.body.accessKeySecret,
@@ -52,5 +52,15 @@ function getOssClient(token) {
   }
 }
 
-export default getOssClient;
+function getURL(objectId, token) {
+  getOssClient(token)
+    .then(function (client) {
+      return client.signatureUrl(objectId, {expires: 3600});
+    })
+    .catch(function (error) {
+
+    });
+}
+
+export {getOssClient, getURL}
   

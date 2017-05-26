@@ -1,5 +1,6 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
+import {getURL} from '../../oss/oss'
 import {uploadAvatar} from '../../oss/upload';
 
 
@@ -53,7 +54,7 @@ class UpdateButton extends MuComponent {
       return (
         <button
           className="ui button disabled"
-          onClick={this.props.handleUpdate}>
+          onClick={this.props.updateProfile}>
           更新
         </button>
       );
@@ -61,7 +62,7 @@ class UpdateButton extends MuComponent {
       return (
         <button
           className="ui primary button"
-          onClick={this.props.handleUpdate}>
+          onClick={this.props.updateProfile}>
           更新
         </button>
       );
@@ -78,11 +79,13 @@ class Profile extends MuComponent {
       gender: '',
       mail: '',
       description: '',
+      avatar: '/image/avatar.png',
       updateButtonDisabled: true,
     };
     this.eventEmitter = new EventEmitter();
     this.handleChange = this.handleChange.bind(this);
     this.loadUserProfile = this.loadUserProfile.bind(this);
+    this.loadUserAvatar = this.loadUserAvatar.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.uploadAvatar = this.uploadAvatar.bind(this);
   }
@@ -112,17 +115,14 @@ class Profile extends MuComponent {
     });
   }
 
-  handleUpdate() {
-    console.log('update profile');
-  }
-
   loadUserProfile() {
     var self = this;
+    var token = $('#token').val();
     fetch('/api/user/profile/get', {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
-        'Authorization': $('#token').val()
+        'Authorization': token
       },
     })
       .then(self.checkStatus)
@@ -134,10 +134,26 @@ class Profile extends MuComponent {
           description: data.body.description,
           gender: data.body.gender,
         });
+        self.loadUserAvatar(data.body.avatar, token);
       })
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  loadUserAvatar(objectId, token) {
+    var self = this;
+    if (objectId != '') {
+      getURL(objectId, token)
+        .then(function (url) {
+          self.setState({
+            avatar: url
+          });
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
   }
 
   uploadAvatar(event) {
@@ -156,6 +172,10 @@ class Profile extends MuComponent {
       .catch(function (error) {
         console.error(error);
       });
+  }
+
+  updateProfile() {
+
   }
 
   render() {
@@ -216,7 +236,7 @@ class Profile extends MuComponent {
               </div>
               <UpdateButton
                 disabled={this.state.updateButtonDisabled}
-                handleUpdate={this.handleUpdate}
+                handleUpdate={this.updateProfile}
               />
             </div>
           </div>
@@ -234,7 +254,7 @@ class Profile extends MuComponent {
                       </div>
                     </div>
                   </div>
-                  <img src="/image/avatar.png"/>
+                  <img src={this.state.avatar}/>
                 </div>
               </div>
             </div>

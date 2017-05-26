@@ -10,11 +10,6 @@
     "semantic-ui": "^2.2.10"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-load-plugins": "^1.1.0",
-    "gulp-sass": "^2.1.0",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.0",
     "babel-loader": "^6.2.4",
@@ -28,6 +23,11 @@
     "eslint-watch": "^2.1.13",
     "exports-loader": "^0.6.4",
     "file-loader": "^0.9.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^2.1.2",
     "html-webpack-plugin": "^2.22.0",
     "image-webpack-loader": "^1.8.0",
     "imports-loader": "^0.7.1",
