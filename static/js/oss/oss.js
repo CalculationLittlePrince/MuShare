@@ -35,6 +35,7 @@ function getOssClient(token) {
       .then(checkStatus)
       .then(parseJSON)
       .then(function (data) {
+        console.log(data);
         OSSClient.expiration = data.body.expiration;
         OSSClient.client = new OSS.Wrapper({
           region: 'oss-cn-hangzhou',
