@@ -1,13 +1,13 @@
 install:
 	go install
 
-run-prod: npm-install
+run-prod:
 	MARTINI_ENV=production go run app.go
 
-run-dev:	npm-install-dev
+run-dev:
 	MARTINI_ENV=development go run app.go
 
-run-test:	npm-install-dev
+run-test:
 	MARTINI_ENV=test go run app.go
 
 db-migration-prod:
