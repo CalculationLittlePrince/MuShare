@@ -4,8 +4,8 @@ var path = require('path');
 module.exports = {
   devtool: 'cheap-source-map',
   entry: {
-    index: './static/js/index/main.js',
-    app: './static/js/app/main.js',
+    index: ['babel-polyfill', './static/js/index/main.js'],
+    app: ['babel-polyfill', './static/js/app/main.js'],
   },
   output: {
     filename: '[name].js',

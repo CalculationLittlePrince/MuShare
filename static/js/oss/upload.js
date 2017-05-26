@@ -1,8 +1,9 @@
-import getOssClient from './oss';
+import {getOssClient} from './oss';
 
 function uploadAvatar(objectKeyId, file, callbackVar, progress) {
   return getOssClient(callbackVar.token)
     .then(function (client) {
+      console.log(client);
       return client.multipartUpload(objectKeyId, file, {
         headers: {
           'x-oss-callback': window.btoa(JSON.stringify({
