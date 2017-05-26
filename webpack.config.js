@@ -37,11 +37,11 @@ module.exports = {
       oss: 'http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.0.min',
       EventEmitter: 'wolfy87-eventemitter'
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
   ],
   module: {
     loaders: [
