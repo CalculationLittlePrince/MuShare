@@ -22,10 +22,6 @@
     "wolfy87-eventemitter": "^5.1.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-load-plugins": "^1.1.0",
-    "gulp-sass": "^2.1.0",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.0",
     "babel-loader": "^6.2.4",
@@ -49,8 +45,6 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "start": "gulp",
-    "build": "gulp sass"
   },
   "repository": {
     "type": "git",
