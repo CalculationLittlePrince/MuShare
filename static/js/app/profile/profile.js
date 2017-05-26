@@ -1,5 +1,6 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
+import {uploadAvatar} from '../../oss/upload';
 
 
 class AvatarUploadModal extends MuComponent {
@@ -117,7 +118,6 @@ class Profile extends MuComponent {
 
   loadUserProfile() {
     var self = this;
-    console.log($('#token').val());
     fetch('/api/user/profile/get', {
       method: 'GET',
       credentials: 'same-origin',
@@ -140,10 +140,22 @@ class Profile extends MuComponent {
       });
   }
 
-  uploadAvatar() {
+  uploadAvatar(event) {
     console.log('upload avatar');
     $('#avatar-upload-modal').modal('show');
-    this.eventEmitter.emit('update-progress', 80);
+    uploadAvatar('123', event.target.files[0], {
+      token: $('#token').val(),
+    }, function*(progress) {
+      console.log(progress);
+      this.eventEmitter.emit('update-progress', progress);
+    })
+      .then(function (result) {
+        console.log(result);
+        $('#avatar-upload-modal').modal('hidden');
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 
   render() {

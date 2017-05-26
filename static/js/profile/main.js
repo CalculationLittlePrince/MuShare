@@ -7,7 +7,7 @@ require.config({
 });
 
 
-require(['jquery', '../upload/upload'], ($, upload) => {
+require(['jquery', '../oss/upload'], ($, upload) => {
   $(document).ready(() => {
     var token = $('#token').val();
     document.getElementById('avatar').addEventListener('change', (e) => {

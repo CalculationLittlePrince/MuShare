@@ -14,6 +14,8 @@ import (
   "fmt"
 )
 
+const DEFAULTSHEETNAME  = "我的收藏"
+
 func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Response {
   //check mail
   reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
@@ -61,7 +63,7 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Res
   //Create default sheet for user
   tx.Where("mail=?", body.Mail).First(&u)
   sheet.UserID = u.ID
-  sheet.Name = "default#" + strconv.Itoa(u.ID)
+  sheet.Name = DEFAULTSHEETNAME
   sheet.Privilege = "private"
   sheet.CreatedAt = time.Now().Unix()
   sheet.UpdatedAt = time.Now().Unix()
