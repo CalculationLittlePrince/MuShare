@@ -37,31 +37,31 @@ webpackJsonp([0,3],{
 
 	var _header2 = _interopRequireDefault(_header);
 
-	var _footer = __webpack_require__(526);
+	var _footer = __webpack_require__(529);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
-	var _home = __webpack_require__(527);
+	var _home = __webpack_require__(530);
 
 	var _home2 = _interopRequireDefault(_home);
 
-	var _hot = __webpack_require__(529);
+	var _hot = __webpack_require__(532);
 
 	var _hot2 = _interopRequireDefault(_hot);
 
-	var _recommends = __webpack_require__(530);
+	var _recommends = __webpack_require__(533);
 
 	var _recommends2 = _interopRequireDefault(_recommends);
 
-	var _original = __webpack_require__(531);
+	var _original = __webpack_require__(534);
 
 	var _original2 = _interopRequireDefault(_original);
 
-	var _main = __webpack_require__(532);
+	var _main = __webpack_require__(535);
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _main3 = __webpack_require__(535);
+	var _main3 = __webpack_require__(538);
 
 	var _main4 = _interopRequireDefault(_main3);
 
@@ -75,7 +75,7 @@ webpackJsonp([0,3],{
 
 	__webpack_require__(547);
 
-	__webpack_require__(525);
+	__webpack_require__(528);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -136,7 +136,7 @@ webpackJsonp([0,3],{
 /***/ 523:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -148,13 +148,19 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
 	var _reactRouterDom = __webpack_require__(483);
 
-	var _logo = __webpack_require__(524);
+	var _logo = __webpack_require__(526);
 
 	var _logo2 = _interopRequireDefault(_logo);
 
-	__webpack_require__(525);
+	var _oss = __webpack_require__(527);
+
+	__webpack_require__(528);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -164,13 +170,20 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Top = function (_React$Component) {
-	  _inherits(Top, _React$Component);
+	var Top = function (_MuComponent) {
+	  _inherits(Top, _MuComponent);
 
 	  function Top(props) {
 	    _classCallCheck(this, Top);
 
-	    return _possibleConstructorReturn(this, (Top.__proto__ || Object.getPrototypeOf(Top)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Top.__proto__ || Object.getPrototypeOf(Top)).call(this, props));
+
+	    _this.state = {
+	      avatar: '/image/avatar.png'
+	    };
+	    _this.loadUserProfile = _this.loadUserProfile.bind(_this);
+	    _this.loadUserAvatar = _this.loadUserAvatar.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Top, [{
@@ -179,6 +192,35 @@ webpackJsonp([0,3],{
 	      $('.ui .dropdown').dropdown({
 	        action: 'hide'
 	      });
+	      this.loadUserProfile();
+	    }
+	  }, {
+	    key: 'loadUserProfile',
+	    value: function loadUserProfile() {
+	      var self = this;
+	      var token = $('#token').val();
+	      fetch('/api/user/profile/get', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': token
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        console.log(data);
+	        self.loadUserAvatar(data.body.avatar);
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
+	    }
+	  }, {
+	    key: 'loadUserAvatar',
+	    value: function loadUserAvatar(objectId) {
+	      var self = this;
+	      if (objectId != '') {
+	        self.setState({
+	          avatar: (0, _oss.getURL)(objectId)
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -260,7 +302,7 @@ webpackJsonp([0,3],{
 	                      'div',
 	                      { className: 'ui floating top right pointing dropdown' },
 	                      _react2.default.createElement('img', { className: 'ui avatar image',
-	                        src: '/image/avatar.png' }),
+	                        src: this.state.avatar }),
 	                      _react2.default.createElement('i', { className: 'dropdown icon' }),
 	                      _react2.default.createElement(
 	                        'div',
@@ -299,10 +341,10 @@ webpackJsonp([0,3],{
 	  }]);
 
 	  return Top;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
-	var Divider = function (_React$Component2) {
-	  _inherits(Divider, _React$Component2);
+	var Divider = function (_React$Component) {
+	  _inherits(Divider, _React$Component);
 
 	  function Divider() {
 	    _classCallCheck(this, Divider);
@@ -320,8 +362,8 @@ webpackJsonp([0,3],{
 	  return Divider;
 	}(_react2.default.Component);
 
-	var Navigation = function (_React$Component3) {
-	  _inherits(Navigation, _React$Component3);
+	var Navigation = function (_React$Component2) {
+	  _inherits(Navigation, _React$Component2);
 
 	  function Navigation() {
 	    _classCallCheck(this, Navigation);
@@ -370,8 +412,8 @@ webpackJsonp([0,3],{
 	  return Navigation;
 	}(_react2.default.Component);
 
-	var Header = function (_React$Component4) {
-	  _inherits(Header, _React$Component4);
+	var Header = function (_React$Component3) {
+	  _inherits(Header, _React$Component3);
 
 	  function Header() {
 	    _classCallCheck(this, Header);
@@ -396,18 +438,149 @@ webpackJsonp([0,3],{
 	}(_react2.default.Component);
 
 	exports.default = Header;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524)))
 
 /***/ }),
 
-/***/ 524:
+/***/ 525:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(302);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MuReactComponent = function (_React$Component) {
+	  _inherits(MuReactComponent, _React$Component);
+
+	  function MuReactComponent(props) {
+	    _classCallCheck(this, MuReactComponent);
+
+	    var _this = _possibleConstructorReturn(this, (MuReactComponent.__proto__ || Object.getPrototypeOf(MuReactComponent)).call(this, props));
+
+	    _this.checkStatus = _this.checkStatus.bind(_this);
+	    _this.parseJSON = _this.parseJSON.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(MuReactComponent, [{
+	    key: 'checkStatus',
+	    value: function checkStatus(response) {
+	      if (response.status >= 200 && response.status < 300) {
+	        return response;
+	      } else {
+	        var error = new Error(response.statusText);
+	        error.response = response;
+	        throw error;
+	      }
+	    }
+	  }, {
+	    key: 'parseJSON',
+	    value: function parseJSON(response) {
+	      return response.json();
+	    }
+	  }]);
+
+	  return MuReactComponent;
+	}(_react2.default.Component);
+
+	exports.default = MuReactComponent;
+
+/***/ }),
+
+/***/ 526:
 /***/ (function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAAAZCAMAAADdXpaGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABsUExURUdwTCkeGiMZFiUdGSMZFiUbGDYpKSwjHyMZFiQaFiMZFiMZFiMZFiMZFiMZFiMZFiQaGCMaFyMZFiMZFiMZFiQaFyMZFiMZFiMaFv///yMZFiMZFiMZFv7+/pSPjVNLSeLh4TwzMG5nZcTBwDMKUrwAAAAcdFJOUwAVwR75KwYO3kOl73y3iMw5Xq+TTVXo1XEBZ51oWI6CAAAD3UlEQVRIx61X63qbMAwFbDA3c7+jtN32/u84yZKJ02771qb+k0Ascc7RkUyiKFyZiWOTRd+wmrz7aqjabAVu5WfxNJAEpi/F7VMC4Vrn/TkgOXyJTNHC+5Wop4BoSD8fFJf05OU8pqLoGy9N9YwmMUD8+SiSwxbXc+Mtd055RpAU9JdkzB8Lmh1o2/IZINNfeMzpP9F/rGcBUIfICoe0bzqWrGYDmZlbQ83Sq119Nu7WAUm40f009qaAkdN1dGOiQbEXzVlzGec/yHjAg+tTImjQPZoyLFi3jOEy74bz76czF32vSVDauPBUMs6G1cr0OmijHpPhb8q1yWIiF9R+ADI+mo2emCWASJoorTQGOwl6WN3PJQM5YJm73hKD89ro+OwD5MfUILCeqbepXkoMUgsMc1/x7RJsY8/53TyqyqG5dO0Ra4lsEjjjXBcGeFzVrgC0u+aPwwdY2OLFbZw5PifOpmJcG1hbKd537m43XaygSZ7QExHP2MUjqWE4iPUAzaCnaBdFTjhlevXBB+ecE11QHxR86YBn4sYGFr7RQYUAM55+mea5oYNaKJkl51Upq5OMGr0lwDglVKCEf1wJa3YRGUgew0/uxCrYFoY3SuYRK0h8EvmV1/HQNK9vt5drqA2oTsxC2Z0S61CJWIimGgbejwBc+2PujAWVtFpKye50SqkE1liaBi63y9oAXm632w9Q18ibOL/D00u3aO9ZJoqphCkCcKaYYWEejVQ4FwJMGotRjBpKI71XPdaBtSMgr37ALDzeUvGemFRxhVQF1Z1ALYqKK9ughKiYi9ullJRAQ+vnxIDOeQ8EFfiFQH4KkEzMOTFBb1KuELa1dLGD6Hb6vh6ZQOu6wqwyrn0piZhlGMbpJIo090GKxXpzisRRQN0T9Ay5Qica2F6hg7OD72vLSd3+fdArX3rP3hHFeU1sZU3h0Ifb7e2nPzA69hwSHEKTukmIU7UMxJwdVlECzXhwpQe6t7EyKGx1nXIuEc7s/t40NguywY+XVyzg5I+wReiOEj+RmDWaf4QWa9Pg5dSmFwTvTo2eMqSkThsEQxPU0ARer7lHDdOtlLfnpln74PWjcfd0mQaDVealNOew5jsdSBVlwumSaIUGT8bEnUZ+I6ptW+SgNJnSuMvcDdbokrqyKzcsTbl87B7egixonWz3AddLpOWmiejUO/bI4HvLELseqxoT1eS1fAo34oZ84zPUxlfcdi/lRDHtzDFWfXzhlNb25lUMKlZcvrhgrQx/mqLj+6qQVO83RnG63y+NumfPUh+TPx4yIv0cfe/6j78o5g//Y8z3/Lf51PoN6rBa5hoOjIUAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 526:
+/***/ 527:
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch, Promise) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var OSSClient = {
+	  client: null,
+	  expiration: ''
+	};
+
+	function checkStatus(response) {
+	  if (response.status >= 200 && response.status < 300) {
+	    return response;
+	  } else {
+	    var error = new Error(response.statusText);
+	    error.response = response;
+	    throw error;
+	  }
+	}
+
+	function parseJSON(response) {
+	  return response.json();
+	}
+
+	function checkExpiration() {
+	  var exp = new Date(OSSClient.expiration).getTime();
+	  var now = new Date().getTime();
+	  return exp <= now;
+	}
+
+	function getOssClient(token) {
+	  if (OSSClient.client === null || checkExpiration()) {
+	    return fetch('/api/oss/sts/get', {
+	      method: 'GET',
+	      credentials: 'same-origin',
+	      headers: {
+	        'Authorization': token
+	      }
+	    }).then(checkStatus).then(parseJSON).then(function (data) {
+	      console.log(data);
+	      OSSClient.expiration = data.body.expiration;
+	      OSSClient.client = new OSS.Wrapper({
+	        region: 'oss-cn-hangzhou',
+	        accessKeyId: data.body.accessKeyId,
+	        accessKeySecret: data.body.accessKeySecret,
+	        stsToken: data.body.securityToken,
+	        bucket: 'mushare-store'
+	      });
+	      return OSSClient.client;
+	    });
+	  } else {
+	    return new Promise(function (resolve, reject) {
+	      resolve(OSSClient.client);
+	    });
+	  }
+	}
+
+	function getURL(objectId) {
+	  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	}
+
+	exports.getOssClient = getOssClient;
+	exports.getURL = getURL;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(294)))
+
+/***/ }),
+
+/***/ 529:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -539,7 +712,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 527:
+/***/ 530:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -558,7 +731,7 @@ webpackJsonp([0,3],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	__webpack_require__(528);
+	__webpack_require__(531);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -900,7 +1073,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 528:
+/***/ 531:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
@@ -1346,7 +1519,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 529:
+/***/ 532:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1487,7 +1660,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 530:
+/***/ 533:
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1624,7 +1797,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 531:
+/***/ 534:
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1761,7 +1934,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 532:
+/***/ 535:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -1776,15 +1949,15 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _moments = __webpack_require__(533);
+	var _moments = __webpack_require__(536);
 
 	var _moments2 = _interopRequireDefault(_moments);
 
-	var _articles = __webpack_require__(534);
+	var _articles = __webpack_require__(537);
 
 	var _articles2 = _interopRequireDefault(_articles);
 
-	__webpack_require__(525);
+	__webpack_require__(528);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1854,7 +2027,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 533:
+/***/ 536:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2137,7 +2310,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 534:
+/***/ 537:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2258,7 +2431,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 535:
+/***/ 538:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2275,7 +2448,7 @@ webpackJsonp([0,3],{
 
 	var _reactRouterDom = __webpack_require__(483);
 
-	var _profile = __webpack_require__(536);
+	var _profile = __webpack_require__(539);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
@@ -2376,7 +2549,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 536:
+/***/ 539:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, EventEmitter, fetch) {'use strict';
@@ -2391,11 +2564,11 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(539);
+	var _mushareReactComponent = __webpack_require__(525);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
-	var _oss = __webpack_require__(540);
+	var _oss = __webpack_require__(527);
 
 	var _upload = __webpack_require__(541);
 
@@ -2575,22 +2748,18 @@ webpackJsonp([0,3],{
 	          description: data.body.description,
 	          gender: data.body.gender
 	        });
-	        self.loadUserAvatar(data.body.avatar, token);
+	        self.loadUserAvatar(data.body.avatar);
 	      }).catch(function (error) {
-	        console.log(error);
+	        console.error(error);
 	      });
 	    }
 	  }, {
 	    key: 'loadUserAvatar',
-	    value: function loadUserAvatar(objectId, token) {
+	    value: function loadUserAvatar(objectId) {
 	      var self = this;
 	      if (objectId != '') {
-	        (0, _oss.getURL)(objectId, token).then(function (url) {
-	          self.setState({
-	            avatar: url
-	          });
-	        }).catch(function (error) {
-	          console.error(error);
+	        self.setState({
+	          avatar: (0, _oss.getURL)(objectId)
 	        });
 	      }
 	    }
@@ -2607,10 +2776,9 @@ webpackJsonp([0,3],{
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                console.log(progress);
-	                self.eventEmitter.emit('update-progress', progress);
+	                self.eventEmitter.emit('update-progress', progress * 100);
 
-	              case 2:
+	              case 1:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -2618,7 +2786,7 @@ webpackJsonp([0,3],{
 	        }, _callee, this);
 	      })).then(function (result) {
 	        console.log(result);
-	        $('#avatar-upload-modal').modal('hidden');
+	        $('#avatar-upload-modal').modal('hide');
 	      }).catch(function (error) {
 	        console.error(error);
 	      });
@@ -2790,140 +2958,7 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Profile;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(537), __webpack_require__(538)))
-
-/***/ }),
-
-/***/ 539:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(302);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MuReactComponent = function (_React$Component) {
-	  _inherits(MuReactComponent, _React$Component);
-
-	  function MuReactComponent(props) {
-	    _classCallCheck(this, MuReactComponent);
-
-	    var _this = _possibleConstructorReturn(this, (MuReactComponent.__proto__ || Object.getPrototypeOf(MuReactComponent)).call(this, props));
-
-	    _this.checkStatus = _this.checkStatus.bind(_this);
-	    _this.parseJSON = _this.parseJSON.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(MuReactComponent, [{
-	    key: 'checkStatus',
-	    value: function checkStatus(response) {
-	      if (response.status >= 200 && response.status < 300) {
-	        return response;
-	      } else {
-	        var error = new Error(response.statusText);
-	        error.response = response;
-	        throw error;
-	      }
-	    }
-	  }, {
-	    key: 'parseJSON',
-	    value: function parseJSON(response) {
-	      return response.json();
-	    }
-	  }]);
-
-	  return MuReactComponent;
-	}(_react2.default.Component);
-
-	exports.default = MuReactComponent;
-
-/***/ }),
-
-/***/ 540:
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(fetch, Promise) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var OSSClient = {
-	  client: null,
-	  expiration: ''
-	};
-
-	function checkStatus(response) {
-	  if (response.status >= 200 && response.status < 300) {
-	    return response;
-	  } else {
-	    var error = new Error(response.statusText);
-	    error.response = response;
-	    throw error;
-	  }
-	}
-
-	function parseJSON(response) {
-	  return response.json();
-	}
-
-	function checkExpiration() {
-	  var exp = new Date(OSSClient.expiration).getTime();
-	  var now = new Date().getTime();
-	  return exp <= now;
-	}
-
-	function getOssClient(token) {
-	  if (OSSClient.client === null || checkExpiration()) {
-	    return fetch('/api/oss/sts/get', {
-	      method: 'GET',
-	      credentials: 'same-origin',
-	      headers: {
-	        'Authorization': token
-	      }
-	    }).then(checkStatus).then(parseJSON).then(function (data) {
-	      console.log(data);
-	      OSSClient.expiration = data.body.expiration;
-	      OSSClient.client = new OSS.Wrapper({
-	        region: 'oss-cn-hangzhou',
-	        accessKeyId: data.body.accessKeyId,
-	        accessKeySecret: data.body.accessKeySecret,
-	        stsToken: data.body.securityToken,
-	        bucket: 'mushare-store'
-	      });
-	      return OSSClient.client;
-	    });
-	  } else {
-	    return new Promise(function (resolve, reject) {
-	      resolve(OSSClient.client);
-	    });
-	  }
-	}
-
-	function getURL(objectId, token) {
-	  getOssClient(token).then(function (client) {
-	    return client.signatureUrl(objectId, { expires: 3600 });
-	  }).catch(function (error) {});
-	}
-
-	exports.getOssClient = getOssClient;
-	exports.getURL = getURL;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(538), __webpack_require__(294)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(540), __webpack_require__(524)))
 
 /***/ }),
 
@@ -2937,7 +2972,7 @@ webpackJsonp([0,3],{
 	});
 	exports.uploadAudio = exports.uploadAvatar = undefined;
 
-	var _oss = __webpack_require__(540);
+	var _oss = __webpack_require__(527);
 
 	function uploadAvatar(objectKeyId, file, callbackVar, progress) {
 	  return (0, _oss.getOssClient)(callbackVar.token).then(function (client) {
@@ -2996,7 +3031,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(539);
+	var _mushareReactComponent = __webpack_require__(525);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3137,7 +3172,7 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Sheets;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(538), __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
 
 /***/ }),
 
@@ -3156,7 +3191,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(539);
+	var _mushareReactComponent = __webpack_require__(525);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3408,7 +3443,7 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Friends;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(538), __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
 
 /***/ }),
 
@@ -3427,7 +3462,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(539);
+	var _mushareReactComponent = __webpack_require__(525);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3547,7 +3582,7 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Subscription;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(538), __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
 
 /***/ }),
 
@@ -3566,7 +3601,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _mushareReactComponent = __webpack_require__(539);
+	var _mushareReactComponent = __webpack_require__(525);
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
@@ -3856,7 +3891,7 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = SheetPage;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(538)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524)))
 
 /***/ }),
 
@@ -3875,7 +3910,7 @@ webpackJsonp([0,3],{
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(525);
+	__webpack_require__(528);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

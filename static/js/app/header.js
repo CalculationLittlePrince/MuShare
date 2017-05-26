@@ -1,17 +1,55 @@
 import React from 'react';
+import MuComponent from '../util/mushare-react-component';
 import {Link, NavLink} from 'react-router-dom';
 import logo from '../../image/logo.png';
+import {getURL} from '../oss/oss'
 import '../../semantic/dist/semantic.min.js';
 
-class Top extends React.Component {
+class Top extends MuComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      avatar: '/image/avatar.png'
+    }
+    this.loadUserProfile = this.loadUserProfile.bind(this);
+    this.loadUserAvatar = this.loadUserAvatar.bind(this);
   }
 
   componentDidMount() {
     $('.ui .dropdown').dropdown({
       action: 'hide'
     });
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
+    var self = this;
+    var token = $('#token').val();
+    fetch('/api/user/profile/get', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': token
+      },
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function (data) {
+        console.log(data);
+        self.loadUserAvatar(data.body.avatar);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }
+
+  loadUserAvatar(objectId) {
+    var self = this;
+    if (objectId != '') {
+      self.setState({
+        avatar: getURL(objectId)
+      });
+    }
   }
 
   render() {
@@ -51,7 +89,7 @@ class Top extends React.Component {
                   <div className="icon-user item">
                     <div className="ui floating top right pointing dropdown">
                       <img className="ui avatar image"
-                           src="/image/avatar.png"/>
+                           src={this.state.avatar}/>
                       <i className="dropdown icon"></i>
                       <div className="menu">
                         <div className="item">个人主页</div>

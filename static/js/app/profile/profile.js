@@ -1,6 +1,7 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 import {getURL} from '../../oss/oss'
+import {guid} from '../../util/utils';
 import {uploadAvatar} from '../../oss/upload';
 
 
@@ -134,25 +135,19 @@ class Profile extends MuComponent {
           description: data.body.description,
           gender: data.body.gender,
         });
-        self.loadUserAvatar(data.body.avatar, token);
+        self.loadUserAvatar(data.body.avatar);
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }
 
-  loadUserAvatar(objectId, token) {
+  loadUserAvatar(objectId) {
     var self = this;
     if (objectId != '') {
-      getURL(objectId, token)
-        .then(function (url) {
-          self.setState({
-            avatar: url
-          });
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      self.setState({
+        avatar: getURL(objectId)
+      });
     }
   }
 
@@ -160,15 +155,15 @@ class Profile extends MuComponent {
     var self = this;
     console.log('upload avatar');
     $('#avatar-upload-modal').modal('show');
-    uploadAvatar('123', event.target.files[0], {
+    var avatarName = 'avatar-' + guid();
+    uploadAvatar(avatarName, event.target.files[0], {
       token: $('#token').val(),
     }, function*(progress) {
-      console.log(progress);
-      self.eventEmitter.emit('update-progress', progress);
+      self.eventEmitter.emit('update-progress', progress * 100);
     })
       .then(function (result) {
         console.log(result);
-        $('#avatar-upload-modal').modal('hidden');
+        $('#avatar-upload-modal').modal('hide');
       })
       .catch(function (error) {
         console.error(error);

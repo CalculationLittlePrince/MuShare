@@ -53,14 +53,8 @@ function getOssClient(token) {
   }
 }
 
-function getURL(objectId, token) {
-  getOssClient(token)
-    .then(function (client) {
-      return client.signatureUrl(objectId, {expires: 3600});
-    })
-    .catch(function (error) {
-
-    });
+function getURL(objectId) {
+  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
 }
 
 export {getOssClient, getURL}
