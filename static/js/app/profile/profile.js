@@ -86,7 +86,7 @@ class Profile extends MuComponent {
     this.handleChange = this.handleChange.bind(this);
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadUserAvatar = this.loadUserAvatar.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
     this.uploadAvatar = this.uploadAvatar.bind(this);
   }
 
