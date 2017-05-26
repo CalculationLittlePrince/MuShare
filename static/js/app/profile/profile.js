@@ -157,13 +157,14 @@ class Profile extends MuComponent {
   }
 
   uploadAvatar(event) {
+    var self = this;
     console.log('upload avatar');
     $('#avatar-upload-modal').modal('show');
     uploadAvatar('123', event.target.files[0], {
       token: $('#token').val(),
     }, function*(progress) {
       console.log(progress);
-      this.eventEmitter.emit('update-progress', progress);
+      self.eventEmitter.emit('update-progress', progress);
     })
       .then(function (result) {
         console.log(result);
