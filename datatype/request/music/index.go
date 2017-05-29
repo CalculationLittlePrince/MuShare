@@ -1,11 +1,12 @@
 package music
 
 type Sheet struct {
-  UserID      int
-  Name        string
-  UpdateName  string
-  Privilege   string
-  ToID        int
+  UserID     int
+  Name       string
+  UpdateName string
+  Privilege  string
+  Cover      string
+  ToID       int
 }
 
 type Audio struct {
@@ -20,7 +21,7 @@ type Audio struct {
 }
 
 type SheetMigration struct {
-  UserID     int
-  IdList     []int
-  ToSheetId  int
+  UserID    int
+  IdList    []int
+  ToSheetId int
 }

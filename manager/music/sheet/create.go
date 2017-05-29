@@ -39,6 +39,7 @@ func CreateSheet(body *music.Sheet, sheet *models.Sheet) {
   sheet.Name = body.Name
   sheet.Privilege = body.Privilege
   sheet.UserID = body.UserID
+  sheet.Cover = body.Cover
   sheet.CreatedAt = time.Now().Unix()
   sheet.UpdatedAt = time.Now().Unix()
 }

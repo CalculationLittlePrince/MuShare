@@ -4,7 +4,7 @@ webpackJsonp([1,3],{
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(551);
+	module.exports = __webpack_require__(553);
 
 
 /***/ }),
@@ -84,7 +84,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 551:
+/***/ 553:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {// var $ = require('jquery');
@@ -139,11 +139,11 @@ webpackJsonp([1,3],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _header = __webpack_require__(552);
+	var _header = __webpack_require__(554);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	__webpack_require__(555);
+	__webpack_require__(557);
 
 	__webpack_require__(528);
 
@@ -186,7 +186,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 552:
+/***/ 554:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -205,11 +205,11 @@ webpackJsonp([1,3],{
 
 	var _logo2 = _interopRequireDefault(_logo);
 
-	var _login = __webpack_require__(553);
+	var _login = __webpack_require__(555);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _register = __webpack_require__(554);
+	var _register = __webpack_require__(556);
 
 	var _register2 = _interopRequireDefault(_register);
 
@@ -240,6 +240,7 @@ webpackJsonp([1,3],{
 	    key: 'showRegister',
 	    value: function showRegister() {
 	      $('.ui.modal.register').modal({
+	        detachable: false,
 	        observeChanges: true
 	      }).modal('show');
 	    }
@@ -247,6 +248,7 @@ webpackJsonp([1,3],{
 	    key: 'showLogin',
 	    value: function showLogin() {
 	      $('.ui.modal.login').modal({
+	        detachable: false,
 	        observeChanges: true
 	      }).modal('show');
 	    }
@@ -335,7 +337,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 553:
+/***/ 555:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -565,7 +567,7 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 554:
+/***/ 556:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -672,16 +674,16 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 555:
+/***/ 557:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(556);
+	var content = __webpack_require__(558);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(550)(content, {});
+	var update = __webpack_require__(552)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -699,10 +701,10 @@ webpackJsonp([1,3],{
 
 /***/ }),
 
-/***/ 556:
+/***/ 558:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(549)();
+	exports = module.exports = __webpack_require__(551)();
 	// imports
 
 

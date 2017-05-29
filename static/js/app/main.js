@@ -23,9 +23,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // $('.ui.sidebar.chat')
-    //   .sidebar('setting', 'transition', 'overlay')
-    //   .sidebar('toggle');
+    $('.ui.sidebar.chat')
+      .sidebar('setting', 'transition', 'overlay')
+      .sidebar('toggle');
   }
 
   render() {

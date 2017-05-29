@@ -17,6 +17,7 @@ class Header extends React.Component {
   showRegister() {
     $('.ui.modal.register')
       .modal({
+        detachable: false,
         observeChanges: true
       })
       .modal('show');
@@ -25,6 +26,7 @@ class Header extends React.Component {
   showLogin() {
     $('.ui.modal.login')
       .modal({
+        detachable: false,
         observeChanges: true
       })
       .modal('show');

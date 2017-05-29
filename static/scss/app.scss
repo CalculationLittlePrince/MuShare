@@ -252,7 +252,7 @@
         padding: 0 6em 0 0;
       }
       .avatar {
-        .avatarfile {
+        .avatar-file {
           width: 0.1px;
           height: 0.1px;
           opacity: 0;
@@ -260,7 +260,7 @@
           position: absolute;
           z-index: -1;
         }
-        .avatarfile + label {
+        .avatar-file + label {
           cursor: pointer;
           font-size: 18px;
           font-weight: 500;
@@ -270,18 +270,57 @@
           display: inline-block;
         }
 
-        .avatarfile:focus + label,
-        .avatarfile + label:hover {
+        .avatar-file:focus + label,
+        .avatar-file + label:hover {
           background-color: red;
         }
       }
     }
     .sheets {
+      #create-sheet-modal {
+        .container {
+          width: 80%;
+          padding: 2em;
+        }
+        .sheet-cover-file {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1;
+        }
+        .sheet-cover-file + label {
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 400;
+          color: white;
+          padding: 0.625rem 1.25rem;
+          background-color: black;
+          display: inline-block;
+        }
+
+        .sheet-cover-file:focus + label,
+        .sheet-cover-file + label:hover {
+          background-color: red;
+        }
+      }
       .public-sheet, .private-sheet {
         padding: 0 6em 2em 0;
         .content {
           .description {
             text-align: center;
+          }
+        }
+        .cards:last-child {
+          .content {
+            height: 100%;
+            .grid {
+              height: 100%;
+              .column {
+                text-align: center;
+              }
+            }
           }
         }
       }

@@ -39,4 +39,13 @@ function uploadAudio(objectKeyId, file, callbackVar, progress) {
     })
 }
 
-export {uploadAvatar, uploadAudio};
+function uploadSheetCover(objectKeyId, file, token, progress) {
+  return getOssClient(token)
+    .then(function (client) {
+      return client.multipartUpload(objectKeyId, file, {
+        progress: progress
+      });
+    })
+}
+
+export {uploadAvatar, uploadAudio, uploadSheetCover};

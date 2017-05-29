@@ -44,7 +44,7 @@ class Home extends React.Component {
               </li>
             </ul>
           </div>
-          <div class="clear"></div>
+          <div className="clear"></div>
         </div>
         <div className="ui container hot">
           <div className="ui medium header">

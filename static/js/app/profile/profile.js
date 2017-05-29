@@ -154,7 +154,12 @@ class Profile extends MuComponent {
   uploadAvatar(event) {
     var self = this;
     console.log('upload avatar');
-    $('#avatar-upload-modal').modal('show');
+    $('#avatar-upload-modal')
+      .modal({
+        closable: false,
+        detachable: false
+      })
+      .modal('show');
     var avatarName = 'avatar-' + guid();
     uploadAvatar(avatarName, event.target.files[0], {
       token: $('#token').val(),
@@ -243,10 +248,10 @@ class Profile extends MuComponent {
                   <div className="ui dimmer">
                     <div className="content">
                       <div className="center">
-                        <input type="file" name="file" id="file"
-                               className="avatarfile"
+                        <input type="file" name="avatar-file" id="avatar-file"
+                               className="avatar-file"
                                onChange={this.uploadAvatar}/>
-                        <label htmlFor="file">更换头像</label>
+                        <label htmlFor="avatar-file">更换头像</label>
                       </div>
                     </div>
                   </div>

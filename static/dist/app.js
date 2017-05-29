@@ -65,15 +65,15 @@ webpackJsonp([0,3],{
 
 	var _main4 = _interopRequireDefault(_main3);
 
-	var _main5 = __webpack_require__(545);
+	var _main5 = __webpack_require__(547);
 
 	var _main6 = _interopRequireDefault(_main5);
 
-	var _main7 = __webpack_require__(546);
+	var _main7 = __webpack_require__(548);
 
 	var _main8 = _interopRequireDefault(_main7);
 
-	__webpack_require__(547);
+	__webpack_require__(549);
 
 	__webpack_require__(528);
 
@@ -97,9 +97,7 @@ webpackJsonp([0,3],{
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      // $('.ui.sidebar.chat')
-	      //   .sidebar('setting', 'transition', 'overlay')
-	      //   .sidebar('toggle');
+	      $('.ui.sidebar.chat').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
 	    }
 	  }, {
 	    key: 'render',
@@ -804,7 +802,7 @@ webpackJsonp([0,3],{
 	              )
 	            )
 	          ),
-	          _react2.default.createElement('div', { 'class': 'clear' })
+	          _react2.default.createElement('div', { className: 'clear' })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -2452,15 +2450,15 @@ webpackJsonp([0,3],{
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _sheets = __webpack_require__(542);
+	var _sheets = __webpack_require__(543);
 
 	var _sheets2 = _interopRequireDefault(_sheets);
 
-	var _friends = __webpack_require__(543);
+	var _friends = __webpack_require__(545);
 
 	var _friends2 = _interopRequireDefault(_friends);
 
-	var _subscription = __webpack_require__(544);
+	var _subscription = __webpack_require__(546);
 
 	var _subscription2 = _interopRequireDefault(_subscription);
 
@@ -2570,7 +2568,9 @@ webpackJsonp([0,3],{
 
 	var _oss = __webpack_require__(527);
 
-	var _upload = __webpack_require__(541);
+	var _utils = __webpack_require__(541);
+
+	var _upload = __webpack_require__(542);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2768,8 +2768,12 @@ webpackJsonp([0,3],{
 	    value: function uploadAvatar(event) {
 	      var self = this;
 	      console.log('upload avatar');
-	      $('#avatar-upload-modal').modal('show');
-	      (0, _upload.uploadAvatar)('123', event.target.files[0], {
+	      $('#avatar-upload-modal').modal({
+	        closable: false,
+	        detachable: false
+	      }).modal('show');
+	      var avatarName = 'avatar-' + (0, _utils.guid)();
+	      (0, _upload.uploadAvatar)(avatarName, event.target.files[0], {
 	        token: $('#token').val()
 	      }, regeneratorRuntime.mark(function _callee(progress) {
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -2933,12 +2937,12 @@ webpackJsonp([0,3],{
 	                      _react2.default.createElement(
 	                        'div',
 	                        { className: 'center' },
-	                        _react2.default.createElement('input', { type: 'file', name: 'file', id: 'file',
-	                          className: 'avatarfile',
+	                        _react2.default.createElement('input', { type: 'file', name: 'avatar-file', id: 'avatar-file',
+	                          className: 'avatar-file',
 	                          onChange: this.uploadAvatar }),
 	                        _react2.default.createElement(
 	                          'label',
-	                          { htmlFor: 'file' },
+	                          { htmlFor: 'avatar-file' },
 	                          '\u66F4\u6362\u5934\u50CF'
 	                        )
 	                      )
@@ -2963,6 +2967,26 @@ webpackJsonp([0,3],{
 /***/ }),
 
 /***/ 541:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function guid() {
+	  function s4() {
+	    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+	  }
+
+	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+	}
+
+	exports.guid = guid;
+
+/***/ }),
+
+/***/ 542:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2970,7 +2994,7 @@ webpackJsonp([0,3],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.uploadAudio = exports.uploadAvatar = undefined;
+	exports.uploadSheetCover = exports.uploadAudio = exports.uploadAvatar = undefined;
 
 	var _oss = __webpack_require__(527);
 
@@ -3011,15 +3035,24 @@ webpackJsonp([0,3],{
 	  });
 	}
 
+	function uploadSheetCover(objectKeyId, file, token, progress) {
+	  return (0, _oss.getOssClient)(token).then(function (client) {
+	    return client.multipartUpload(objectKeyId, file, {
+	      progress: progress
+	    });
+	  });
+	}
+
 	exports.uploadAvatar = uploadAvatar;
 	exports.uploadAudio = uploadAudio;
+	exports.uploadSheetCover = uploadSheetCover;
 
 /***/ }),
 
-/***/ 542:
+/***/ 543:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
+	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -3035,6 +3068,20 @@ webpackJsonp([0,3],{
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
+	var _logo = __webpack_require__(526);
+
+	var _logo2 = _interopRequireDefault(_logo);
+
+	var _utils = __webpack_require__(541);
+
+	var _upload = __webpack_require__(542);
+
+	var _oss = __webpack_require__(527);
+
+	var _co = __webpack_require__(544);
+
+	var _co2 = _interopRequireDefault(_co);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3043,8 +3090,200 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var SheetCards = function (_MuComponent) {
-	  _inherits(SheetCards, _MuComponent);
+	var CreateSheetModal = function (_MuComponent) {
+	  _inherits(CreateSheetModal, _MuComponent);
+
+	  function CreateSheetModal(props) {
+	    _classCallCheck(this, CreateSheetModal);
+
+	    var _this = _possibleConstructorReturn(this, (CreateSheetModal.__proto__ || Object.getPrototypeOf(CreateSheetModal)).call(this, props));
+
+	    _this.sheet = {
+	      name: '',
+	      privilege: '',
+	      coverFile: null
+	    };
+	    _this.createSheet = _this.createSheet.bind(_this);
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(CreateSheetModal, [{
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      if (event.target.type === 'file') {
+	        this.sheet.coverFile = event.target.files[0];
+	      } else {
+	        this.sheet[event.target.name] = event.target.value;
+	      }
+	    }
+	  }, {
+	    key: 'createSheet',
+	    value: function createSheet() {
+	      var self = this;
+	      if (this.sheet.coverFile === null) {
+	        return;
+	      }
+	      (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+	        var token, objectId, cover, result;
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                token = $('#token').val();
+	                objectId = 'sheetcover-' + (0, _utils.guid)();
+	                _context.next = 4;
+	                return (0, _upload.uploadSheetCover)(objectId, self.sheet.coverFile, token);
+
+	              case 4:
+	                cover = _context.sent;
+
+	                console.log(cover);
+	                _context.next = 8;
+	                return fetch('/api/music/sheet/create', {
+	                  method: 'POST',
+	                  credentials: 'same-origin',
+	                  headers: {
+	                    'Authorization': token
+	                  },
+	                  body: JSON.stringify({
+	                    name: self.sheet.name,
+	                    privilege: self.sheet.privilege,
+	                    cover: cover.name
+	                  })
+	                }).then(self.checkStatus).then(self.parseJSON);
+
+	              case 8:
+	                result = _context.sent;
+	                return _context.abrupt('return', result);
+
+	              case 10:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      })).then(function (result) {
+	        console.log(result);
+	      }, function (error) {});
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var self = this;
+	      $('#create-sheet-modal .form .dropdown').dropdown({
+	        onChange: function onChange(value) {
+	          console.log(value);
+	          self.sheet.privilege = value;
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui small login modal', id: 'create-sheet-modal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui items' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ui image' },
+	                _react2.default.createElement('img', { src: _logo2.default, alt: '' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'middle aligned content' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  '\u521B\u5EFA\u6B4C\u5355'
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui form' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u6B4C\u5355\u540D'
+	              ),
+	              _react2.default.createElement('input', { type: 'text', name: 'name',
+	                placeholder: '\u6B4C\u5355\u540D', onChange: this.handleChange })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u6743\u9650'
+	              ),
+	              _react2.default.createElement(
+	                'select',
+	                { name: 'privilege', className: 'ui fluid dropdown' },
+	                _react2.default.createElement(
+	                  'option',
+	                  { value: '' },
+	                  '\u9009\u62E9\u6743\u9650'
+	                ),
+	                _react2.default.createElement(
+	                  'option',
+	                  { value: 'public' },
+	                  '\u5BF9\u6240\u6709\u4EBA\u516C\u5F00'
+	                ),
+	                _react2.default.createElement(
+	                  'option',
+	                  { value: 'friend' },
+	                  '\u5BF9\u597D\u53CB\u516C\u5F00'
+	                ),
+	                _react2.default.createElement(
+	                  'option',
+	                  { value: 'private' },
+	                  '\u79C1\u6709'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { type: 'file', name: 'sheet-cover-file', id: 'sheet-cover-file',
+	                className: 'sheet-cover-file',
+	                onChange: this.handleChange }),
+	              _react2.default.createElement(
+	                'label',
+	                { htmlFor: 'sheet-cover-file' },
+	                '\u4E0A\u4F20\u5C01\u9762'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'ui fluid button', onClick: this.createSheet },
+	              '\u521B\u5EFA'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CreateSheetModal;
+	}(_mushareReactComponent2.default);
+
+	var SheetCards = function (_MuComponent2) {
+	  _inherits(SheetCards, _MuComponent2);
 
 	  function SheetCards(props) {
 	    _classCallCheck(this, SheetCards);
@@ -3062,7 +3301,7 @@ webpackJsonp([0,3],{
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'image' },
-	            _react2.default.createElement('img', { src: '/image/avatar.png' })
+	            _react2.default.createElement('img', { src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -3078,7 +3317,30 @@ webpackJsonp([0,3],{
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'ui four link cards' },
-	        cards
+	        cards,
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            className: 'card',
+	            onClick: this.props.openCreateSheetModal },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'ui middle aligned grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column' },
+	                  _react2.default.createElement('i', { className: 'huge plus icon' })
+	                )
+	              )
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -3086,22 +3348,38 @@ webpackJsonp([0,3],{
 	  return SheetCards;
 	}(_mushareReactComponent2.default);
 
-	var Sheets = function (_MuComponent2) {
-	  _inherits(Sheets, _MuComponent2);
+	var Sheets = function (_MuComponent3) {
+	  _inherits(Sheets, _MuComponent3);
 
 	  function Sheets(props) {
 	    _classCallCheck(this, Sheets);
 
-	    var _this2 = _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).call(this, props));
 
-	    _this2.state = {
+	    _this3.state = {
 	      privateSheet: [],
 	      publicSheet: []
 	    };
-	    return _this2;
+	    _this3.eventEmitter = new EventEmitter();
+	    _this3.onSheetCreated = _this3.onSheetCreated.bind(_this3);
+	    _this3.openCreateSheetModal = _this3.openCreateSheetModal.bind(_this3);
+	    return _this3;
 	  }
 
 	  _createClass(Sheets, [{
+	    key: 'openCreateSheetModal',
+	    value: function openCreateSheetModal() {
+	      $('#create-sheet-modal').modal({
+	        detachable: false
+	      }).modal('show');
+	    }
+	  }, {
+	    key: 'onSheetCreated',
+	    value: function onSheetCreated() {
+	      $('#create-sheet-modal').modal('hide');
+	      this.loadSheet();
+	    }
+	  }, {
 	    key: 'loadSheet',
 	    value: function loadSheet() {
 	      var self = this;
@@ -3140,6 +3418,10 @@ webpackJsonp([0,3],{
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'sheets' },
+	        _react2.default.createElement(CreateSheetModal, {
+	          eventEmitter: this.eventEmitter,
+	          onSheetCreated: this.onSheetCreated
+	        }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'ui medium header' },
@@ -3150,7 +3432,9 @@ webpackJsonp([0,3],{
 	          'div',
 	          { className: 'public-sheet' },
 	          _react2.default.createElement(SheetCards, {
-	            sheets: this.state.publicSheet })
+	            sheets: this.state.publicSheet,
+	            openCreateSheetModal: this.openCreateSheetModal,
+	            createSheet: this.createSheet })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -3162,7 +3446,9 @@ webpackJsonp([0,3],{
 	          'div',
 	          { className: 'private-sheet' },
 	          _react2.default.createElement(SheetCards, {
-	            sheets: this.state.privateSheet })
+	            sheets: this.state.privateSheet,
+	            openCreateSheetModal: this.openCreateSheetModal,
+	            createSheet: this.createSheet })
 	        )
 	      );
 	    }
@@ -3172,11 +3458,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Sheets;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524), __webpack_require__(540)))
 
 /***/ }),
 
-/***/ 543:
+/***/ 545:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3447,7 +3733,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 544:
+/***/ 546:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3586,7 +3872,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 545:
+/***/ 547:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
@@ -3895,7 +4181,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 546:
+/***/ 548:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3950,16 +4236,16 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 547:
+/***/ 549:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(548);
+	var content = __webpack_require__(550);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(550)(content, {});
+	var update = __webpack_require__(552)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3977,15 +4263,15 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 548:
+/***/ 550:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(549)();
+	exports = module.exports = __webpack_require__(551)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatarfile {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatarfile + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatarfile:focus + label,\n#app .personal .profile .avatar .avatarfile + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 
