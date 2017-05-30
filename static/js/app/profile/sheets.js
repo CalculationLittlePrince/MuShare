@@ -5,6 +5,61 @@ import {guid} from '../../util/utils';
 import {uploadSheetCover} from '../../oss/upload';
 import {getURL} from '../../oss/oss'
 import co from 'co';
+import '../../vendor/cropper.min.js';
+import '../../../scss/cropper.min.css'
+
+class SheetCoverCropperModal extends MuComponent {
+  constructor(props) {
+    super(props);
+    this.receiveInputCover = this.receiveInputCover.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.props.eventEmitter.addListener('receive-input-cover', this.receiveInputCover);
+    this.imgcut = '';
+    this.state = {
+      url: ''
+    }
+  }
+
+  receiveInputCover(cover) {
+    var url = URL.createObjectURL(cover);
+    $('#sheet-cover-cropper-modal img').cropper('destroy');
+    this.setState({
+      url: url
+    });
+  }
+
+  handleClick() {
+    this.props.eventEmitter.emit('receive-img-cut', this.imgcut);
+    $('#sheet-cover-cropper-modal').modal('hide');
+  }
+
+  componentDidUpdate() {
+    var self = this;
+    $('#sheet-cover-cropper-modal img').cropper({
+      aspectRatio: 1,
+      crop: function (e) {
+        self.imgcut = `x_${e.x < 0 ? 0 : Math.floor(e.x)},` +
+          `y_${e.y < 0 ? 0 : Math.floor(e.y)},` +
+          `w_${Math.floor(e.width)},` +
+          `h_${Math.floor(e.height)}`;
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="ui small couple modal" id="sheet-cover-cropper-modal">
+        <div className="ui container">
+          <div className="avatar-wrapper">
+            <img src={this.state.url} alt=""/>
+          </div>
+          <button className="ui fluid button" onClick={this.handleClick}>确定
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
 
 class CreateSheetModal extends MuComponent {
   constructor(props) {
@@ -14,16 +69,37 @@ class CreateSheetModal extends MuComponent {
       privilege: '',
       coverFile: null,
     }
+    this.state = {
+      creating: false
+    }
+    this.imgcut = '';
+    this.receiveImgCut = this.receiveImgCut.bind(this);
     this.createSheet = this.createSheet.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.props.eventEmitter.addListener('receive-img-cut', this.receiveImgCut);
+  }
+
+
+  receiveImgCut(imgcut) {
+    console.log(imgcut);
+    this.imgcut = imgcut;
   }
 
   handleChange(event) {
     if (event.target.type === 'file') {
+      this.props.eventEmitter.emit('receive-input-cover', event.target.files[0]);
+      $('#sheet-cover-cropper-modal').modal('show');
       this.sheet.coverFile = event.target.files[0];
     } else {
       this.sheet[event.target.name] = event.target.value;
     }
+  }
+
+  closeModal() {
+    this.props.onSheetCreated();
+    $('#create-sheet-modal .form .name').val('');
+    $('#create-sheet-modal .form .sheet-cover-file').val('');
+    $('#create-sheet-modal .form .dropdown').dropdown('clear');
   }
 
   createSheet() {
@@ -31,6 +107,9 @@ class CreateSheetModal extends MuComponent {
     if (this.sheet.coverFile === null) {
       return;
     }
+    this.setState({
+      creating: true
+    });
     co(function*() {
       var token = $('#token').val();
       var objectId = 'sheetcover-' + guid();
@@ -45,7 +124,7 @@ class CreateSheetModal extends MuComponent {
         body: JSON.stringify({
           name: self.sheet.name,
           privilege: self.sheet.privilege,
-          cover: cover.name
+          cover: cover.name + `?x-oss-process=image/crop,${self.imgcut}`
         })
       })
         .then(self.checkStatus)
@@ -53,9 +132,14 @@ class CreateSheetModal extends MuComponent {
       return result;
     })
       .then(function (result) {
-        console.log(result);
+        self.setState({
+          creating: false
+        });
+        self.closeModal();
       }, function (error) {
-
+        self.setState({
+          creating: false
+        });
       });
   }
 
@@ -70,8 +154,22 @@ class CreateSheetModal extends MuComponent {
   }
 
   render() {
+    var button = null;
+    if (this.state.creating) {
+      button = (
+        <button className="ui fluid button" onClick={this.createSheet}>
+          <i className="spinner loading icon"></i>创建中...
+        </button>
+      );
+    } else {
+      button = (
+        <button className="ui fluid button" onClick={this.createSheet}>
+          创建
+        </button>
+      );
+    }
     return (
-      <div className="ui small login modal" id="create-sheet-modal">
+      <div className="ui small couple modal" id="create-sheet-modal">
         <div className="ui container">
           <div className="ui items">
             <div className="item">
@@ -86,7 +184,7 @@ class CreateSheetModal extends MuComponent {
           <div className="ui form">
             <div className="field">
               <label>歌单名</label>
-              <input type="text" name="name"
+              <input type="text" name="name" className="name"
                      placeholder="歌单名" onChange={this.handleChange}/>
             </div>
             <div className="field">
@@ -104,8 +202,7 @@ class CreateSheetModal extends MuComponent {
                      onChange={this.handleChange}/>
               <label htmlFor="sheet-cover-file">上传封面</label>
             </div>
-            <button className="ui fluid button" onClick={this.createSheet}>创建
-            </button>
+            {button}
           </div>
         </div>
       </div>
@@ -123,7 +220,8 @@ class SheetCards extends MuComponent {
       return (
         <div className="card">
           <div className="image">
-            <img src={sheet.cover === '' ? '/image/avatar.png' :getURL(sheet.cover)}/>
+            <img
+              src={sheet.cover === '' ? '/image/avatar.png' : getURL(sheet.cover)}/>
           </div>
           <div className="content">
             <div className="description">
@@ -167,16 +265,11 @@ class Sheets extends MuComponent {
   }
 
   openCreateSheetModal() {
-    $('#create-sheet-modal')
-      .modal({
-        detachable: false
-      })
-      .modal('show');
+    $('#create-sheet-modal').modal('show');
   }
 
   onSheetCreated() {
-    $('#create-sheet-modal')
-      .modal('hide');
+    $('#create-sheet-modal').modal('hide');
     this.loadSheet();
   }
 
@@ -214,6 +307,11 @@ class Sheets extends MuComponent {
 
   componentDidMount() {
     this.loadSheet();
+    $('.sheets .couple.modal')
+      .modal({
+        detachable: false,
+        allowMultiple: true
+      });
   }
 
   render() {
@@ -222,6 +320,9 @@ class Sheets extends MuComponent {
         <CreateSheetModal
           eventEmitter={this.eventEmitter}
           onSheetCreated={this.onSheetCreated}
+        />
+        <SheetCoverCropperModal
+          eventEmitter={this.eventEmitter}
         />
         <div className="ui medium header">
           公开歌单

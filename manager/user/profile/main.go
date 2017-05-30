@@ -13,7 +13,7 @@ type Profile struct {
 var gender map[string]string;
 
 func init() {
-  gender = map[string]string{"Male": "Male", "Female": "Female"}
+  gender = map[string]string{"male": "male", "female": "female"}
 }
 
 func ok(responseText string, body interface{}) datatype.Response {

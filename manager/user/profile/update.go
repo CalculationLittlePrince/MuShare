@@ -4,6 +4,7 @@ import (
   "MuShare/datatype"
   "MuShare/datatype/request/user"
   "MuShare/db/models"
+  "fmt"
 )
 
 func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
@@ -13,13 +14,21 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
   update := make(map[string]interface{})
 
 
+  if body.Name == "" {
+    badRequest("Name Can't Be Null")
+  }
+
   if body.Name != nil {
     update["name"] = body.Name
   }
 
+  if body.Avatar != nil {
+    update["avatar"] = body.Avatar
+  }
+
   if body.Gender != nil {
     if gender[body.Gender.(string)] != "" {
-      update["avatar"] = gender[body.Gender.(string)]
+      update["gender"] = gender[body.Gender.(string)]
     }
   }
 
@@ -35,10 +44,7 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
     update["description"] = body.Description
   }
 
-  if body.Name == "" {
-    badRequest("Name Can't Be Null")
-  }
-
+  fmt.Println(update["gender"])
   err := tx.Model(&user).Updates(update).Error
 
   if err != nil {

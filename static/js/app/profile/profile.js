@@ -3,6 +3,7 @@ import MuComponent from '../../util/mushare-react-component';
 import {getURL} from '../../oss/oss'
 import {guid} from '../../util/utils';
 import {uploadAvatar} from '../../oss/upload';
+import co from 'co';
 
 
 class AvatarUploadModal extends MuComponent {
@@ -21,7 +22,6 @@ class AvatarUploadModal extends MuComponent {
   }
 
   componentDidUpdate() {
-    console.log('did update');
   }
 
   updateProgress(percent) {
@@ -152,31 +152,67 @@ class Profile extends MuComponent {
   }
 
   uploadAvatar(event) {
-    var self = this;
     console.log('upload avatar');
+    var self = this;
+    var token = $('#token').val();
     $('#avatar-upload-modal')
       .modal({
         closable: false,
         detachable: false
       })
       .modal('show');
-    var avatarName = 'avatar-' + guid();
-    uploadAvatar(avatarName, event.target.files[0], {
-      token: $('#token').val(),
-    }, function*(progress) {
-      self.eventEmitter.emit('update-progress', progress * 100);
-    })
-      .then(function (result) {
-        console.log(result);
-        $('#avatar-upload-modal').modal('hide');
+    co(function*() {
+      var avatarName = 'avatar-' + guid();
+      var avatar = yield uploadAvatar(avatarName, event.target.files[0], token,
+        function*(progress) {
+          self.eventEmitter.emit('update-progress', progress * 100);
+        });
+      var result = yield fetch('/api/user/profile/update', {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: {
+          'Authorization': token
+        },
+        body: JSON.stringify({
+          avatar: avatar.name,
+        })
       })
-      .catch(function (error) {
-        console.error(error);
-      });
+        .then(self.checkStatus)
+        .then(self.parseJSON)
+      return result;
+    }).then(function (result) {
+      console.log(result);
+      self.loadUserProfile();
+      $('#avatar-upload-modal').modal('hide');
+    }, function (error) {
+      console.error(error);
+    });
   }
 
   updateProfile() {
-
+    var self = this;
+    var token = $('#token').val();
+    fetch('/api/user/profile/update', {
+      method: 'PUT',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        name: self.state.name,
+        mail: self.state.mail,
+        description: self.state.description,
+        gender: self.state.gender
+      })
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function (result) {
+        console.log(result)
+      })
+      .catch(function (error) {
+        console.error(error);
+      })
   }
 
   render() {
@@ -237,7 +273,7 @@ class Profile extends MuComponent {
               </div>
               <UpdateButton
                 disabled={this.state.updateButtonDisabled}
-                handleUpdate={this.updateProfile}
+                updateProfile={this.updateProfile}
               />
             </div>
           </div>

@@ -21,7 +21,9 @@ module.exports = {
       name: 'vendor',
       minChunks: function (module) {
         // this assumes your vendor imports exist in the node_modules directory
-        return module.context && (module.context.indexOf('node_modules') !== -1 || module.context.indexOf('static/semantic') != -1);
+        return module.context && (module.context.indexOf('node_modules') !== -1
+          || module.context.indexOf('static/semantic') != -1
+          || module.context.indexOf('static/js/vendor') != -1);
       },
     }),
     // CommonChunksPlugin will now extract all the common modules from vendor and main bundles

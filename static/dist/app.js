@@ -65,15 +65,15 @@ webpackJsonp([0,3],{
 
 	var _main4 = _interopRequireDefault(_main3);
 
-	var _main5 = __webpack_require__(547);
+	var _main5 = __webpack_require__(552);
 
 	var _main6 = _interopRequireDefault(_main5);
 
-	var _main7 = __webpack_require__(548);
+	var _main7 = __webpack_require__(553);
 
 	var _main8 = _interopRequireDefault(_main7);
 
-	__webpack_require__(549);
+	__webpack_require__(554);
 
 	__webpack_require__(528);
 
@@ -1071,452 +1071,6 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 531:
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	/**
-	 * jQuery Roundabout - v2.4.2
-	 * http://fredhq.com/projects/roundabout
-	 *
-	 * Moves list-items of enabled ordered and unordered lists long
-	 * a chosen path. Includes the default "lazySusan" path, that
-	 * moves items long a spinning turntable.
-	 *
-	 * Terms of Use // jQuery Roundabout
-	 *
-	 * Open source under the BSD license
-	 *
-	 * Copyright (c) 2011-2012, Fred LeBlanc
-	 * All rights reserved.
-	 *
-	 * Redistribution and use in source and binary forms, with or without
-	 * modification, are permitted provided that the following conditions are met:
-	 *
-	 *   - Redistributions of source code must retain the above copyright
-	 *     notice, this list of conditions and the following disclaimer.
-	 *   - Redistributions in binary form must reproduce the above
-	 *     copyright notice, this list of conditions and the following
-	 *     disclaimer in the documentation and/or other materials provided
-	 *     with the distribution.
-	 *   - Neither the name of the author nor the names of its contributors
-	 *     may be used to endorse or promote products derived from this
-	 *     software without specific prior written permission.
-	 *
-	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-	 * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-	 * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-	 * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-	 * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-	 * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	 * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	 * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	 * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	 * POSSIBILITY OF SUCH DAMAGE.
-	 */
-	(function (a) {
-	  "use strict";
-	  var b, c, d;a.extend({ roundaboutShapes: { def: "lazySusan", lazySusan: function lazySusan(a, b, c) {
-	        return { x: Math.sin(a + b), y: Math.sin(a + 3 * Math.PI / 2 + b) / 8 * c, z: (Math.cos(a + b) + 1) / 2, scale: Math.sin(a + Math.PI / 2 + b) / 2 + .5 };
-	      } } });b = { bearing: 0, tilt: 0, minZ: 100, maxZ: 280, minOpacity: .4, maxOpacity: 1, minScale: .4, maxScale: 1, duration: 600, btnNext: null, btnNextCallback: function btnNextCallback() {}, btnPrev: null, btnPrevCallback: function btnPrevCallback() {}, btnToggleAutoplay: null, btnStartAutoplay: null, btnStopAutoplay: null, easing: "swing", clickToFocus: true, clickToFocusCallback: function clickToFocusCallback() {}, focusBearing: 0, shape: "lazySusan", debug: false, childSelector: "li", startingChild: null, reflect: false, floatComparisonThreshold: .001, autoplay: false, autoplayDuration: 1e3, autoplayPauseOnHover: false, autoplayCallback: function autoplayCallback() {}, autoplayInitialDelay: 0, enableDrag: false, dropDuration: 600, dropEasing: "swing", dropAnimateTo: "nearest", dropCallback: function dropCallback() {}, dragAxis: "x", dragFactor: 4, triggerFocusEvents: true, triggerBlurEvents: true, responsive: false };c = { autoplayInterval: null, autoplayIsRunning: false, autoplayStartTimeout: null, animating: false, childInFocus: -1, touchMoveStartPosition: null, stopAnimation: false, lastAnimationStep: false };d = { init: function init(e, f, g) {
-	      var h,
-	          i = new Date().getTime();e = (typeof e === "undefined" ? "undefined" : _typeof(e)) === "object" ? e : {};f = a.isFunction(f) ? f : function () {};f = a.isFunction(e) ? e : f;h = a.extend({}, b, e, c);return this.each(function () {
-	        var b = a(this),
-	            c = b.children(h.childSelector).length,
-	            e = 360 / c,
-	            i = h.startingChild && h.startingChild > c - 1 ? c - 1 : h.startingChild,
-	            j = h.startingChild === null ? h.bearing : 360 - i * e,
-	            k = b.css("position") !== "static" ? b.css("position") : "relative";b.css({ padding: 0, position: k }).addClass("roundabout-holder").data("roundabout", a.extend({}, h, { startingChild: i, bearing: j, oppositeOfFocusBearing: d.normalize.apply(null, [h.focusBearing - 180]), dragBearing: j, period: e }));if (g) {
-	          b.unbind(".roundabout").children(h.childSelector).unbind(".roundabout");
-	        } else {
-	          if (h.responsive) {
-	            a(window).bind("resize", function () {
-	              d.stopAutoplay.apply(b);d.relayoutChildren.apply(b);
-	            });
-	          }
-	        }if (h.clickToFocus) {
-	          b.children(h.childSelector).each(function (c) {
-	            a(this).bind("click.roundabout", function () {
-	              var e = d.getPlacement.apply(b, [c]);if (!d.isInFocus.apply(b, [e])) {
-	                d.stopAnimation.apply(a(this));if (!b.data("roundabout").animating) {
-	                  d.animateBearingToFocus.apply(b, [e, b.data("roundabout").clickToFocusCallback]);
-	                }return false;
-	              }
-	            });
-	          });
-	        }if (h.btnNext) {
-	          a(h.btnNext).bind("click.roundabout", function () {
-	            if (!b.data("roundabout").animating) {
-	              d.animateToNextChild.apply(b, [b.data("roundabout").btnNextCallback]);
-	            }return false;
-	          });
-	        }if (h.btnPrev) {
-	          a(h.btnPrev).bind("click.roundabout", function () {
-	            d.animateToPreviousChild.apply(b, [b.data("roundabout").btnPrevCallback]);return false;
-	          });
-	        }if (h.btnToggleAutoplay) {
-	          a(h.btnToggleAutoplay).bind("click.roundabout", function () {
-	            d.toggleAutoplay.apply(b);return false;
-	          });
-	        }if (h.btnStartAutoplay) {
-	          a(h.btnStartAutoplay).bind("click.roundabout", function () {
-	            d.startAutoplay.apply(b);return false;
-	          });
-	        }if (h.btnStopAutoplay) {
-	          a(h.btnStopAutoplay).bind("click.roundabout", function () {
-	            d.stopAutoplay.apply(b);return false;
-	          });
-	        }if (h.autoplayPauseOnHover) {
-	          b.bind("mouseenter.roundabout.autoplay", function () {
-	            d.stopAutoplay.apply(b, [true]);
-	          }).bind("mouseleave.roundabout.autoplay", function () {
-	            d.startAutoplay.apply(b);
-	          });
-	        }if (h.enableDrag) {
-	          if (!a.isFunction(b.drag)) {
-	            if (h.debug) {
-	              alert("You do not have the drag plugin loaded.");
-	            }
-	          } else if (!a.isFunction(b.drop)) {
-	            if (h.debug) {
-	              alert("You do not have the drop plugin loaded.");
-	            }
-	          } else {
-	            b.drag(function (a, c) {
-	              var e = b.data("roundabout"),
-	                  f = e.dragAxis.toLowerCase() === "x" ? "deltaX" : "deltaY";d.stopAnimation.apply(b);d.setBearing.apply(b, [e.dragBearing + c[f] / e.dragFactor]);
-	            }).drop(function (a) {
-	              var c = b.data("roundabout"),
-	                  e = d.getAnimateToMethod(c.dropAnimateTo);d.allowAnimation.apply(b);d[e].apply(b, [c.dropDuration, c.dropEasing, c.dropCallback]);c.dragBearing = c.period * d.getNearestChild.apply(b);
-	            });
-	          }b.each(function () {
-	            var b = a(this).get(0),
-	                c = a(this).data("roundabout"),
-	                e = c.dragAxis.toLowerCase() === "x" ? "pageX" : "pageY",
-	                f = d.getAnimateToMethod(c.dropAnimateTo);if (b.addEventListener) {
-	              b.addEventListener("touchstart", function (a) {
-	                c.touchMoveStartPosition = a.touches[0][e];
-	              }, false);b.addEventListener("touchmove", function (b) {
-	                var f = (b.touches[0][e] - c.touchMoveStartPosition) / c.dragFactor;b.preventDefault();d.stopAnimation.apply(a(this));d.setBearing.apply(a(this), [c.dragBearing + f]);
-	              }, false);b.addEventListener("touchend", function (b) {
-	                b.preventDefault();d.allowAnimation.apply(a(this));f = d.getAnimateToMethod(c.dropAnimateTo);d[f].apply(a(this), [c.dropDuration, c.dropEasing, c.dropCallback]);c.dragBearing = c.period * d.getNearestChild.apply(a(this));
-	              }, false);
-	            }
-	          });
-	        }d.initChildren.apply(b, [f, g]);
-	      });
-	    }, initChildren: function initChildren(b, c) {
-	      var e = a(this),
-	          f = e.data("roundabout");b = b || function () {};e.children(f.childSelector).each(function (b) {
-	        var f,
-	            g,
-	            h,
-	            i = d.getPlacement.apply(e, [b]);if (c && a(this).data("roundabout")) {
-	          f = a(this).data("roundabout").startWidth;g = a(this).data("roundabout").startHeight;h = a(this).data("roundabout").startFontSize;
-	        }a(this).addClass("roundabout-moveable-item").css("position", "absolute");a(this).data("roundabout", { startWidth: f || a(this).width(), startHeight: g || a(this).height(), startFontSize: h || parseInt(a(this).css("font-size"), 10), degrees: i, backDegrees: d.normalize.apply(null, [i - 180]), childNumber: b, currentScale: 1, parent: e });
-	      });d.updateChildren.apply(e);if (f.autoplay) {
-	        f.autoplayStartTimeout = setTimeout(function () {
-	          d.startAutoplay.apply(e);
-	        }, f.autoplayInitialDelay);
-	      }e.trigger("ready");b.apply(e);return e;
-	    }, updateChildren: function updateChildren() {
-	      return this.each(function () {
-	        var b = a(this),
-	            c = b.data("roundabout"),
-	            e = -1,
-	            f = { bearing: c.bearing, tilt: c.tilt, stage: { width: Math.floor(a(this).width() * .9), height: Math.floor(a(this).height() * .9) }, animating: c.animating, inFocus: c.childInFocus, focusBearingRadian: d.degToRad.apply(null, [c.focusBearing]), shape: a.roundaboutShapes[c.shape] || a.roundaboutShapes[a.roundaboutShapes.def] };f.midStage = { width: f.stage.width / 2, height: f.stage.height / 2 };f.nudge = { width: f.midStage.width + f.stage.width * .05, height: f.midStage.height + f.stage.height * .05 };f.zValues = { min: c.minZ, max: c.maxZ, diff: c.maxZ - c.minZ };f.opacity = { min: c.minOpacity, max: c.maxOpacity, diff: c.maxOpacity - c.minOpacity };f.scale = { min: c.minScale, max: c.maxScale, diff: c.maxScale - c.minScale };b.children(c.childSelector).each(function (g) {
-	          if (d.updateChild.apply(b, [a(this), f, g, function () {
-	            a(this).trigger("ready");
-	          }]) && (!f.animating || c.lastAnimationStep)) {
-	            e = g;a(this).addClass("roundabout-in-focus");
-	          } else {
-	            a(this).removeClass("roundabout-in-focus");
-	          }
-	        });if (e !== f.inFocus) {
-	          if (c.triggerBlurEvents) {
-	            b.children(c.childSelector).eq(f.inFocus).trigger("blur");
-	          }c.childInFocus = e;if (c.triggerFocusEvents && e !== -1) {
-	            b.children(c.childSelector).eq(e).trigger("focus");
-	          }
-	        }b.trigger("childrenUpdated");
-	      });
-	    }, updateChild: function updateChild(b, c, e, f) {
-	      var g,
-	          h = this,
-	          i = a(b),
-	          j = i.data("roundabout"),
-	          k = [],
-	          l = d.degToRad.apply(null, [360 - j.degrees + c.bearing]);f = f || function () {};l = d.normalizeRad.apply(null, [l]);g = c.shape(l, c.focusBearingRadian, c.tilt);g.scale = g.scale > 1 ? 1 : g.scale;g.adjustedScale = (c.scale.min + c.scale.diff * g.scale).toFixed(4);g.width = (g.adjustedScale * j.startWidth).toFixed(4);g.height = (g.adjustedScale * j.startHeight).toFixed(4);i.css({ left: (g.x * c.midStage.width + c.nudge.width - g.width / 2).toFixed(0) + "px", top: (g.y * c.midStage.height + c.nudge.height - g.height / 2).toFixed(0) + "px", width: g.width + "px", height: g.height + "px", opacity: (c.opacity.min + c.opacity.diff * g.scale).toFixed(2), zIndex: Math.round(c.zValues.min + c.zValues.diff * g.z), fontSize: (g.adjustedScale * j.startFontSize).toFixed(1) + "px" });j.currentScale = g.adjustedScale;if (h.data("roundabout").debug) {
-	        k.push('<div style="font-weight: normal; font-size: 10px; padding: 2px; width: ' + i.css("width") + '; background-color: #ffc;">');k.push('<strong style="font-size: 12px; white-space: nowrap;">Child ' + e + "</strong><br />");k.push("<strong>left:</strong> " + i.css("left") + "<br />");k.push("<strong>top:</strong> " + i.css("top") + "<br />");k.push("<strong>width:</strong> " + i.css("width") + "<br />");k.push("<strong>opacity:</strong> " + i.css("opacity") + "<br />");k.push("<strong>height:</strong> " + i.css("height") + "<br />");k.push("<strong>z-index:</strong> " + i.css("z-index") + "<br />");k.push("<strong>font-size:</strong> " + i.css("font-size") + "<br />");k.push("<strong>scale:</strong> " + i.data("roundabout").currentScale);k.push("</div>");i.html(k.join(""));
-	      }i.trigger("reposition");f.apply(h);return d.isInFocus.apply(h, [j.degrees]);
-	    }, setBearing: function setBearing(b, c) {
-	      c = c || function () {};b = d.normalize.apply(null, [b]);this.each(function () {
-	        var c,
-	            e,
-	            f,
-	            g = a(this),
-	            h = g.data("roundabout"),
-	            i = h.bearing;h.bearing = b;g.trigger("bearingSet");d.updateChildren.apply(g);c = Math.abs(i - b);if (!h.animating || c > 180) {
-	          return;
-	        }c = Math.abs(i - b);g.children(h.childSelector).each(function (c) {
-	          var e;if (d.isChildBackDegreesBetween.apply(a(this), [b, i])) {
-	            e = i > b ? "Clockwise" : "Counterclockwise";a(this).trigger("move" + e + "ThroughBack");
-	          }
-	        });
-	      });c.apply(this);return this;
-	    }, adjustBearing: function adjustBearing(b, c) {
-	      c = c || function () {};if (b === 0) {
-	        return this;
-	      }this.each(function () {
-	        d.setBearing.apply(a(this), [a(this).data("roundabout").bearing + b]);
-	      });c.apply(this);return this;
-	    }, setTilt: function setTilt(b, c) {
-	      c = c || function () {};this.each(function () {
-	        a(this).data("roundabout").tilt = b;d.updateChildren.apply(a(this));
-	      });c.apply(this);return this;
-	    }, adjustTilt: function adjustTilt(b, c) {
-	      c = c || function () {};this.each(function () {
-	        d.setTilt.apply(a(this), [a(this).data("roundabout").tilt + b]);
-	      });c.apply(this);return this;
-	    }, animateToBearing: function animateToBearing(b, c, e, f, g) {
-	      var h = new Date().getTime();g = g || function () {};if (a.isFunction(f)) {
-	        g = f;f = null;
-	      } else if (a.isFunction(e)) {
-	        g = e;e = null;
-	      } else if (a.isFunction(c)) {
-	        g = c;c = null;
-	      }this.each(function () {
-	        var i,
-	            j,
-	            k,
-	            l = a(this),
-	            m = l.data("roundabout"),
-	            n = !c ? m.duration : c,
-	            o = e ? e : m.easing || "swing";if (!f) {
-	          f = { timerStart: h, start: m.bearing, totalTime: n };
-	        }i = h - f.timerStart;if (m.stopAnimation) {
-	          d.allowAnimation.apply(l);m.animating = false;return;
-	        }if (i < n) {
-	          if (!m.animating) {
-	            l.trigger("animationStart");
-	          }m.animating = true;if (typeof a.easing.def === "string") {
-	            j = a.easing[o] || a.easing[a.easing.def];k = j(null, i, f.start, b - f.start, f.totalTime);
-	          } else {
-	            k = a.easing[o](i / f.totalTime, i, f.start, b - f.start, f.totalTime);
-	          }if (d.compareVersions.apply(null, [a().jquery, "1.7.2"]) >= 0 && !a.easing["easeOutBack"]) {
-	            k = f.start + (b - f.start) * k;
-	          }k = d.normalize.apply(null, [k]);m.dragBearing = k;d.setBearing.apply(l, [k, function () {
-	            setTimeout(function () {
-	              d.animateToBearing.apply(l, [b, n, o, f, g]);
-	            }, 0);
-	          }]);
-	        } else {
-	          m.lastAnimationStep = true;b = d.normalize.apply(null, [b]);d.setBearing.apply(l, [b, function () {
-	            l.trigger("animationEnd");
-	          }]);m.animating = false;m.lastAnimationStep = false;m.dragBearing = b;g.apply(l);
-	        }
-	      });return this;
-	    }, animateToNearbyChild: function animateToNearbyChild(b, c) {
-	      var e = b[0],
-	          f = b[1],
-	          g = b[2] || function () {};if (a.isFunction(f)) {
-	        g = f;f = null;
-	      } else if (a.isFunction(e)) {
-	        g = e;e = null;
-	      }return this.each(function () {
-	        var b,
-	            h,
-	            i = a(this),
-	            j = i.data("roundabout"),
-	            k = !j.reflect ? j.bearing % 360 : j.bearing,
-	            l = i.children(j.childSelector).length;if (!j.animating) {
-	          if (j.reflect && c === "previous" || !j.reflect && c === "next") {
-	            k = Math.abs(k) < j.floatComparisonThreshold ? 360 : k;for (b = 0; b < l; b += 1) {
-	              h = { lower: j.period * b, upper: j.period * (b + 1) };h.upper = b === l - 1 ? 360 : h.upper;if (k <= Math.ceil(h.upper) && k >= Math.floor(h.lower)) {
-	                if (l === 2 && k === 360) {
-	                  d.animateToDelta.apply(i, [-180, e, f, g]);
-	                } else {
-	                  d.animateBearingToFocus.apply(i, [h.lower, e, f, g]);
-	                }break;
-	              }
-	            }
-	          } else {
-	            k = Math.abs(k) < j.floatComparisonThreshold || 360 - Math.abs(k) < j.floatComparisonThreshold ? 0 : k;for (b = l - 1; b >= 0; b -= 1) {
-	              h = { lower: j.period * b, upper: j.period * (b + 1) };h.upper = b === l - 1 ? 360 : h.upper;if (k >= Math.floor(h.lower) && k < Math.ceil(h.upper)) {
-	                if (l === 2 && k === 360) {
-	                  d.animateToDelta.apply(i, [180, e, f, g]);
-	                } else {
-	                  d.animateBearingToFocus.apply(i, [h.upper, e, f, g]);
-	                }break;
-	              }
-	            }
-	          }
-	        }
-	      });
-	    }, animateToNearestChild: function animateToNearestChild(b, c, e) {
-	      e = e || function () {};if (a.isFunction(c)) {
-	        e = c;c = null;
-	      } else if (a.isFunction(b)) {
-	        e = b;b = null;
-	      }return this.each(function () {
-	        var f = d.getNearestChild.apply(a(this));d.animateToChild.apply(a(this), [f, b, c, e]);
-	      });
-	    }, animateToChild: function animateToChild(b, c, e, f) {
-	      f = f || function () {};if (a.isFunction(e)) {
-	        f = e;e = null;
-	      } else if (a.isFunction(c)) {
-	        f = c;c = null;
-	      }return this.each(function () {
-	        var g,
-	            h = a(this),
-	            i = h.data("roundabout");if (i.childInFocus !== b && !i.animating) {
-	          g = h.children(i.childSelector).eq(b);d.animateBearingToFocus.apply(h, [g.data("roundabout").degrees, c, e, f]);
-	        }
-	      });
-	    }, animateToNextChild: function animateToNextChild(a, b, c) {
-	      return d.animateToNearbyChild.apply(this, [arguments, "next"]);
-	    }, animateToPreviousChild: function animateToPreviousChild(a, b, c) {
-	      return d.animateToNearbyChild.apply(this, [arguments, "previous"]);
-	    }, animateToDelta: function animateToDelta(b, c, e, f) {
-	      f = f || function () {};if (a.isFunction(e)) {
-	        f = e;e = null;
-	      } else if (a.isFunction(c)) {
-	        f = c;c = null;
-	      }return this.each(function () {
-	        var g = a(this).data("roundabout").bearing + b;d.animateToBearing.apply(a(this), [g, c, e, f]);
-	      });
-	    }, animateBearingToFocus: function animateBearingToFocus(b, c, e, f) {
-	      f = f || function () {};if (a.isFunction(e)) {
-	        f = e;e = null;
-	      } else if (a.isFunction(c)) {
-	        f = c;c = null;
-	      }return this.each(function () {
-	        var g = a(this).data("roundabout").bearing - b;g = Math.abs(360 - g) < Math.abs(g) ? 360 - g : -g;g = g > 180 ? -(360 - g) : g;if (g !== 0) {
-	          d.animateToDelta.apply(a(this), [g, c, e, f]);
-	        }
-	      });
-	    }, stopAnimation: function stopAnimation() {
-	      return this.each(function () {
-	        a(this).data("roundabout").stopAnimation = true;
-	      });
-	    }, allowAnimation: function allowAnimation() {
-	      return this.each(function () {
-	        a(this).data("roundabout").stopAnimation = false;
-	      });
-	    }, startAutoplay: function startAutoplay(b) {
-	      return this.each(function () {
-	        var c = a(this),
-	            e = c.data("roundabout");b = b || e.autoplayCallback || function () {};clearInterval(e.autoplayInterval);e.autoplayInterval = setInterval(function () {
-	          d.animateToNextChild.apply(c, [b]);
-	        }, e.autoplayDuration);e.autoplayIsRunning = true;c.trigger("autoplayStart");
-	      });
-	    }, stopAutoplay: function stopAutoplay(b) {
-	      return this.each(function () {
-	        clearInterval(a(this).data("roundabout").autoplayInterval);a(this).data("roundabout").autoplayInterval = null;a(this).data("roundabout").autoplayIsRunning = false;if (!b) {
-	          a(this).unbind(".autoplay");
-	        }a(this).trigger("autoplayStop");
-	      });
-	    }, toggleAutoplay: function toggleAutoplay(b) {
-	      return this.each(function () {
-	        var c = a(this),
-	            e = c.data("roundabout");b = b || e.autoplayCallback || function () {};if (!d.isAutoplaying.apply(a(this))) {
-	          d.startAutoplay.apply(a(this), [b]);
-	        } else {
-	          d.stopAutoplay.apply(a(this), [b]);
-	        }
-	      });
-	    }, isAutoplaying: function isAutoplaying() {
-	      return this.data("roundabout").autoplayIsRunning;
-	    }, changeAutoplayDuration: function changeAutoplayDuration(b) {
-	      return this.each(function () {
-	        var c = a(this),
-	            e = c.data("roundabout");e.autoplayDuration = b;if (d.isAutoplaying.apply(c)) {
-	          d.stopAutoplay.apply(c);setTimeout(function () {
-	            d.startAutoplay.apply(c);
-	          }, 10);
-	        }
-	      });
-	    }, normalize: function normalize(a) {
-	      var b = a % 360;return b < 0 ? 360 + b : b;
-	    }, normalizeRad: function normalizeRad(a) {
-	      while (a < 0) {
-	        a += Math.PI * 2;
-	      }while (a > Math.PI * 2) {
-	        a -= Math.PI * 2;
-	      }return a;
-	    }, isChildBackDegreesBetween: function isChildBackDegreesBetween(b, c) {
-	      var d = a(this).data("roundabout").backDegrees;if (b > c) {
-	        return d >= c && d < b;
-	      } else {
-	        return d < c && d >= b;
-	      }
-	    }, getAnimateToMethod: function getAnimateToMethod(a) {
-	      a = a.toLowerCase();if (a === "next") {
-	        return "animateToNextChild";
-	      } else if (a === "previous") {
-	        return "animateToPreviousChild";
-	      }return "animateToNearestChild";
-	    }, relayoutChildren: function relayoutChildren() {
-	      return this.each(function () {
-	        var b = a(this),
-	            c = a.extend({}, b.data("roundabout"));c.startingChild = b.data("roundabout").childInFocus;d.init.apply(b, [c, null, true]);
-	      });
-	    }, getNearestChild: function getNearestChild() {
-	      var b = a(this),
-	          c = b.data("roundabout"),
-	          d = b.children(c.childSelector).length;if (!c.reflect) {
-	        return (d - Math.round(c.bearing / c.period) % d) % d;
-	      } else {
-	        return Math.round(c.bearing / c.period) % d;
-	      }
-	    }, degToRad: function degToRad(a) {
-	      return d.normalize.apply(null, [a]) * Math.PI / 180;
-	    }, getPlacement: function getPlacement(a) {
-	      var b = this.data("roundabout");return !b.reflect ? 360 - b.period * a : b.period * a;
-	    }, isInFocus: function isInFocus(a) {
-	      var b,
-	          c = this,
-	          e = c.data("roundabout"),
-	          f = d.normalize.apply(null, [e.bearing]);a = d.normalize.apply(null, [a]);b = Math.abs(f - a);return b <= e.floatComparisonThreshold || b >= 360 - e.floatComparisonThreshold;
-	    }, getChildInFocus: function getChildInFocus() {
-	      var b = a(this).data("roundabout");return b.childInFocus > -1 ? b.childInFocus : false;
-	    }, compareVersions: function compareVersions(a, b) {
-	      var c,
-	          d = a.split(/\./i),
-	          e = b.split(/\./i),
-	          f = d.length > e.length ? d.length : e.length;for (c = 0; c <= f; c++) {
-	        if (d[c] && !e[c] && parseInt(d[c], 10) !== 0) {
-	          return 1;
-	        } else if (e[c] && !d[c] && parseInt(e[c], 10) !== 0) {
-	          return -1;
-	        } else if (d[c] === e[c]) {
-	          continue;
-	        }if (d[c] && e[c]) {
-	          if (parseInt(d[c], 10) > parseInt(e[c], 10)) {
-	            return 1;
-	          } else {
-	            return -1;
-	          }
-	        }
-	      }return 0;
-	    } };a.fn.roundabout = function (b) {
-	    if (d[b]) {
-	      return d[b].apply(this, Array.prototype.slice.call(arguments, 1));
-	    } else if ((typeof b === "undefined" ? "undefined" : _typeof(b)) === "object" || a.isFunction(b) || !b) {
-	      return d.init.apply(this, arguments);
-	    } else {
-	      a.error("Method " + b + " does not exist for jQuery.roundabout.");
-	    }
-	  };
-	})(jQuery);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301)))
-
-/***/ }),
-
 /***/ 532:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2450,15 +2004,15 @@ webpackJsonp([0,3],{
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _sheets = __webpack_require__(543);
+	var _sheets = __webpack_require__(544);
 
 	var _sheets2 = _interopRequireDefault(_sheets);
 
-	var _friends = __webpack_require__(545);
+	var _friends = __webpack_require__(550);
 
 	var _friends2 = _interopRequireDefault(_friends);
 
-	var _subscription = __webpack_require__(546);
+	var _subscription = __webpack_require__(551);
 
 	var _subscription2 = _interopRequireDefault(_subscription);
 
@@ -2572,6 +2126,10 @@ webpackJsonp([0,3],{
 
 	var _upload = __webpack_require__(542);
 
+	var _co = __webpack_require__(543);
+
+	var _co2 = _interopRequireDefault(_co);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2605,9 +2163,7 @@ webpackJsonp([0,3],{
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      console.log('did update');
-	    }
+	    value: function componentDidUpdate() {}
 	  }, {
 	    key: 'updateProgress',
 	    value: function updateProgress(percent) {
@@ -2766,38 +2322,91 @@ webpackJsonp([0,3],{
 	  }, {
 	    key: 'uploadAvatar',
 	    value: function uploadAvatar(event) {
-	      var self = this;
 	      console.log('upload avatar');
+	      var self = this;
+	      var token = $('#token').val();
 	      $('#avatar-upload-modal').modal({
 	        closable: false,
 	        detachable: false
 	      }).modal('show');
-	      var avatarName = 'avatar-' + (0, _utils.guid)();
-	      (0, _upload.uploadAvatar)(avatarName, event.target.files[0], {
-	        token: $('#token').val()
-	      }, regeneratorRuntime.mark(function _callee(progress) {
-	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	      (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+	        var avatarName, avatar, result;
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	          while (1) {
-	            switch (_context.prev = _context.next) {
+	            switch (_context2.prev = _context2.next) {
 	              case 0:
-	                self.eventEmitter.emit('update-progress', progress * 100);
+	                avatarName = 'avatar-' + (0, _utils.guid)();
+	                _context2.next = 3;
+	                return (0, _upload.uploadAvatar)(avatarName, event.target.files[0], token, regeneratorRuntime.mark(function _callee(progress) {
+	                  return regeneratorRuntime.wrap(function _callee$(_context) {
+	                    while (1) {
+	                      switch (_context.prev = _context.next) {
+	                        case 0:
+	                          self.eventEmitter.emit('update-progress', progress * 100);
 
-	              case 1:
+	                        case 1:
+	                        case 'end':
+	                          return _context.stop();
+	                      }
+	                    }
+	                  }, _callee, this);
+	                }));
+
+	              case 3:
+	                avatar = _context2.sent;
+	                _context2.next = 6;
+	                return fetch('/api/user/profile/update', {
+	                  method: 'PUT',
+	                  credentials: 'same-origin',
+	                  headers: {
+	                    'Authorization': token
+	                  },
+	                  body: JSON.stringify({
+	                    avatar: avatar.name
+	                  })
+	                }).then(self.checkStatus).then(self.parseJSON);
+
+	              case 6:
+	                result = _context2.sent;
+	                return _context2.abrupt('return', result);
+
+	              case 8:
 	              case 'end':
-	                return _context.stop();
+	                return _context2.stop();
 	            }
 	          }
-	        }, _callee, this);
+	        }, _callee2, this);
 	      })).then(function (result) {
 	        console.log(result);
+	        self.loadUserProfile();
 	        $('#avatar-upload-modal').modal('hide');
-	      }).catch(function (error) {
+	      }, function (error) {
 	        console.error(error);
 	      });
 	    }
 	  }, {
 	    key: 'updateProfile',
-	    value: function updateProfile() {}
+	    value: function updateProfile() {
+	      var self = this;
+	      var token = $('#token').val();
+	      fetch('/api/user/profile/update', {
+	        method: 'PUT',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': token
+	        },
+	        body: JSON.stringify({
+	          name: self.state.name,
+	          mail: self.state.mail,
+	          description: self.state.description,
+	          gender: self.state.gender
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        console.log(result);
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -2912,7 +2521,7 @@ webpackJsonp([0,3],{
 	              ),
 	              _react2.default.createElement(UpdateButton, {
 	                disabled: this.state.updateButtonDisabled,
-	                handleUpdate: this.updateProfile
+	                updateProfile: this.updateProfile
 	              })
 	            )
 	          ),
@@ -2998,20 +2607,20 @@ webpackJsonp([0,3],{
 
 	var _oss = __webpack_require__(527);
 
-	function uploadAvatar(objectKeyId, file, callbackVar, progress) {
-	  return (0, _oss.getOssClient)(callbackVar.token).then(function (client) {
+	function uploadAvatar(objectKeyId, file, token, progress) {
+	  return (0, _oss.getOssClient)(token).then(function (client) {
 	    console.log(client);
 	    return client.multipartUpload(objectKeyId, file, {
-	      headers: {
-	        'x-oss-callback': window.btoa(JSON.stringify({
-	          'callbackUrl': 'music.mushare.cn/api/oss/upload/avatar',
-	          'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-	          'callbackBodyType': 'application/json'
-	        })),
-	        'x-oss-callback-var': window.btoa(JSON.stringify({
-	          'x:token': callbackVar.token
-	        }))
-	      },
+	      // headers: {
+	      //   'x-oss-callback': window.btoa(JSON.stringify({
+	      //     'callbackUrl': 'music.mushare.cn/api/oss/upload/avatar',
+	      //     'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
+	      //     'callbackBodyType': 'application/json'
+	      //   })),
+	      //   'x-oss-callback-var': window.btoa(JSON.stringify({
+	      //     'x:token': callbackVar.token
+	      //   }))
+	      // },
 	      progress: progress
 	    });
 	  });
@@ -3049,7 +2658,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 543:
+/***/ 544:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
@@ -3078,9 +2687,13 @@ webpackJsonp([0,3],{
 
 	var _oss = __webpack_require__(527);
 
-	var _co = __webpack_require__(544);
+	var _co = __webpack_require__(543);
 
 	var _co2 = _interopRequireDefault(_co);
+
+	__webpack_require__(545);
+
+	__webpack_require__(546);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3090,32 +2703,125 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CreateSheetModal = function (_MuComponent) {
-	  _inherits(CreateSheetModal, _MuComponent);
+	var SheetCoverCropperModal = function (_MuComponent) {
+	  _inherits(SheetCoverCropperModal, _MuComponent);
+
+	  function SheetCoverCropperModal(props) {
+	    _classCallCheck(this, SheetCoverCropperModal);
+
+	    var _this = _possibleConstructorReturn(this, (SheetCoverCropperModal.__proto__ || Object.getPrototypeOf(SheetCoverCropperModal)).call(this, props));
+
+	    _this.receiveInputCover = _this.receiveInputCover.bind(_this);
+	    _this.handleClick = _this.handleClick.bind(_this);
+	    _this.props.eventEmitter.addListener('receive-input-cover', _this.receiveInputCover);
+	    _this.imgcut = '';
+	    _this.state = {
+	      url: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(SheetCoverCropperModal, [{
+	    key: 'receiveInputCover',
+	    value: function receiveInputCover(cover) {
+	      var url = URL.createObjectURL(cover);
+	      $('#sheet-cover-cropper-modal img').cropper('destroy');
+	      this.setState({
+	        url: url
+	      });
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.eventEmitter.emit('receive-img-cut', this.imgcut);
+	      $('#sheet-cover-cropper-modal').modal('hide');
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var self = this;
+	      $('#sheet-cover-cropper-modal img').cropper({
+	        aspectRatio: 1,
+	        crop: function crop(e) {
+	          self.imgcut = 'x_' + (e.x < 0 ? 0 : Math.floor(e.x)) + ',' + ('y_' + (e.y < 0 ? 0 : Math.floor(e.y)) + ',') + ('w_' + Math.floor(e.width) + ',') + ('h_' + Math.floor(e.height));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui small couple modal', id: 'sheet-cover-cropper-modal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'avatar-wrapper' },
+	            _react2.default.createElement('img', { src: this.state.url, alt: '' })
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'ui fluid button', onClick: this.handleClick },
+	            '\u786E\u5B9A'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SheetCoverCropperModal;
+	}(_mushareReactComponent2.default);
+
+	var CreateSheetModal = function (_MuComponent2) {
+	  _inherits(CreateSheetModal, _MuComponent2);
 
 	  function CreateSheetModal(props) {
 	    _classCallCheck(this, CreateSheetModal);
 
-	    var _this = _possibleConstructorReturn(this, (CreateSheetModal.__proto__ || Object.getPrototypeOf(CreateSheetModal)).call(this, props));
+	    var _this2 = _possibleConstructorReturn(this, (CreateSheetModal.__proto__ || Object.getPrototypeOf(CreateSheetModal)).call(this, props));
 
-	    _this.sheet = {
+	    _this2.sheet = {
 	      name: '',
 	      privilege: '',
 	      coverFile: null
 	    };
-	    _this.createSheet = _this.createSheet.bind(_this);
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    return _this;
+	    _this2.state = {
+	      creating: false
+	    };
+	    _this2.imgcut = '';
+	    _this2.receiveImgCut = _this2.receiveImgCut.bind(_this2);
+	    _this2.createSheet = _this2.createSheet.bind(_this2);
+	    _this2.handleChange = _this2.handleChange.bind(_this2);
+	    _this2.props.eventEmitter.addListener('receive-img-cut', _this2.receiveImgCut);
+	    return _this2;
 	  }
 
 	  _createClass(CreateSheetModal, [{
+	    key: 'receiveImgCut',
+	    value: function receiveImgCut(imgcut) {
+	      console.log(imgcut);
+	      this.imgcut = imgcut;
+	    }
+	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(event) {
 	      if (event.target.type === 'file') {
+	        this.props.eventEmitter.emit('receive-input-cover', event.target.files[0]);
+	        $('#sheet-cover-cropper-modal').modal('show');
 	        this.sheet.coverFile = event.target.files[0];
 	      } else {
 	        this.sheet[event.target.name] = event.target.value;
 	      }
+	    }
+	  }, {
+	    key: 'closeModal',
+	    value: function closeModal() {
+	      this.props.onSheetCreated();
+	      $('#create-sheet-modal .form .name').val('');
+	      $('#create-sheet-modal .form .sheet-cover-file').val('');
+	      $('#create-sheet-modal .form .dropdown').dropdown('clear');
 	    }
 	  }, {
 	    key: 'createSheet',
@@ -3124,6 +2830,9 @@ webpackJsonp([0,3],{
 	      if (this.sheet.coverFile === null) {
 	        return;
 	      }
+	      this.setState({
+	        creating: true
+	      });
 	      (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
 	        var token, objectId, cover, result;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -3149,7 +2858,7 @@ webpackJsonp([0,3],{
 	                  body: JSON.stringify({
 	                    name: self.sheet.name,
 	                    privilege: self.sheet.privilege,
-	                    cover: cover.name
+	                    cover: cover.name + ('?x-oss-process=image/crop,' + self.imgcut)
 	                  })
 	                }).then(self.checkStatus).then(self.parseJSON);
 
@@ -3164,8 +2873,15 @@ webpackJsonp([0,3],{
 	          }
 	        }, _callee, this);
 	      })).then(function (result) {
-	        console.log(result);
-	      }, function (error) {});
+	        self.setState({
+	          creating: false
+	        });
+	        self.closeModal();
+	      }, function (error) {
+	        self.setState({
+	          creating: false
+	        });
+	      });
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -3181,9 +2897,24 @@ webpackJsonp([0,3],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var button = null;
+	      if (this.state.creating) {
+	        button = _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.createSheet },
+	          _react2.default.createElement('i', { className: 'spinner loading icon' }),
+	          '\u521B\u5EFA\u4E2D...'
+	        );
+	      } else {
+	        button = _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.createSheet },
+	          '\u521B\u5EFA'
+	        );
+	      }
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'ui small login modal', id: 'create-sheet-modal' },
+	        { className: 'ui small couple modal', id: 'create-sheet-modal' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'ui container' },
@@ -3220,7 +2951,7 @@ webpackJsonp([0,3],{
 	                null,
 	                '\u6B4C\u5355\u540D'
 	              ),
-	              _react2.default.createElement('input', { type: 'text', name: 'name',
+	              _react2.default.createElement('input', { type: 'text', name: 'name', className: 'name',
 	                placeholder: '\u6B4C\u5355\u540D', onChange: this.handleChange })
 	            ),
 	            _react2.default.createElement(
@@ -3268,11 +2999,7 @@ webpackJsonp([0,3],{
 	                '\u4E0A\u4F20\u5C01\u9762'
 	              )
 	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { className: 'ui fluid button', onClick: this.createSheet },
-	              '\u521B\u5EFA'
-	            )
+	            button
 	          )
 	        )
 	      );
@@ -3282,8 +3009,8 @@ webpackJsonp([0,3],{
 	  return CreateSheetModal;
 	}(_mushareReactComponent2.default);
 
-	var SheetCards = function (_MuComponent2) {
-	  _inherits(SheetCards, _MuComponent2);
+	var SheetCards = function (_MuComponent3) {
+	  _inherits(SheetCards, _MuComponent3);
 
 	  function SheetCards(props) {
 	    _classCallCheck(this, SheetCards);
@@ -3301,7 +3028,8 @@ webpackJsonp([0,3],{
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'image' },
-	            _react2.default.createElement('img', { src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -3348,30 +3076,28 @@ webpackJsonp([0,3],{
 	  return SheetCards;
 	}(_mushareReactComponent2.default);
 
-	var Sheets = function (_MuComponent3) {
-	  _inherits(Sheets, _MuComponent3);
+	var Sheets = function (_MuComponent4) {
+	  _inherits(Sheets, _MuComponent4);
 
 	  function Sheets(props) {
 	    _classCallCheck(this, Sheets);
 
-	    var _this3 = _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).call(this, props));
 
-	    _this3.state = {
+	    _this4.state = {
 	      privateSheet: [],
 	      publicSheet: []
 	    };
-	    _this3.eventEmitter = new EventEmitter();
-	    _this3.onSheetCreated = _this3.onSheetCreated.bind(_this3);
-	    _this3.openCreateSheetModal = _this3.openCreateSheetModal.bind(_this3);
-	    return _this3;
+	    _this4.eventEmitter = new EventEmitter();
+	    _this4.onSheetCreated = _this4.onSheetCreated.bind(_this4);
+	    _this4.openCreateSheetModal = _this4.openCreateSheetModal.bind(_this4);
+	    return _this4;
 	  }
 
 	  _createClass(Sheets, [{
 	    key: 'openCreateSheetModal',
 	    value: function openCreateSheetModal() {
-	      $('#create-sheet-modal').modal({
-	        detachable: false
-	      }).modal('show');
+	      $('#create-sheet-modal').modal('show');
 	    }
 	  }, {
 	    key: 'onSheetCreated',
@@ -3411,6 +3137,10 @@ webpackJsonp([0,3],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.loadSheet();
+	      $('.sheets .couple.modal').modal({
+	        detachable: false,
+	        allowMultiple: true
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -3421,6 +3151,9 @@ webpackJsonp([0,3],{
 	        _react2.default.createElement(CreateSheetModal, {
 	          eventEmitter: this.eventEmitter,
 	          onSheetCreated: this.onSheetCreated
+	        }),
+	        _react2.default.createElement(SheetCoverCropperModal, {
+	          eventEmitter: this.eventEmitter
 	        }),
 	        _react2.default.createElement(
 	          'div',
@@ -3462,7 +3195,49 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 545:
+/***/ 546:
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(547);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(549)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+
+/***/ 547:
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(548)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*!\n * Cropper v3.0.0-rc.1\n * https://github.com/fengyuanchen/cropper\n *\n * Copyright (c) 2017 Fengyuan Chen\n * Released under the MIT license\n *\n * Date: 2017-04-30T03:10:34.736Z\n */\n.cropper-container {\n  font-size: 0;\n  line-height: 0;\n  position: relative;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  direction: ltr;\n  -ms-touch-action: none;\n  touch-action: none; }\n\n.cropper-container img {\n  display: block;\n  min-width: 0 !important;\n  max-width: none !important;\n  min-height: 0 !important;\n  max-height: none !important;\n  width: 100%;\n  height: 100%;\n  image-orientation: 0deg; }\n\n.cropper-canvas, .cropper-crop-box, .cropper-drag-box, .cropper-modal, .cropper-wrap-box {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n\n.cropper-wrap-box {\n  overflow: hidden; }\n\n.cropper-drag-box {\n  opacity: 0;\n  background-color: #fff; }\n\n.cropper-modal {\n  opacity: .5;\n  background-color: #000; }\n\n.cropper-view-box {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 1px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75); }\n\n.cropper-dashed {\n  position: absolute;\n  display: block;\n  opacity: .5;\n  border: 0 dashed #eee; }\n\n.cropper-dashed.dashed-h {\n  top: 33.33333%;\n  left: 0;\n  width: 100%;\n  height: 33.33333%;\n  border-top-width: 1px;\n  border-bottom-width: 1px; }\n\n.cropper-dashed.dashed-v {\n  top: 0;\n  left: 33.33333%;\n  width: 33.33333%;\n  height: 100%;\n  border-right-width: 1px;\n  border-left-width: 1px; }\n\n.cropper-center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  display: block;\n  width: 0;\n  height: 0;\n  opacity: .75; }\n\n.cropper-center:after, .cropper-center:before {\n  position: absolute;\n  display: block;\n  content: \" \";\n  background-color: #eee; }\n\n.cropper-center:before {\n  top: 0;\n  left: -3px;\n  width: 7px;\n  height: 1px; }\n\n.cropper-center:after {\n  top: -3px;\n  left: 0;\n  width: 1px;\n  height: 7px; }\n\n.cropper-face, .cropper-line, .cropper-point {\n  position: absolute;\n  display: block;\n  width: 100%;\n  height: 100%;\n  opacity: .1; }\n\n.cropper-face {\n  top: 0;\n  left: 0;\n  background-color: #fff; }\n\n.cropper-line {\n  background-color: #39f; }\n\n.cropper-line.line-e {\n  top: 0;\n  right: -3px;\n  width: 5px;\n  cursor: e-resize; }\n\n.cropper-line.line-n {\n  top: -3px;\n  left: 0;\n  height: 5px;\n  cursor: n-resize; }\n\n.cropper-line.line-w {\n  top: 0;\n  left: -3px;\n  width: 5px;\n  cursor: w-resize; }\n\n.cropper-line.line-s {\n  bottom: -3px;\n  left: 0;\n  height: 5px;\n  cursor: s-resize; }\n\n.cropper-point {\n  width: 5px;\n  height: 5px;\n  opacity: .75;\n  background-color: #39f; }\n\n.cropper-point.point-e {\n  top: 50%;\n  right: -3px;\n  margin-top: -3px;\n  cursor: e-resize; }\n\n.cropper-point.point-n {\n  top: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: n-resize; }\n\n.cropper-point.point-w {\n  top: 50%;\n  left: -3px;\n  margin-top: -3px;\n  cursor: w-resize; }\n\n.cropper-point.point-s {\n  bottom: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: s-resize; }\n\n.cropper-point.point-ne {\n  top: -3px;\n  right: -3px;\n  cursor: ne-resize; }\n\n.cropper-point.point-nw {\n  top: -3px;\n  left: -3px;\n  cursor: nw-resize; }\n\n.cropper-point.point-sw {\n  bottom: -3px;\n  left: -3px;\n  cursor: sw-resize; }\n\n.cropper-point.point-se {\n  right: -3px;\n  bottom: -3px;\n  width: 20px;\n  height: 20px;\n  cursor: se-resize;\n  opacity: 1; }\n\n@media (min-width: 768px) {\n  .cropper-point.point-se {\n    width: 15px;\n    height: 15px; } }\n\n@media (min-width: 992px) {\n  .cropper-point.point-se {\n    width: 10px;\n    height: 10px; } }\n\n@media (min-width: 1200px) {\n  .cropper-point.point-se {\n    width: 5px;\n    height: 5px;\n    opacity: .75; } }\n\n.cropper-point.point-se:before {\n  position: absolute;\n  right: -50%;\n  bottom: -50%;\n  display: block;\n  width: 200%;\n  height: 200%;\n  content: \" \";\n  opacity: 0;\n  background-color: #39f; }\n\n.cropper-invisible {\n  opacity: 0; }\n\n.cropper-bg {\n  background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC\"); }\n\n.cropper-hide {\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0; }\n\n.cropper-hidden {\n  display: none !important; }\n\n.cropper-move {\n  cursor: move; }\n\n.cropper-crop {\n  cursor: crosshair; }\n\n.cropper-disabled .cropper-drag-box, .cropper-disabled .cropper-face, .cropper-disabled .cropper-line, .cropper-disabled .cropper-point {\n  cursor: not-allowed; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+
+/***/ 550:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3733,7 +3508,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 546:
+/***/ 551:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3872,7 +3647,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 547:
+/***/ 552:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
@@ -4181,7 +3956,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 548:
+/***/ 553:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4236,16 +4011,16 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 549:
+/***/ 554:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(550);
+	var content = __webpack_require__(555);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(552)(content, {});
+	var update = __webpack_require__(549)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -4263,15 +4038,15 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 550:
+/***/ 555:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(551)();
+	exports = module.exports = __webpack_require__(548)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 
