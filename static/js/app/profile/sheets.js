@@ -38,6 +38,7 @@ class SheetCoverCropperModal extends MuComponent {
     var self = this;
     $('#sheet-cover-cropper-modal img').cropper({
       aspectRatio: 1,
+      viewMode: 1,
       crop: function (e) {
         self.imgcut = `x_${e.x < 0 ? 0 : Math.floor(e.x)},` +
           `y_${e.y < 0 ? 0 : Math.floor(e.y)},` +

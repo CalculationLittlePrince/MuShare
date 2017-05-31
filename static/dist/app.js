@@ -2186,6 +2186,7 @@ webpackJsonp([0,3],{
 	      var self = this;
 	      $('#avatar-cropper-modal img').cropper({
 	        aspectRatio: 1,
+	        viewMode: 1,
 	        crop: function crop(e) {
 	          self.imgcut = 'x_' + (e.x < 0 ? 0 : Math.floor(e.x)) + ',' + ('y_' + (e.y < 0 ? 0 : Math.floor(e.y)) + ',') + ('w_' + Math.floor(e.width) + ',') + ('h_' + Math.floor(e.height));
 	        }
@@ -2886,6 +2887,7 @@ webpackJsonp([0,3],{
 	      var self = this;
 	      $('#sheet-cover-cropper-modal img').cropper({
 	        aspectRatio: 1,
+	        viewMode: 1,
 	        crop: function crop(e) {
 	          self.imgcut = 'x_' + (e.x < 0 ? 0 : Math.floor(e.x)) + ',' + ('y_' + (e.y < 0 ? 0 : Math.floor(e.y)) + ',') + ('w_' + Math.floor(e.width) + ',') + ('h_' + Math.floor(e.height));
 	        }
