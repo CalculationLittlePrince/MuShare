@@ -8,7 +8,7 @@ import (
 type Model struct {
   ID        int   `gorm:"" json:"id"`
   CreatedAt int64 `gorm:"" json:"-"`
-  UpdatedAt int64 `gorm:"" json:"-"`
+  UpdatedAt int64 `gorm:"" json:"update_at"`
 }
 
 func New(mysql conf.Mysql) *gorm.DB {

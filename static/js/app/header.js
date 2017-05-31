@@ -16,10 +16,14 @@ class Top extends MuComponent {
   }
 
   componentDidMount() {
+    var self = this;
     $('.ui .dropdown').dropdown({
       action: 'hide'
     });
     this.loadUserProfile();
+    setInterval(function () {
+      self.loadUserProfile();
+    }, 1000);
   }
 
   loadUserProfile() {

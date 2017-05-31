@@ -4,6 +4,61 @@ import {getURL} from '../../oss/oss'
 import {guid} from '../../util/utils';
 import {uploadAvatar} from '../../oss/upload';
 import co from 'co';
+import '../../vendor/cropper.min.js';
+import '../../../scss/cropper.min.css'
+
+
+class AvatarCropperModal extends MuComponent {
+  constructor(props) {
+    super(props);
+    this.receiveInputCover = this.receiveInputCover.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.props.eventEmitter.addListener('receive-input-cover', this.receiveInputCover);
+    this.imgcut = '';
+    this.state = {
+      url: ''
+    }
+  }
+
+  receiveInputCover(avatar) {
+    var url = URL.createObjectURL(avatar);
+    $('#avatar-cropper-modal img').cropper('destroy');
+    this.setState({
+      url: url
+    });
+  }
+
+  handleClick() {
+    this.props.eventEmitter.emit('receive-img-cut', this.imgcut);
+  }
+
+  componentDidUpdate() {
+    var self = this;
+    $('#avatar-cropper-modal img').cropper({
+      aspectRatio: 1,
+      crop: function (e) {
+        self.imgcut = `x_${e.x < 0 ? 0 : Math.floor(e.x)},` +
+          `y_${e.y < 0 ? 0 : Math.floor(e.y)},` +
+          `w_${Math.floor(e.width)},` +
+          `h_${Math.floor(e.height)}`;
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="ui small modal" id="avatar-cropper-modal">
+        <div className="ui container">
+          <div className="avatar-wrapper">
+            <img src={this.state.url} alt=""/>
+          </div>
+          <button className="ui fluid button" onClick={this.handleClick}>确定
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
 
 
 class AvatarUploadModal extends MuComponent {
@@ -83,12 +138,16 @@ class Profile extends MuComponent {
       avatar: '/image/avatar.png',
       updateButtonDisabled: true,
     };
+    this.avatarFile = null;
     this.eventEmitter = new EventEmitter();
+    this.receiveImgCut = this.receiveImgCut.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadUserAvatar = this.loadUserAvatar.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.uploadAvatar = this.uploadAvatar.bind(this);
+    this.openAvatarCropperModal = this.openAvatarCropperModal.bind(this);
+    this.eventEmitter.addListener('receive-img-cut', this.receiveImgCut);
   }
 
   componentDidMount() {
@@ -151,7 +210,23 @@ class Profile extends MuComponent {
     }
   }
 
-  uploadAvatar(event) {
+  openAvatarCropperModal(event) {
+    $('#avatar-cropper-modal')
+      .modal({
+        detachable: false
+      })
+      .modal('show');
+    this.avatarFile = event.target.files[0];
+    this.eventEmitter.emit('receive-input-cover', this.avatarFile);
+  }
+
+  receiveImgCut(imgcut) {
+    console.log(imgcut);
+    $('#avatar-cropper-modal').modal('hide');
+    this.uploadAvatar(this.avatarFile, imgcut);
+  }
+
+  uploadAvatar(file, imgcut) {
     console.log('upload avatar');
     var self = this;
     var token = $('#token').val();
@@ -163,7 +238,7 @@ class Profile extends MuComponent {
       .modal('show');
     co(function*() {
       var avatarName = 'avatar-' + guid();
-      var avatar = yield uploadAvatar(avatarName, event.target.files[0], token,
+      var avatar = yield uploadAvatar(avatarName, file, token,
         function*(progress) {
           self.eventEmitter.emit('update-progress', progress * 100);
         });
@@ -174,7 +249,7 @@ class Profile extends MuComponent {
           'Authorization': token
         },
         body: JSON.stringify({
-          avatar: avatar.name,
+          avatar: avatar.name + `?x-oss-process=image/crop,${imgcut}`,
         })
       })
         .then(self.checkStatus)
@@ -218,6 +293,8 @@ class Profile extends MuComponent {
   render() {
     return (
       <div className="profile">
+        <AvatarCropperModal
+          eventEmitter={this.eventEmitter}/>
         <AvatarUploadModal
           eventEmitter={this.eventEmitter}/>
         <div className="ui medium header">
@@ -286,7 +363,7 @@ class Profile extends MuComponent {
                       <div className="center">
                         <input type="file" name="avatar-file" id="avatar-file"
                                className="avatar-file"
-                               onChange={this.uploadAvatar}/>
+                               onChange={this.openAvatarCropperModal}/>
                         <label htmlFor="avatar-file">更换头像</label>
                       </div>
                     </div>
@@ -298,7 +375,8 @@ class Profile extends MuComponent {
           </div>
         </div>
       </div>
-    );
+    )
+      ;
   }
 }
 

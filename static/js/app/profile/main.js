@@ -15,34 +15,34 @@ class Personal extends React.Component {
 
   render() {
     return (
-      <Router basename="/app/personal">
+      <Router>
         <div className="personal">
           <div className="ui middle">
             <div className="ui container grid">
               <div className="four wide column">
                 <div className="ui secondary vertical pointing menu">
-                  <NavLink to="/profile" activeClassName="active" className="item">
+                  <NavLink to="/app/personal/profile" activeClassName="active" className="item">
                     个人信息
                   </NavLink>
-                  <NavLink to="/sheets" activeClassName="active" className="item">
+                  <NavLink to="/app/personal/sheets" activeClassName="active" className="item">
                     我的歌单
                   </NavLink>
-                  <NavLink to="/subscription" activeClassName="active" className="item">
+                  <NavLink to="/app/personal/subscription" activeClassName="active" className="item">
                     我的订阅
                   </NavLink>
-                  <NavLink to="/friends" activeClassName="active" className="item">
+                  <NavLink to="/app/personal/friends" activeClassName="active" className="item">
                     我的好友
                   </NavLink>
                 </div>
               </div>
               <div className="twelve wide column">
-                <Route exact path="/" render={props => (
-                  <Redirect to="/profile"/>
+                <Route exact path="/app/personal" render={props => (
+                  <Redirect to="/app/personal/profile"/>
                 )}/>
-                <Route path="/profile" component={Profile}/>
-                <Route path="/sheets" component={Sheets}/>
-                <Route path="/friends" component={Friends}/>
-                <Route path="/subscription" component={Subscription}/>
+                <Route path="/app/personal/profile" component={Profile}/>
+                <Route path="/app/personal/sheets" component={Sheets}/>
+                <Route path="/app/personal/friends" component={Friends}/>
+                <Route path="/app/personal/subscription" component={Subscription}/>
               </div>
             </div>
           </div>

@@ -13,7 +13,6 @@ const priPrivate = "private"
 
 func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
   sheet := models.Sheet{}
-  audios := []models.Audio{}
   friend := models.Friends{}
   tx := this.DB.Begin()
 
@@ -21,7 +20,7 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
     return badRequest("no sheet id")
   }
 
-  tx.Where("id = ?",
+  tx.Preload("User").Where("id = ?",
     strconv.Itoa(body.SheetID)).Find(&sheet)
 
   if sheet.ID == 0 {
@@ -45,12 +44,12 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
     }
   }
 
-  getAudios(tx, &audios, body.SheetID)
+  getAudios(tx, &sheet.Audios, body.SheetID)
   return ok("success", &sheet)
 }
 
 func getAudios(tx *gorm.DB, audios *[]models.Audio, id int) {
   tx.Where("sheet_id = ?",
-    strconv.Itoa(id)).Find(&audios)
+    strconv.Itoa(id)).Find(audios)
   tx.Commit()
 }

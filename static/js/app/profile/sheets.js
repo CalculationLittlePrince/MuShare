@@ -7,6 +7,7 @@ import {getURL} from '../../oss/oss'
 import co from 'co';
 import '../../vendor/cropper.min.js';
 import '../../../scss/cropper.min.css'
+import {Link} from 'react-router-dom';
 
 class SheetCoverCropperModal extends MuComponent {
   constructor(props) {
@@ -218,7 +219,10 @@ class SheetCards extends MuComponent {
   render() {
     var cards = this.props.sheets.map(function (sheet) {
       return (
-        <div className="card">
+        <Link
+          to={`/app/sheet/${sheet.id}`}
+          className="card"
+          data-id={sheet.id}>
           <div className="image">
             <img
               src={sheet.cover === '' ? '/image/avatar.png' : getURL(sheet.cover)}/>
@@ -228,7 +232,7 @@ class SheetCards extends MuComponent {
               {sheet.name}
             </div>
           </div>
-        </div>
+        </Link>
       );
     });
     return (

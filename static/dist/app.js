@@ -187,10 +187,14 @@ webpackJsonp([0,3],{
 	  _createClass(Top, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var self = this;
 	      $('.ui .dropdown').dropdown({
 	        action: 'hide'
 	      });
 	      this.loadUserProfile();
+	      setInterval(function () {
+	        self.loadUserProfile();
+	      }, 1000);
 	    }
 	  }, {
 	    key: 'loadUserProfile',
@@ -2004,7 +2008,7 @@ webpackJsonp([0,3],{
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _sheets = __webpack_require__(544);
+	var _sheets = __webpack_require__(549);
 
 	var _sheets2 = _interopRequireDefault(_sheets);
 
@@ -2038,7 +2042,7 @@ webpackJsonp([0,3],{
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactRouterDom.BrowserRouter,
-	        { basename: '/app/personal' },
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'personal' },
@@ -2056,22 +2060,22 @@ webpackJsonp([0,3],{
 	                  { className: 'ui secondary vertical pointing menu' },
 	                  _react2.default.createElement(
 	                    _reactRouterDom.NavLink,
-	                    { to: '/profile', activeClassName: 'active', className: 'item' },
+	                    { to: '/app/personal/profile', activeClassName: 'active', className: 'item' },
 	                    '\u4E2A\u4EBA\u4FE1\u606F'
 	                  ),
 	                  _react2.default.createElement(
 	                    _reactRouterDom.NavLink,
-	                    { to: '/sheets', activeClassName: 'active', className: 'item' },
+	                    { to: '/app/personal/sheets', activeClassName: 'active', className: 'item' },
 	                    '\u6211\u7684\u6B4C\u5355'
 	                  ),
 	                  _react2.default.createElement(
 	                    _reactRouterDom.NavLink,
-	                    { to: '/subscription', activeClassName: 'active', className: 'item' },
+	                    { to: '/app/personal/subscription', activeClassName: 'active', className: 'item' },
 	                    '\u6211\u7684\u8BA2\u9605'
 	                  ),
 	                  _react2.default.createElement(
 	                    _reactRouterDom.NavLink,
-	                    { to: '/friends', activeClassName: 'active', className: 'item' },
+	                    { to: '/app/personal/friends', activeClassName: 'active', className: 'item' },
 	                    '\u6211\u7684\u597D\u53CB'
 	                  )
 	                )
@@ -2079,13 +2083,13 @@ webpackJsonp([0,3],{
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'twelve wide column' },
-	                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', render: function render(props) {
-	                    return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/profile' });
+	                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/personal', render: function render(props) {
+	                    return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/app/personal/profile' });
 	                  } }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/profile', component: _profile2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/sheets', component: _sheets2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/friends', component: _friends2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/subscription', component: _subscription2.default })
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/profile', component: _profile2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/sheets', component: _sheets2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/friends', component: _friends2.default }),
+	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/subscription', component: _subscription2.default })
 	              )
 	            )
 	          )
@@ -2130,6 +2134,10 @@ webpackJsonp([0,3],{
 
 	var _co2 = _interopRequireDefault(_co);
 
+	__webpack_require__(544);
+
+	__webpack_require__(545);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2140,16 +2148,86 @@ webpackJsonp([0,3],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var AvatarUploadModal = function (_MuComponent) {
-	  _inherits(AvatarUploadModal, _MuComponent);
+	var AvatarCropperModal = function (_MuComponent) {
+	  _inherits(AvatarCropperModal, _MuComponent);
+
+	  function AvatarCropperModal(props) {
+	    _classCallCheck(this, AvatarCropperModal);
+
+	    var _this = _possibleConstructorReturn(this, (AvatarCropperModal.__proto__ || Object.getPrototypeOf(AvatarCropperModal)).call(this, props));
+
+	    _this.receiveInputCover = _this.receiveInputCover.bind(_this);
+	    _this.handleClick = _this.handleClick.bind(_this);
+	    _this.props.eventEmitter.addListener('receive-input-cover', _this.receiveInputCover);
+	    _this.imgcut = '';
+	    _this.state = {
+	      url: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AvatarCropperModal, [{
+	    key: 'receiveInputCover',
+	    value: function receiveInputCover(avatar) {
+	      var url = URL.createObjectURL(avatar);
+	      $('#avatar-cropper-modal img').cropper('destroy');
+	      this.setState({
+	        url: url
+	      });
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.eventEmitter.emit('receive-img-cut', this.imgcut);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var self = this;
+	      $('#avatar-cropper-modal img').cropper({
+	        aspectRatio: 1,
+	        crop: function crop(e) {
+	          self.imgcut = 'x_' + (e.x < 0 ? 0 : Math.floor(e.x)) + ',' + ('y_' + (e.y < 0 ? 0 : Math.floor(e.y)) + ',') + ('w_' + Math.floor(e.width) + ',') + ('h_' + Math.floor(e.height));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui small modal', id: 'avatar-cropper-modal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'avatar-wrapper' },
+	            _react2.default.createElement('img', { src: this.state.url, alt: '' })
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'ui fluid button', onClick: this.handleClick },
+	            '\u786E\u5B9A'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AvatarCropperModal;
+	}(_mushareReactComponent2.default);
+
+	var AvatarUploadModal = function (_MuComponent2) {
+	  _inherits(AvatarUploadModal, _MuComponent2);
 
 	  function AvatarUploadModal(props) {
 	    _classCallCheck(this, AvatarUploadModal);
 
-	    var _this = _possibleConstructorReturn(this, (AvatarUploadModal.__proto__ || Object.getPrototypeOf(AvatarUploadModal)).call(this, props));
+	    var _this2 = _possibleConstructorReturn(this, (AvatarUploadModal.__proto__ || Object.getPrototypeOf(AvatarUploadModal)).call(this, props));
 
-	    _this.updateProgress = _this.updateProgress.bind(_this);
-	    return _this;
+	    _this2.updateProgress = _this2.updateProgress.bind(_this2);
+	    return _this2;
 	  }
 
 	  _createClass(AvatarUploadModal, [{
@@ -2201,8 +2279,8 @@ webpackJsonp([0,3],{
 	  return AvatarUploadModal;
 	}(_mushareReactComponent2.default);
 
-	var UpdateButton = function (_MuComponent2) {
-	  _inherits(UpdateButton, _MuComponent2);
+	var UpdateButton = function (_MuComponent3) {
+	  _inherits(UpdateButton, _MuComponent3);
 
 	  function UpdateButton(props) {
 	    _classCallCheck(this, UpdateButton);
@@ -2236,15 +2314,15 @@ webpackJsonp([0,3],{
 	  return UpdateButton;
 	}(_mushareReactComponent2.default);
 
-	var Profile = function (_MuComponent3) {
-	  _inherits(Profile, _MuComponent3);
+	var Profile = function (_MuComponent4) {
+	  _inherits(Profile, _MuComponent4);
 
 	  function Profile(props) {
 	    _classCallCheck(this, Profile);
 
-	    var _this3 = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
 
-	    _this3.state = {
+	    _this4.state = {
 	      name: '',
 	      gender: '',
 	      mail: '',
@@ -2252,13 +2330,17 @@ webpackJsonp([0,3],{
 	      avatar: '/image/avatar.png',
 	      updateButtonDisabled: true
 	    };
-	    _this3.eventEmitter = new EventEmitter();
-	    _this3.handleChange = _this3.handleChange.bind(_this3);
-	    _this3.loadUserProfile = _this3.loadUserProfile.bind(_this3);
-	    _this3.loadUserAvatar = _this3.loadUserAvatar.bind(_this3);
-	    _this3.updateProfile = _this3.updateProfile.bind(_this3);
-	    _this3.uploadAvatar = _this3.uploadAvatar.bind(_this3);
-	    return _this3;
+	    _this4.avatarFile = null;
+	    _this4.eventEmitter = new EventEmitter();
+	    _this4.receiveImgCut = _this4.receiveImgCut.bind(_this4);
+	    _this4.handleChange = _this4.handleChange.bind(_this4);
+	    _this4.loadUserProfile = _this4.loadUserProfile.bind(_this4);
+	    _this4.loadUserAvatar = _this4.loadUserAvatar.bind(_this4);
+	    _this4.updateProfile = _this4.updateProfile.bind(_this4);
+	    _this4.uploadAvatar = _this4.uploadAvatar.bind(_this4);
+	    _this4.openAvatarCropperModal = _this4.openAvatarCropperModal.bind(_this4);
+	    _this4.eventEmitter.addListener('receive-img-cut', _this4.receiveImgCut);
+	    return _this4;
 	  }
 
 	  _createClass(Profile, [{
@@ -2320,8 +2402,24 @@ webpackJsonp([0,3],{
 	      }
 	    }
 	  }, {
+	    key: 'openAvatarCropperModal',
+	    value: function openAvatarCropperModal(event) {
+	      $('#avatar-cropper-modal').modal({
+	        detachable: false
+	      }).modal('show');
+	      this.avatarFile = event.target.files[0];
+	      this.eventEmitter.emit('receive-input-cover', this.avatarFile);
+	    }
+	  }, {
+	    key: 'receiveImgCut',
+	    value: function receiveImgCut(imgcut) {
+	      console.log(imgcut);
+	      $('#avatar-cropper-modal').modal('hide');
+	      this.uploadAvatar(this.avatarFile, imgcut);
+	    }
+	  }, {
 	    key: 'uploadAvatar',
-	    value: function uploadAvatar(event) {
+	    value: function uploadAvatar(file, imgcut) {
 	      console.log('upload avatar');
 	      var self = this;
 	      var token = $('#token').val();
@@ -2337,7 +2435,7 @@ webpackJsonp([0,3],{
 	              case 0:
 	                avatarName = 'avatar-' + (0, _utils.guid)();
 	                _context2.next = 3;
-	                return (0, _upload.uploadAvatar)(avatarName, event.target.files[0], token, regeneratorRuntime.mark(function _callee(progress) {
+	                return (0, _upload.uploadAvatar)(avatarName, file, token, regeneratorRuntime.mark(function _callee(progress) {
 	                  return regeneratorRuntime.wrap(function _callee$(_context) {
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
@@ -2362,7 +2460,7 @@ webpackJsonp([0,3],{
 	                    'Authorization': token
 	                  },
 	                  body: JSON.stringify({
-	                    avatar: avatar.name
+	                    avatar: avatar.name + ('?x-oss-process=image/crop,' + imgcut)
 	                  })
 	                }).then(self.checkStatus).then(self.parseJSON);
 
@@ -2413,6 +2511,8 @@ webpackJsonp([0,3],{
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'profile' },
+	        _react2.default.createElement(AvatarCropperModal, {
+	          eventEmitter: this.eventEmitter }),
 	        _react2.default.createElement(AvatarUploadModal, {
 	          eventEmitter: this.eventEmitter }),
 	        _react2.default.createElement(
@@ -2548,7 +2648,7 @@ webpackJsonp([0,3],{
 	                        { className: 'center' },
 	                        _react2.default.createElement('input', { type: 'file', name: 'avatar-file', id: 'avatar-file',
 	                          className: 'avatar-file',
-	                          onChange: this.uploadAvatar }),
+	                          onChange: this.openAvatarCropperModal }),
 	                        _react2.default.createElement(
 	                          'label',
 	                          { htmlFor: 'avatar-file' },
@@ -2658,7 +2758,49 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 544:
+/***/ 545:
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(546);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(548)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+
+/***/ 546:
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(547)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*!\n * Cropper v3.0.0-rc.1\n * https://github.com/fengyuanchen/cropper\n *\n * Copyright (c) 2017 Fengyuan Chen\n * Released under the MIT license\n *\n * Date: 2017-04-30T03:10:34.736Z\n */\n.cropper-container {\n  font-size: 0;\n  line-height: 0;\n  position: relative;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  direction: ltr;\n  -ms-touch-action: none;\n  touch-action: none; }\n\n.cropper-container img {\n  display: block;\n  min-width: 0 !important;\n  max-width: none !important;\n  min-height: 0 !important;\n  max-height: none !important;\n  width: 100%;\n  height: 100%;\n  image-orientation: 0deg; }\n\n.cropper-canvas, .cropper-crop-box, .cropper-drag-box, .cropper-modal, .cropper-wrap-box {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n\n.cropper-wrap-box {\n  overflow: hidden; }\n\n.cropper-drag-box {\n  opacity: 0;\n  background-color: #fff; }\n\n.cropper-modal {\n  opacity: .5;\n  background-color: #000; }\n\n.cropper-view-box {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 1px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75); }\n\n.cropper-dashed {\n  position: absolute;\n  display: block;\n  opacity: .5;\n  border: 0 dashed #eee; }\n\n.cropper-dashed.dashed-h {\n  top: 33.33333%;\n  left: 0;\n  width: 100%;\n  height: 33.33333%;\n  border-top-width: 1px;\n  border-bottom-width: 1px; }\n\n.cropper-dashed.dashed-v {\n  top: 0;\n  left: 33.33333%;\n  width: 33.33333%;\n  height: 100%;\n  border-right-width: 1px;\n  border-left-width: 1px; }\n\n.cropper-center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  display: block;\n  width: 0;\n  height: 0;\n  opacity: .75; }\n\n.cropper-center:after, .cropper-center:before {\n  position: absolute;\n  display: block;\n  content: \" \";\n  background-color: #eee; }\n\n.cropper-center:before {\n  top: 0;\n  left: -3px;\n  width: 7px;\n  height: 1px; }\n\n.cropper-center:after {\n  top: -3px;\n  left: 0;\n  width: 1px;\n  height: 7px; }\n\n.cropper-face, .cropper-line, .cropper-point {\n  position: absolute;\n  display: block;\n  width: 100%;\n  height: 100%;\n  opacity: .1; }\n\n.cropper-face {\n  top: 0;\n  left: 0;\n  background-color: #fff; }\n\n.cropper-line {\n  background-color: #39f; }\n\n.cropper-line.line-e {\n  top: 0;\n  right: -3px;\n  width: 5px;\n  cursor: e-resize; }\n\n.cropper-line.line-n {\n  top: -3px;\n  left: 0;\n  height: 5px;\n  cursor: n-resize; }\n\n.cropper-line.line-w {\n  top: 0;\n  left: -3px;\n  width: 5px;\n  cursor: w-resize; }\n\n.cropper-line.line-s {\n  bottom: -3px;\n  left: 0;\n  height: 5px;\n  cursor: s-resize; }\n\n.cropper-point {\n  width: 5px;\n  height: 5px;\n  opacity: .75;\n  background-color: #39f; }\n\n.cropper-point.point-e {\n  top: 50%;\n  right: -3px;\n  margin-top: -3px;\n  cursor: e-resize; }\n\n.cropper-point.point-n {\n  top: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: n-resize; }\n\n.cropper-point.point-w {\n  top: 50%;\n  left: -3px;\n  margin-top: -3px;\n  cursor: w-resize; }\n\n.cropper-point.point-s {\n  bottom: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: s-resize; }\n\n.cropper-point.point-ne {\n  top: -3px;\n  right: -3px;\n  cursor: ne-resize; }\n\n.cropper-point.point-nw {\n  top: -3px;\n  left: -3px;\n  cursor: nw-resize; }\n\n.cropper-point.point-sw {\n  bottom: -3px;\n  left: -3px;\n  cursor: sw-resize; }\n\n.cropper-point.point-se {\n  right: -3px;\n  bottom: -3px;\n  width: 20px;\n  height: 20px;\n  cursor: se-resize;\n  opacity: 1; }\n\n@media (min-width: 768px) {\n  .cropper-point.point-se {\n    width: 15px;\n    height: 15px; } }\n\n@media (min-width: 992px) {\n  .cropper-point.point-se {\n    width: 10px;\n    height: 10px; } }\n\n@media (min-width: 1200px) {\n  .cropper-point.point-se {\n    width: 5px;\n    height: 5px;\n    opacity: .75; } }\n\n.cropper-point.point-se:before {\n  position: absolute;\n  right: -50%;\n  bottom: -50%;\n  display: block;\n  width: 200%;\n  height: 200%;\n  content: \" \";\n  opacity: 0;\n  background-color: #39f; }\n\n.cropper-invisible {\n  opacity: 0; }\n\n.cropper-bg {\n  background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC\"); }\n\n.cropper-hide {\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0; }\n\n.cropper-hidden {\n  display: none !important; }\n\n.cropper-move {\n  cursor: move; }\n\n.cropper-crop {\n  cursor: crosshair; }\n\n.cropper-disabled .cropper-drag-box, .cropper-disabled .cropper-face, .cropper-disabled .cropper-line, .cropper-disabled .cropper-point {\n  cursor: not-allowed; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+
+/***/ 549:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
@@ -2691,9 +2833,11 @@ webpackJsonp([0,3],{
 
 	var _co2 = _interopRequireDefault(_co);
 
+	__webpack_require__(544);
+
 	__webpack_require__(545);
 
-	__webpack_require__(546);
+	var _reactRouterDom = __webpack_require__(483);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3023,8 +3167,11 @@ webpackJsonp([0,3],{
 	    value: function render() {
 	      var cards = this.props.sheets.map(function (sheet) {
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'card' },
+	          _reactRouterDom.Link,
+	          {
+	            to: '/app/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'image' },
@@ -3192,48 +3339,6 @@ webpackJsonp([0,3],{
 
 	exports.default = Sheets;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524), __webpack_require__(540)))
-
-/***/ }),
-
-/***/ 546:
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(547);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(549)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./cropper.min.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-
-/***/ 547:
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(548)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/*!\n * Cropper v3.0.0-rc.1\n * https://github.com/fengyuanchen/cropper\n *\n * Copyright (c) 2017 Fengyuan Chen\n * Released under the MIT license\n *\n * Date: 2017-04-30T03:10:34.736Z\n */\n.cropper-container {\n  font-size: 0;\n  line-height: 0;\n  position: relative;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  direction: ltr;\n  -ms-touch-action: none;\n  touch-action: none; }\n\n.cropper-container img {\n  display: block;\n  min-width: 0 !important;\n  max-width: none !important;\n  min-height: 0 !important;\n  max-height: none !important;\n  width: 100%;\n  height: 100%;\n  image-orientation: 0deg; }\n\n.cropper-canvas, .cropper-crop-box, .cropper-drag-box, .cropper-modal, .cropper-wrap-box {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n\n.cropper-wrap-box {\n  overflow: hidden; }\n\n.cropper-drag-box {\n  opacity: 0;\n  background-color: #fff; }\n\n.cropper-modal {\n  opacity: .5;\n  background-color: #000; }\n\n.cropper-view-box {\n  display: block;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  outline: 1px solid #39f;\n  outline-color: rgba(51, 153, 255, 0.75); }\n\n.cropper-dashed {\n  position: absolute;\n  display: block;\n  opacity: .5;\n  border: 0 dashed #eee; }\n\n.cropper-dashed.dashed-h {\n  top: 33.33333%;\n  left: 0;\n  width: 100%;\n  height: 33.33333%;\n  border-top-width: 1px;\n  border-bottom-width: 1px; }\n\n.cropper-dashed.dashed-v {\n  top: 0;\n  left: 33.33333%;\n  width: 33.33333%;\n  height: 100%;\n  border-right-width: 1px;\n  border-left-width: 1px; }\n\n.cropper-center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  display: block;\n  width: 0;\n  height: 0;\n  opacity: .75; }\n\n.cropper-center:after, .cropper-center:before {\n  position: absolute;\n  display: block;\n  content: \" \";\n  background-color: #eee; }\n\n.cropper-center:before {\n  top: 0;\n  left: -3px;\n  width: 7px;\n  height: 1px; }\n\n.cropper-center:after {\n  top: -3px;\n  left: 0;\n  width: 1px;\n  height: 7px; }\n\n.cropper-face, .cropper-line, .cropper-point {\n  position: absolute;\n  display: block;\n  width: 100%;\n  height: 100%;\n  opacity: .1; }\n\n.cropper-face {\n  top: 0;\n  left: 0;\n  background-color: #fff; }\n\n.cropper-line {\n  background-color: #39f; }\n\n.cropper-line.line-e {\n  top: 0;\n  right: -3px;\n  width: 5px;\n  cursor: e-resize; }\n\n.cropper-line.line-n {\n  top: -3px;\n  left: 0;\n  height: 5px;\n  cursor: n-resize; }\n\n.cropper-line.line-w {\n  top: 0;\n  left: -3px;\n  width: 5px;\n  cursor: w-resize; }\n\n.cropper-line.line-s {\n  bottom: -3px;\n  left: 0;\n  height: 5px;\n  cursor: s-resize; }\n\n.cropper-point {\n  width: 5px;\n  height: 5px;\n  opacity: .75;\n  background-color: #39f; }\n\n.cropper-point.point-e {\n  top: 50%;\n  right: -3px;\n  margin-top: -3px;\n  cursor: e-resize; }\n\n.cropper-point.point-n {\n  top: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: n-resize; }\n\n.cropper-point.point-w {\n  top: 50%;\n  left: -3px;\n  margin-top: -3px;\n  cursor: w-resize; }\n\n.cropper-point.point-s {\n  bottom: -3px;\n  left: 50%;\n  margin-left: -3px;\n  cursor: s-resize; }\n\n.cropper-point.point-ne {\n  top: -3px;\n  right: -3px;\n  cursor: ne-resize; }\n\n.cropper-point.point-nw {\n  top: -3px;\n  left: -3px;\n  cursor: nw-resize; }\n\n.cropper-point.point-sw {\n  bottom: -3px;\n  left: -3px;\n  cursor: sw-resize; }\n\n.cropper-point.point-se {\n  right: -3px;\n  bottom: -3px;\n  width: 20px;\n  height: 20px;\n  cursor: se-resize;\n  opacity: 1; }\n\n@media (min-width: 768px) {\n  .cropper-point.point-se {\n    width: 15px;\n    height: 15px; } }\n\n@media (min-width: 992px) {\n  .cropper-point.point-se {\n    width: 10px;\n    height: 10px; } }\n\n@media (min-width: 1200px) {\n  .cropper-point.point-se {\n    width: 5px;\n    height: 5px;\n    opacity: .75; } }\n\n.cropper-point.point-se:before {\n  position: absolute;\n  right: -50%;\n  bottom: -50%;\n  display: block;\n  width: 200%;\n  height: 200%;\n  content: \" \";\n  opacity: 0;\n  background-color: #39f; }\n\n.cropper-invisible {\n  opacity: 0; }\n\n.cropper-bg {\n  background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC\"); }\n\n.cropper-hide {\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0; }\n\n.cropper-hidden {\n  display: none !important; }\n\n.cropper-move {\n  cursor: move; }\n\n.cropper-crop {\n  cursor: crosshair; }\n\n.cropper-disabled .cropper-drag-box, .cropper-disabled .cropper-face, .cropper-disabled .cropper-line, .cropper-disabled .cropper-point {\n  cursor: not-allowed; }\n", ""]);
-
-	// exports
-
 
 /***/ }),
 
@@ -3666,6 +3771,8 @@ webpackJsonp([0,3],{
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3704,7 +3811,7 @@ webpackJsonp([0,3],{
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'ui middle cover aligned image' },
-	                  _react2.default.createElement('img', { src: '/image/avatar.png', alt: '' })
+	                  _react2.default.createElement('img', { src: this.props.sheetInfo.cover, alt: '' })
 	                ),
 	                _react2.default.createElement(
 	                  'div',
@@ -3712,24 +3819,24 @@ webpackJsonp([0,3],{
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'ui huge header' },
-	                    this.props.sheetName
+	                    this.props.sheetInfo.sheetName
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'meta' },
 	                    _react2.default.createElement('img', { className: 'ui avatar image',
-	                      src: '/image/avatar.png' }),
+	                      src: this.props.sheetInfo.creatorAvatar }),
 	                    _react2.default.createElement(
 	                      'a',
 	                      { href: '', className: 'username' },
-	                      this.props.creator
+	                      this.props.sheetInfo.creator
 	                    ),
 	                    _react2.default.createElement(
 	                      'span',
 	                      {
 	                        className: 'modify-date' },
 	                      '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A',
-	                      this.props.lastModified
+	                      this.props.sheetInfo.lastModified
 	                    )
 	                  )
 	                )
@@ -3891,7 +3998,9 @@ webpackJsonp([0,3],{
 	      sheetInfo: {
 	        sheetName: '',
 	        creator: '',
-	        lastModified: ''
+	        creatorAvatar: '',
+	        lastModified: '',
+	        cover: ''
 	      },
 	      audioList: []
 	    };
@@ -3915,9 +4024,10 @@ webpackJsonp([0,3],{
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
 	        console.log(data.body);
 	        var sheetInfo = {
-	          sheetName: '',
-	          cover: '',
-	          creator: '',
+	          sheetName: data.body.name,
+	          cover: data.body.cover === '' ? '/image/avatar' : (0, _oss.getURL)(data.body.cover),
+	          creator: data.body.user.name,
+	          creatorAvatar: data.body.user.avatar === '' ? '/image/avatar' : (0, _oss.getURL)(data.body.user.avatar),
 	          lastModified: ''
 	        };
 	        var audioList = data.body.audio.map(function (audio) {
@@ -4020,7 +4130,7 @@ webpackJsonp([0,3],{
 	var content = __webpack_require__(555);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(549)(content, {});
+	var update = __webpack_require__(548)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -4041,12 +4151,12 @@ webpackJsonp([0,3],{
 /***/ 555:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(548)();
+	exports = module.exports = __webpack_require__(547)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 12px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 13px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold;\n  margin: 5px; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer .column {\n  padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

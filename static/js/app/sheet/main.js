@@ -1,5 +1,6 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
+import {getURL} from '../../oss/oss'
 
 class SheetInfo extends MuComponent {
   render() {
@@ -10,16 +11,16 @@ class SheetInfo extends MuComponent {
             <div className="ui items">
               <div className="item">
                 <div className="ui middle cover aligned image">
-                  <img src="/image/avatar.png" alt=""/>
+                  <img src={this.props.sheetInfo.cover} alt=""/>
                 </div>
                 <div className="middle aligned content">
-                  <div className="ui huge header">{this.props.sheetName}</div>
+                  <div className="ui huge header">{this.props.sheetInfo.sheetName}</div>
                   <div className="meta">
                     <img className="ui avatar image"
-                         src="/image/avatar.png"/>
-                    <a href="" className="username">{this.props.creator}</a>
+                         src={this.props.sheetInfo.creatorAvatar}/>
+                    <a href="" className="username">{this.props.sheetInfo.creator}</a>
                     <span
-                      className="modify-date">上次修改日期：{this.props.lastModified}</span>
+                      className="modify-date">上次修改日期：{this.props.sheetInfo.lastModified}</span>
                   </div>
                 </div>
               </div>
@@ -99,7 +100,9 @@ class SheetPage extends MuComponent {
       sheetInfo: {
         sheetName: '',
         creator: '',
+        creatorAvatar: '',
         lastModified: '',
+        cover: '',
       },
       audioList: []
     }
@@ -123,9 +126,10 @@ class SheetPage extends MuComponent {
       .then(function (data) {
         console.log(data.body);
         var sheetInfo = {
-          sheetName: '',
-          cover: '',
-          creator: '',
+          sheetName: data.body.name,
+          cover: data.body.cover === '' ? '/image/avatar' : getURL(data.body.cover),
+          creator: data.body.user.name,
+          creatorAvatar: data.body.user.avatar === '' ? '/image/avatar' : getURL(data.body.user.avatar),
           lastModified: '',
         };
         var audioList = data.body.audio.map(function (audio) {
