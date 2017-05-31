@@ -208,7 +208,6 @@ webpackJsonp([0,3],{
 	          'Authorization': token
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
-	        console.log(data);
 	        self.loadUserAvatar(data.body.avatar);
 	      }).catch(function (error) {
 	        console.error(error);
@@ -316,7 +315,7 @@ webpackJsonp([0,3],{
 	                        ),
 	                        _react2.default.createElement(
 	                          _reactRouterDom.Link,
-	                          { to: '/personal', className: 'item' },
+	                          { to: '/personal/profile', className: 'item' },
 	                          '\u4E2A\u4EBA\u4E2D\u5FC3'
 	                        ),
 	                        _react2.default.createElement('div', { className: 'divider' }),
@@ -2041,56 +2040,49 @@ webpackJsonp([0,3],{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        _reactRouterDom.BrowserRouter,
-	        null,
+	        'div',
+	        { className: 'personal' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'personal' },
+	          { className: 'ui middle' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'ui middle' },
+	            { className: 'ui container grid' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'ui container grid' },
+	              { className: 'four wide column' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'four wide column' },
+	                { className: 'ui secondary vertical pointing menu' },
 	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui secondary vertical pointing menu' },
-	                  _react2.default.createElement(
-	                    _reactRouterDom.NavLink,
-	                    { to: '/app/personal/profile', activeClassName: 'active', className: 'item' },
-	                    '\u4E2A\u4EBA\u4FE1\u606F'
-	                  ),
-	                  _react2.default.createElement(
-	                    _reactRouterDom.NavLink,
-	                    { to: '/app/personal/sheets', activeClassName: 'active', className: 'item' },
-	                    '\u6211\u7684\u6B4C\u5355'
-	                  ),
-	                  _react2.default.createElement(
-	                    _reactRouterDom.NavLink,
-	                    { to: '/app/personal/subscription', activeClassName: 'active', className: 'item' },
-	                    '\u6211\u7684\u8BA2\u9605'
-	                  ),
-	                  _react2.default.createElement(
-	                    _reactRouterDom.NavLink,
-	                    { to: '/app/personal/friends', activeClassName: 'active', className: 'item' },
-	                    '\u6211\u7684\u597D\u53CB'
-	                  )
+	                  _reactRouterDom.NavLink,
+	                  { to: '/personal/profile', activeClassName: 'active', className: 'item' },
+	                  '\u4E2A\u4EBA\u4FE1\u606F'
+	                ),
+	                _react2.default.createElement(
+	                  _reactRouterDom.NavLink,
+	                  { to: '/personal/sheets', activeClassName: 'active', className: 'item' },
+	                  '\u6211\u7684\u6B4C\u5355'
+	                ),
+	                _react2.default.createElement(
+	                  _reactRouterDom.NavLink,
+	                  { to: '/personal/subscription', activeClassName: 'active', className: 'item' },
+	                  '\u6211\u7684\u8BA2\u9605'
+	                ),
+	                _react2.default.createElement(
+	                  _reactRouterDom.NavLink,
+	                  { to: '/personal/friends', activeClassName: 'active', className: 'item' },
+	                  '\u6211\u7684\u597D\u53CB'
 	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'twelve wide column' },
-	                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app/personal', render: function render(props) {
-	                    return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/app/personal/profile' });
-	                  } }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/profile', component: _profile2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/sheets', component: _sheets2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/friends', component: _friends2.default }),
-	                _react2.default.createElement(_reactRouterDom.Route, { path: '/app/personal/subscription', component: _subscription2.default })
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'twelve wide column' },
+	              _react2.default.createElement(_reactRouterDom.Route, { path: this.props.match.path + '/profile', component: _profile2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: this.props.match.path + '/sheets', component: _sheets2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: this.props.match.path + '/subscription', component: _subscription2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: this.props.match.path + '/friends', component: _friends2.default })
 	            )
 	          )
 	        )
@@ -3171,7 +3163,7 @@ webpackJsonp([0,3],{
 	        return _react2.default.createElement(
 	          _reactRouterDom.Link,
 	          {
-	            to: '/app/sheet/' + sheet.id,
+	            to: '/sheet/' + sheet.id,
 	            className: 'card',
 	            'data-id': sheet.id },
 	          _react2.default.createElement(

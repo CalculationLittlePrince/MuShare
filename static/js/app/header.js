@@ -39,7 +39,6 @@ class Top extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (data) {
-        console.log(data);
         self.loadUserAvatar(data.body.avatar);
       })
       .catch(function (error) {
@@ -97,7 +96,7 @@ class Top extends MuComponent {
                       <i className="dropdown icon"></i>
                       <div className="menu">
                         <div className="item">个人主页</div>
-                        <Link to="/personal" className="item">个人中心</Link>
+                        <Link to="/personal/profile" className="item">个人中心</Link>
                         <div className="divider"></div>
                         <div className="item">设置</div>
                         <div className="item">注销</div>

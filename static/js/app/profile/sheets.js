@@ -221,7 +221,7 @@ class SheetCards extends MuComponent {
     var cards = this.props.sheets.map(function (sheet) {
       return (
         <Link
-          to={`/app/sheet/${sheet.id}`}
+          to={`/sheet/${sheet.id}`}
           className="card"
           data-id={sheet.id}>
           <div className="image">
