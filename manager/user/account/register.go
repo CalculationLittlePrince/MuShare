@@ -22,6 +22,7 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Res
   sel := [...]bool{true, true}
   u := models.User{}
   sheet := models.Sheet{}
+  artist := models.Artist{}
   salt := models.Salts{}
   // begin transaction
   tx := this.DB.Begin()
@@ -60,14 +61,18 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Res
 
   CreateUser(&u, &salt, body)
   tx.Create(&u)
-  //Create default sheet for user
   tx.Where("mail=?", body.Mail).First(&u)
+  //Create default sheet for user
   sheet.UserID = u.ID
   sheet.Name = DEFAULTSHEETNAME
   sheet.Privilege = "private"
   sheet.CreatedAt = time.Now().Unix()
   sheet.UpdatedAt = time.Now().Unix()
   tx.Create(&sheet)
+  //Create default artist for the user with the same name
+  artist.UserID = u.ID
+  artist.Name = u.Name
+  tx.Create(&artist)
   // transaction commit
   salt.UserID = u.ID
   tx.Create(&salt)

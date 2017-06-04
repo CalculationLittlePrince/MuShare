@@ -2,7 +2,7 @@ import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 import {getURL} from '../../oss/oss'
 import {guid} from '../../util/utils';
-import {uploadAvatar} from '../../oss/upload';
+import {uploadToOss} from '../../oss/upload';
 import co from 'co';
 import '../../vendor/cropper.min.js';
 import '../../../scss/cropper.min.css'
@@ -71,7 +71,6 @@ class AvatarUploadModal extends MuComponent {
   }
 
   componentDidMount() {
-    console.log('did mount');
     $('#avatar-upload-modal .progress').progress({
       percent: 0
     });
@@ -79,6 +78,7 @@ class AvatarUploadModal extends MuComponent {
   }
 
   componentDidUpdate() {
+
   }
 
   updateProgress(percent) {
@@ -159,8 +159,6 @@ class Profile extends MuComponent {
     });
     $('.profile .form .ui.radio.checkbox').checkbox({
       onChecked: function () {
-        console.log($(this).attr('name'));
-        console.log($(this).val());
         self.setState({
           updateButtonDisabled: false,
           [$(this).attr('name')]: $(this).val()
@@ -240,7 +238,7 @@ class Profile extends MuComponent {
       .modal('show');
     co(function*() {
       var avatarName = 'avatar-' + guid();
-      var avatar = yield uploadAvatar(avatarName, file, token,
+      var avatar = yield uploadToOss(avatarName, file, token,
         function*(progress) {
           self.eventEmitter.emit('update-progress', progress * 100);
         });
@@ -377,8 +375,7 @@ class Profile extends MuComponent {
           </div>
         </div>
       </div>
-    )
-      ;
+    );
   }
 }
 

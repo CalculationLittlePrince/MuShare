@@ -5,14 +5,20 @@ import (
   "MuShare/datatype"
   "MuShare/db/models"
   "time"
+  "fmt"
 )
 
-func (this *Audio) AddEmptyAudio(body *music.Audio) datatype.Response {
+func (this *Audio) AddAudio(body *music.Audio) datatype.Response {
   audio := models.Audio{}
   tx := this.DB.Begin()
   sheet := models.Sheet{}
 
-  if body.SheetID == 0 || body.Name == "" {
+  fmt.Println(body)
+  if body.SheetID == 0 ||
+    body.Name == "" ||
+    body.ArtistID == 0 ||
+    body.AudioUrl == "" ||
+    body.Duration == 0 {
     return badRequest("")
   }
 
@@ -25,16 +31,19 @@ func (this *Audio) AddEmptyAudio(body *music.Audio) datatype.Response {
     return forbidden("auth fail")
   }
 
-  createEmptyMusic(body, &audio)
+  createAudio(body, &audio)
   tx.Create(&audio)
   tx.Commit()
 
   return ok("success", audio)
 }
 
-func createEmptyMusic(body *music.Audio, audio *models.Audio) {
+func createAudio(body *music.Audio, audio *models.Audio) {
   audio.Name = body.Name
   audio.SheetID = body.SheetID
+  audio.ArtistID = body.ArtistID
+  audio.AudioUrl = body.AudioUrl
+  audio.Duration = body.Duration
   audio.CreatedAt = time.Now().Unix()
   audio.UpdatedAt = time.Now().Unix()
 }

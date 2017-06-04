@@ -1,7 +1,46 @@
-/**
- *
- * Created by lee on 2016/11/9.
- */
+import React from 'react';
+import MuComponent from '../../util/mushare-react-component';
+
+class AudioList extends MuComponent {
+  render() {
+    return (
+      <div className="audio-list">
+
+      </div>
+    );
+  }
+}
+
+class AudioInfo extends MuComponent {
+  render() {
+    return (
+      <div className="audio-info"></div>
+    );
+  }
+}
+
+class AudioController extends MuComponent {
+  render() {
+    return (
+      <div className="audio-controller">
+
+      </div>
+    );
+  }
+}
+
+class Player extends MuComponent {
+  render() {
+    return (
+      <div className="player">
+        <div className="pl-container"></div>
+        <div></div>
+      </div>
+    );
+  }
+}
+
+export default Player;
 
 define([], function () {
   function MPlayer(option) {
@@ -60,7 +99,7 @@ define([], function () {
       this.next();
     }
     this.songList.splice(position, 1);
-    if(this.listener.onSongRemove) {
+    if (this.listener.onSongRemove) {
       this.listener.onSongRemove(this.currentSong, this.songList);
     }
   };

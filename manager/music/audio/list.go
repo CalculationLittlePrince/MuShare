@@ -49,7 +49,7 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
 }
 
 func getAudios(tx *gorm.DB, audios *[]models.Audio, id int) {
-  tx.Where("sheet_id = ?",
+  tx.Preload("Artist").Where("sheet_id = ?",
     strconv.Itoa(id)).Find(audios)
   tx.Commit()
 }

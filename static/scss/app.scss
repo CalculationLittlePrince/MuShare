@@ -230,8 +230,15 @@
     }
     .sheet-info {
       .cover {
+        box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, .12), 0 2px 10px 0 rgba(34, 36, 38, .15);
         width: 220px;
+        padding: 2px;
       }
+
+      .item .content .sheetname {
+        font-size: 3em;
+      }
+
       .item .content .modify-date {
         font-size: 13px;
         margin-left: 5px;
@@ -243,9 +250,49 @@
       }
     }
     .audio-content {
+      #upload-audio-modal {
+        .container {
+          width: 80%;
+          padding: 2em;
+        }
+        .audio-file {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1;
+        }
+        .audio-file + label {
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 400;
+          color: white;
+          padding: 0.625rem 1.25rem;
+          background-color: black;
+          display: inline-block;
+        }
+
+        .audio-file:focus + label,
+        .audio-file + label:hover {
+          background-color: red;
+        }
+      }
       .audio-list {
         table .operations {
-          margin-left: 10px;
+          i {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+          .play {
+            font-size: 14px;
+          }
+          .plus {
+            font-size: 15px;
+          }
+          .remove {
+            font-size: 15px;
+          }
         }
       }
     }

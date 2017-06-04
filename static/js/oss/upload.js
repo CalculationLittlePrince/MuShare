@@ -1,45 +1,33 @@
 import {getOssClient} from './oss';
+import co from 'co';
 
-function uploadAvatar(objectKeyId, file, token, progress) {
+
+function uploadAudio(objectKeyId, file, token, progress) {
   return getOssClient(token)
     .then(function (client) {
-      console.log(client);
-      return client.multipartUpload(objectKeyId, file, {
-        // headers: {
-        //   'x-oss-callback': window.btoa(JSON.stringify({
-        //     'callbackUrl': 'music.mushare.cn/api/oss/upload/avatar',
-        //     'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-        //     'callbackBodyType': 'application/json'
-        //   })),
-        //   'x-oss-callback-var': window.btoa(JSON.stringify({
-        //     'x:token': callbackVar.token
-        //   }))
-        // },
-        progress: progress
+      return co(function*() {
+        var checkpoint = null;
+        for (var i = 0; i < 5; i++) {
+          console.log(i);
+          try {
+            var result = yield client.multipartUpload(objectKeyId, file, {
+              checkpoint: checkpoint,
+              progress: function*(percentage, cpt) {
+                checkpoint = cpt;
+              }
+            });
+            console.log(result);
+            return result;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        throw new Error('Upload Failed');
       });
     })
 }
 
-function uploadAudio(objectKeyId, file, callbackVar, progress) {
-  return getOssClient(callbackVar.token)
-    .then(function (client) {
-      return client.multipartUpload(objectKeyId, file, {
-        headers: {
-          'x-oss-callback': window.btoa(JSON.stringify({
-            'callbackUrl': 'music.mushare.cn/api/oss/upload/audio',
-            'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-            'callbackBodyType': 'application/json'
-          })),
-          'x-oss-callback-var': window.btoa(JSON.stringify({
-            'x:token': callbackVar.token
-          }))
-        },
-        progress: progress
-      });
-    })
-}
-
-function uploadSheetCover(objectKeyId, file, token, progress) {
+function uploadToOss(objectKeyId, file, token, progress) {
   return getOssClient(token)
     .then(function (client) {
       return client.multipartUpload(objectKeyId, file, {
@@ -48,4 +36,4 @@ function uploadSheetCover(objectKeyId, file, token, progress) {
     })
 }
 
-export {uploadAvatar, uploadAudio, uploadSheetCover};
+export {uploadToOss, uploadAudio};

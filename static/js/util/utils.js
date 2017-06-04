@@ -1,3 +1,5 @@
+import dateformater from 'dateformater'
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -9,4 +11,11 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-export {guid}
+function dateformat(date, format) {
+  if(!format) {
+    return dateformater.format(date, 'YYYY-MM-DD')
+  }
+  return  dateformater.format(date, format);
+}
+
+export {guid, dateformat}

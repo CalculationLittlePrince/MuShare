@@ -34,13 +34,6 @@ func (this *Audio) Update(body *music.Audio) datatype.Response{
 	if body.Name != ""{
 		audio.Name = body.Name
 	}
-	if body.ImageUrl != ""{
-		audio.ImageUrl = body.ImageUrl
-	}
-
-	//if body.Artist != ""{
-	//	audio.Artist =  body.Artist
-	//}
 
 	if body.SheetID != 0{
 		sheet.ID = 0

@@ -16,6 +16,7 @@ import (
   "MuShare/controllers/api/user/search"
   "MuShare/controllers/api/oss/sts"
   "MuShare/datatype/request/oss"
+  "MuShare/controllers/api/music/artist"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -61,6 +62,11 @@ func includeUserApi(m *martini.ClassicMartini) {
 }
 
 func includeMusicApi(m *martini.ClassicMartini) {
+
+  m.Group("/api/music/artist", func(r martini.Router) {
+    r.Get("/get", artists.GetArtist)
+  }, RetrieveBody(reflect.TypeOf(music.Artist{})), TokenAuth)
+
   m.Group("/api/music/sheet", func(r martini.Router) {
     r.Post("/create", sheet.Create)
     r.Delete("/delete", sheet.Delete)
@@ -71,7 +77,7 @@ func includeMusicApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(music.Sheet{})), TokenAuth)
 
   m.Group("/api/music/audio", func(r martini.Router) {
-    r.Post("/add/empty", audio.AddEmptyAudio)
+    r.Post("/add", audio.AddAudio)
     r.Delete("/delete", audio.DeleteAudio)
     r.Get("/list", audio.GetAudiosList)
     r.Put("/update", audio.Update)

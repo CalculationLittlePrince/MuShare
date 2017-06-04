@@ -65,15 +65,15 @@ webpackJsonp([0,3],{
 
 	var _main4 = _interopRequireDefault(_main3);
 
-	var _main5 = __webpack_require__(552);
+	var _main5 = __webpack_require__(554);
 
 	var _main6 = _interopRequireDefault(_main5);
 
-	var _main7 = __webpack_require__(553);
+	var _main7 = __webpack_require__(555);
 
 	var _main8 = _interopRequireDefault(_main7);
 
-	__webpack_require__(554);
+	__webpack_require__(556);
 
 	__webpack_require__(528);
 
@@ -2007,15 +2007,15 @@ webpackJsonp([0,3],{
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _sheets = __webpack_require__(549);
+	var _sheets = __webpack_require__(551);
 
 	var _sheets2 = _interopRequireDefault(_sheets);
 
-	var _friends = __webpack_require__(550);
+	var _friends = __webpack_require__(552);
 
 	var _friends2 = _interopRequireDefault(_friends);
 
-	var _subscription = __webpack_require__(551);
+	var _subscription = __webpack_require__(553);
 
 	var _subscription2 = _interopRequireDefault(_subscription);
 
@@ -2120,15 +2120,15 @@ webpackJsonp([0,3],{
 
 	var _utils = __webpack_require__(541);
 
-	var _upload = __webpack_require__(542);
+	var _upload = __webpack_require__(544);
 
-	var _co = __webpack_require__(543);
+	var _co = __webpack_require__(545);
 
 	var _co2 = _interopRequireDefault(_co);
 
-	__webpack_require__(544);
+	__webpack_require__(546);
 
-	__webpack_require__(545);
+	__webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2226,7 +2226,6 @@ webpackJsonp([0,3],{
 	  _createClass(AvatarUploadModal, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log('did mount');
 	      $('#avatar-upload-modal .progress').progress({
 	        percent: 0
 	      });
@@ -2345,8 +2344,6 @@ webpackJsonp([0,3],{
 	      });
 	      $('.profile .form .ui.radio.checkbox').checkbox({
 	        onChecked: function onChecked() {
-	          console.log($(this).attr('name'));
-	          console.log($(this).val());
 	          self.setState(_defineProperty({
 	            updateButtonDisabled: false
 	          }, $(this).attr('name'), $(this).val()));
@@ -2428,7 +2425,7 @@ webpackJsonp([0,3],{
 	              case 0:
 	                avatarName = 'avatar-' + (0, _utils.guid)();
 	                _context2.next = 3;
-	                return (0, _upload.uploadAvatar)(avatarName, file, token, regeneratorRuntime.mark(function _callee(progress) {
+	                return (0, _upload.uploadToOss)(avatarName, file, token, regeneratorRuntime.mark(function _callee(progress) {
 	                  return regeneratorRuntime.wrap(function _callee$(_context) {
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
@@ -2669,13 +2666,21 @@ webpackJsonp([0,3],{
 /***/ }),
 
 /***/ 541:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.dateformat = exports.guid = undefined;
+
+	var _dateformater = __webpack_require__(542);
+
+	var _dateformater2 = _interopRequireDefault(_dateformater);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function guid() {
 	  function s4() {
 	    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -2684,11 +2689,19 @@ webpackJsonp([0,3],{
 	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 	}
 
+	function dateformat(date, format) {
+	  if (!format) {
+	    return _dateformater2.default.format(date, 'YYYY-MM-DD');
+	  }
+	  return _dateformater2.default.format(date, format);
+	}
+
 	exports.guid = guid;
+	exports.dateformat = dateformat;
 
 /***/ }),
 
-/***/ 542:
+/***/ 544:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2696,48 +2709,85 @@ webpackJsonp([0,3],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.uploadSheetCover = exports.uploadAudio = exports.uploadAvatar = undefined;
+	exports.uploadAudio = exports.uploadToOss = undefined;
 
 	var _oss = __webpack_require__(527);
 
-	function uploadAvatar(objectKeyId, file, token, progress) {
+	var _co = __webpack_require__(545);
+
+	var _co2 = _interopRequireDefault(_co);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function uploadAudio(objectKeyId, file, token, progress) {
 	  return (0, _oss.getOssClient)(token).then(function (client) {
-	    console.log(client);
-	    return client.multipartUpload(objectKeyId, file, {
-	      // headers: {
-	      //   'x-oss-callback': window.btoa(JSON.stringify({
-	      //     'callbackUrl': 'music.mushare.cn/api/oss/upload/avatar',
-	      //     'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-	      //     'callbackBodyType': 'application/json'
-	      //   })),
-	      //   'x-oss-callback-var': window.btoa(JSON.stringify({
-	      //     'x:token': callbackVar.token
-	      //   }))
-	      // },
-	      progress: progress
-	    });
+	    return (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+	      var checkpoint, i, result;
+	      return regeneratorRuntime.wrap(function _callee$(_context2) {
+	        while (1) {
+	          switch (_context2.prev = _context2.next) {
+	            case 0:
+	              checkpoint = null;
+	              i = 0;
+
+	            case 2:
+	              if (!(i < 5)) {
+	                _context2.next = 18;
+	                break;
+	              }
+
+	              console.log(i);
+	              _context2.prev = 4;
+	              _context2.next = 7;
+	              return client.multipartUpload(objectKeyId, file, {
+	                checkpoint: checkpoint,
+	                progress: regeneratorRuntime.mark(function progress(percentage, cpt) {
+	                  return regeneratorRuntime.wrap(function progress$(_context) {
+	                    while (1) {
+	                      switch (_context.prev = _context.next) {
+	                        case 0:
+	                          checkpoint = cpt;
+
+	                        case 1:
+	                        case 'end':
+	                          return _context.stop();
+	                      }
+	                    }
+	                  }, progress, this);
+	                })
+	              });
+
+	            case 7:
+	              result = _context2.sent;
+
+	              console.log(result);
+	              return _context2.abrupt('return', result);
+
+	            case 12:
+	              _context2.prev = 12;
+	              _context2.t0 = _context2['catch'](4);
+
+	              console.log(_context2.t0);
+
+	            case 15:
+	              i++;
+	              _context2.next = 2;
+	              break;
+
+	            case 18:
+	              throw new Error('Upload Failed');
+
+	            case 19:
+	            case 'end':
+	              return _context2.stop();
+	          }
+	        }
+	      }, _callee, this, [[4, 12]]);
+	    }));
 	  });
 	}
 
-	function uploadAudio(objectKeyId, file, callbackVar, progress) {
-	  return (0, _oss.getOssClient)(callbackVar.token).then(function (client) {
-	    return client.multipartUpload(objectKeyId, file, {
-	      headers: {
-	        'x-oss-callback': window.btoa(JSON.stringify({
-	          'callbackUrl': 'music.mushare.cn/api/oss/upload/audio',
-	          'callbackBody': '{"bucket":${bucket},"object":${object},"mimeType":${mimeType},"token":${x:token}}',
-	          'callbackBodyType': 'application/json'
-	        })),
-	        'x-oss-callback-var': window.btoa(JSON.stringify({
-	          'x:token': callbackVar.token
-	        }))
-	      },
-	      progress: progress
-	    });
-	  });
-	}
-
-	function uploadSheetCover(objectKeyId, file, token, progress) {
+	function uploadToOss(objectKeyId, file, token, progress) {
 	  return (0, _oss.getOssClient)(token).then(function (client) {
 	    return client.multipartUpload(objectKeyId, file, {
 	      progress: progress
@@ -2745,22 +2795,21 @@ webpackJsonp([0,3],{
 	  });
 	}
 
-	exports.uploadAvatar = uploadAvatar;
+	exports.uploadToOss = uploadToOss;
 	exports.uploadAudio = uploadAudio;
-	exports.uploadSheetCover = uploadSheetCover;
 
 /***/ }),
 
-/***/ 545:
+/***/ 547:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(546);
+	var content = __webpack_require__(548);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(548)(content, {});
+	var update = __webpack_require__(550)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2778,10 +2827,10 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 546:
+/***/ 548:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(547)();
+	exports = module.exports = __webpack_require__(549)();
 	// imports
 
 
@@ -2793,7 +2842,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 549:
+/***/ 551:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
@@ -2818,17 +2867,17 @@ webpackJsonp([0,3],{
 
 	var _utils = __webpack_require__(541);
 
-	var _upload = __webpack_require__(542);
+	var _upload = __webpack_require__(544);
 
 	var _oss = __webpack_require__(527);
 
-	var _co = __webpack_require__(543);
+	var _co = __webpack_require__(545);
 
 	var _co2 = _interopRequireDefault(_co);
 
-	__webpack_require__(544);
+	__webpack_require__(546);
 
-	__webpack_require__(545);
+	__webpack_require__(547);
 
 	var _reactRouterDom = __webpack_require__(483);
 
@@ -2980,7 +3029,7 @@ webpackJsonp([0,3],{
 	                token = $('#token').val();
 	                objectId = 'sheetcover-' + (0, _utils.guid)();
 	                _context.next = 4;
-	                return (0, _upload.uploadSheetCover)(objectId, self.sheet.coverFile, token);
+	                return (0, _upload.uploadToOss)(objectId, self.sheet.coverFile, token);
 
 	              case 4:
 	                cover = _context.sent;
@@ -3264,8 +3313,6 @@ webpackJsonp([0,3],{
 	        var publicSheet = sheets.filter(function (sheet) {
 	          return sheet.privilege === 'public' || sheet.privilege === 'friend';
 	        });
-	        console.log(privateSheet);
-	        console.log(publicSheet);
 	        self.setState({
 	          privateSheet: privateSheet,
 	          publicSheet: publicSheet
@@ -3336,7 +3383,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 550:
+/***/ 552:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3607,7 +3654,7 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 551:
+/***/ 553:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
@@ -3746,10 +3793,10 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 552:
+/***/ 554:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($, fetch) {'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -3766,6 +3813,18 @@ webpackJsonp([0,3],{
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
 	var _oss = __webpack_require__(527);
+
+	var _utils = __webpack_require__(541);
+
+	var _logo = __webpack_require__(526);
+
+	var _logo2 = _interopRequireDefault(_logo);
+
+	var _co = __webpack_require__(545);
+
+	var _co2 = _interopRequireDefault(_co);
+
+	var _upload = __webpack_require__(544);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3804,7 +3863,7 @@ webpackJsonp([0,3],{
 	                { className: 'item' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui middle cover aligned image' },
+	                  { className: 'ui middle raised cover aligned image' },
 	                  _react2.default.createElement('img', { src: this.props.sheetInfo.cover, alt: '' })
 	                ),
 	                _react2.default.createElement(
@@ -3812,7 +3871,8 @@ webpackJsonp([0,3],{
 	                  { className: 'middle aligned content' },
 	                  _react2.default.createElement(
 	                    'div',
-	                    { className: 'ui huge header' },
+	                    {
+	                      className: 'ui huge header sheetname' },
 	                    this.props.sheetInfo.sheetName
 	                  ),
 	                  _react2.default.createElement(
@@ -3822,7 +3882,8 @@ webpackJsonp([0,3],{
 	                      src: this.props.sheetInfo.creatorAvatar }),
 	                    _react2.default.createElement(
 	                      'a',
-	                      { href: '', className: 'username' },
+	                      { href: '',
+	                        className: 'username' },
 	                      this.props.sheetInfo.creator
 	                    ),
 	                    _react2.default.createElement(
@@ -3855,9 +3916,20 @@ webpackJsonp([0,3],{
 	  }
 
 	  _createClass(AudioList, [{
+	    key: 'timeConvert',
+	    value: function timeConvert(time) {
+	      var min;
+	      var sec;
+	      min = Math.floor(time / 60);
+	      min = min >= 10 ? '' + min : '0' + min;
+	      sec = Math.floor(time % 60);
+	      sec = sec >= 10 ? '' + sec : '0' + sec;
+	      return min + ':' + sec;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-
+	      var self = this;
 	      var rows = this.props.audioList.map(function (audio, index) {
 	        return _react2.default.createElement(
 	          'tr',
@@ -3865,7 +3937,7 @@ webpackJsonp([0,3],{
 	          _react2.default.createElement(
 	            'td',
 	            null,
-	            index
+	            index + 1
 	          ),
 	          _react2.default.createElement(
 	            'td',
@@ -3874,13 +3946,17 @@ webpackJsonp([0,3],{
 	              'span',
 	              null,
 	              audio.name
-	            ),
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'td',
+	            null,
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'operations' },
-	              _react2.default.createElement('i', { className: 'folder icon' }),
-	              _react2.default.createElement('i', { className: 'folder icon' }),
-	              _react2.default.createElement('i', { className: 'folder icon' })
+	              _react2.default.createElement('i', { className: 'play icon' }),
+	              _react2.default.createElement('i', { className: 'plus icon' }),
+	              _react2.default.createElement('i', { className: 'remove icon' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -3891,7 +3967,7 @@ webpackJsonp([0,3],{
 	          _react2.default.createElement(
 	            'td',
 	            null,
-	            audio.duration
+	            self.timeConvert(audio.duration)
 	          )
 	        );
 	      });
@@ -3911,6 +3987,7 @@ webpackJsonp([0,3],{
 	              null,
 	              '\u97F3\u4E50\u6807\u9898'
 	            ),
+	            _react2.default.createElement('th', null),
 	            _react2.default.createElement(
 	              'th',
 	              null,
@@ -3935,16 +4012,288 @@ webpackJsonp([0,3],{
 	  return AudioList;
 	}(_mushareReactComponent2.default);
 
-	var AudioContent = function (_MuComponent3) {
-	  _inherits(AudioContent, _MuComponent3);
+	var UploadAudioModal = function (_MuComponent3) {
+	  _inherits(UploadAudioModal, _MuComponent3);
 
-	  function AudioContent() {
+	  function UploadAudioModal(props) {
+	    _classCallCheck(this, UploadAudioModal);
+
+	    var _this3 = _possibleConstructorReturn(this, (UploadAudioModal.__proto__ || Object.getPrototypeOf(UploadAudioModal)).call(this, props));
+
+	    _this3.state = {
+	      uploading: false,
+	      artists: []
+	    };
+	    _this3.audio = {
+	      name: '',
+	      artistId: -1,
+	      audioFile: null,
+	      duration: 0
+	    };
+	    _this3.loadArtists = _this3.loadArtists.bind(_this3);
+	    _this3.handleChange = _this3.handleChange.bind(_this3);
+	    _this3.uploadAudio = _this3.uploadAudio.bind(_this3);
+	    return _this3;
+	  }
+
+	  _createClass(UploadAudioModal, [{
+	    key: 'loadArtists',
+	    value: function loadArtists() {
+	      var self = this;
+	      fetch('/api/music/artist/get', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        self.setState({
+	          artists: result.body
+	        });
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
+	    }
+	  }, {
+	    key: 'uploadAudio',
+	    value: function uploadAudio() {
+	      var self = this;
+	      var token = $('#token').val();
+	      if (self.audio.audioFile === null || self.audio.name === '' || self.audio.artistId === -1 || self.audio.duration === 0) {
+	        alert('some file is empty');
+	        return;
+	      }
+	      this.setState({
+	        uploading: true
+	      });
+	      (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+	        var audio, result;
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                _context.prev = 0;
+	                _context.next = 3;
+	                return (0, _upload.uploadAudio)('audio-' + (0, _utils.guid)(), self.audio.audioFile, token);
+
+	              case 3:
+	                audio = _context.sent;
+
+	                console.log(audio);
+	                _context.next = 7;
+	                return fetch('/api/music/audio/add', {
+	                  method: 'POST',
+	                  credentials: 'same-origin',
+	                  headers: {
+	                    'Authorization': token
+	                  },
+	                  body: JSON.stringify({
+	                    name: self.audio.name,
+	                    artistId: parseInt(self.audio.artistId),
+	                    audioUrl: audio.name,
+	                    sheetId: parseInt(self.props.sheetId),
+	                    duration: self.audio.duration
+	                  })
+	                }).then(self.checkStatus).then(self.parseJSON);
+
+	              case 7:
+	                result = _context.sent;
+	                return _context.abrupt('return', result);
+
+	              case 11:
+	                _context.prev = 11;
+	                _context.t0 = _context['catch'](0);
+	                throw _context.t0;
+
+	              case 14:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this, [[0, 11]]);
+	      })).then(function (result) {
+	        console.log(result);
+	        $('#upload-audio-modal').modal('hide');
+	      }, function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'getAudioDuration',
+	    value: function getAudioDuration(file, callback) {
+	      var url = URL.createObjectURL(file);
+	      var audio = new Audio(url);
+	      audio.onloadedmetadata = function () {
+	        console.log('onloadedmetadata');
+	        callback(parseInt(audio.duration));
+	      };
+	      audio.onerror = function () {
+	        console.log('not audio file');
+	        callback();
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      var self = this;
+	      if (event.target.name === 'audio-file') {
+	        var file = event.target.files[0];
+	        this.getAudioDuration(event.target.files[0], function (duration) {
+	          if (duration) {
+	            self.audio.audioFile = file;
+	            self.audio.duration = duration;
+	          } else {
+	            alert('Not Audio File');
+	          }
+	        });
+	      } else if (event.target.name === 'audio-name') {
+	        this.audio.name = event.target.value;
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var self = this;
+	      this.loadArtists();
+	      $('#upload-audio-modal .form .dropdown').dropdown({
+	        onChange: function onChange(artistId) {
+	          self.audio.artistId = artistId;
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var artists = this.state.artists.map(function (artist) {
+	        return _react2.default.createElement(
+	          'option',
+	          { value: artist.id },
+	          artist.name
+	        );
+	      });
+	      var button = null;
+	      if (this.state.uploading) {
+	        button = _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.uploadAudio },
+	          _react2.default.createElement('i', { className: 'spinner loading icon' }),
+	          '\u4E0A\u4F20\u4E2D...'
+	        );
+	      } else {
+	        button = _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.uploadAudio },
+	          '\u4E0A\u4F20'
+	        );
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui small modal', id: 'upload-audio-modal' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui items' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'item' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ui image' },
+	                _react2.default.createElement('img', { src: _logo2.default, alt: '' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'middle aligned content' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  '\u4E0A\u4F20\u6B4C\u66F2'
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui form' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u6B4C\u5355\u540D'
+	              ),
+	              _react2.default.createElement('input', { type: 'text',
+	                name: 'audio-name',
+	                className: 'audio-name',
+	                placeholder: '\u6B4C\u66F2\u540D',
+	                onChange: this.handleChange })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u6B4C\u624B'
+	              ),
+	              _react2.default.createElement(
+	                'select',
+	                { name: 'privilege', className: 'ui fluid dropdown' },
+	                _react2.default.createElement(
+	                  'option',
+	                  { value: '' },
+	                  '\u9009\u62E9\u6B4C\u624B'
+	                ),
+	                artists
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { type: 'file',
+	                name: 'audio-file',
+	                id: 'audio-file',
+	                className: 'audio-file',
+	                onChange: this.handleChange }),
+	              _react2.default.createElement(
+	                'label',
+	                { htmlFor: 'audio-file' },
+	                '\u6B4C\u66F2\u6587\u4EF6'
+	              )
+	            ),
+	            button
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return UploadAudioModal;
+	}(_mushareReactComponent2.default);
+
+	var AudioContent = function (_MuComponent4) {
+	  _inherits(AudioContent, _MuComponent4);
+
+	  function AudioContent(props) {
 	    _classCallCheck(this, AudioContent);
 
-	    return _possibleConstructorReturn(this, (AudioContent.__proto__ || Object.getPrototypeOf(AudioContent)).apply(this, arguments));
+	    var _this4 = _possibleConstructorReturn(this, (AudioContent.__proto__ || Object.getPrototypeOf(AudioContent)).call(this, props));
+
+	    _this4.openUploadAudioModal = _this4.openUploadAudioModal.bind(_this4);
+	    return _this4;
 	  }
 
 	  _createClass(AudioContent, [{
+	    key: 'openUploadAudioModal',
+	    value: function openUploadAudioModal() {
+	      $('#upload-audio-modal').modal({
+	        detachable: false
+	      }).modal('show');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -3969,6 +4318,15 @@ webpackJsonp([0,3],{
 	          'div',
 	          { className: 'ui bottom active attached tab segment audio-list',
 	            'data-tab': 'audioList' },
+	          _react2.default.createElement(UploadAudioModal, {
+	            sheetId: this.props.sheetId }),
+	          _react2.default.createElement(
+	            'button',
+	            {
+	              className: 'ui primary button',
+	              onClick: this.openUploadAudioModal },
+	            '\u4E0A\u4F20\u6B4C\u66F2'
+	          ),
 	          _react2.default.createElement(AudioList, {
 	            audioList: this.props.audioList })
 	        ),
@@ -3980,26 +4338,25 @@ webpackJsonp([0,3],{
 	  return AudioContent;
 	}(_mushareReactComponent2.default);
 
-	var SheetPage = function (_MuComponent4) {
-	  _inherits(SheetPage, _MuComponent4);
+	var SheetPage = function (_MuComponent5) {
+	  _inherits(SheetPage, _MuComponent5);
 
 	  function SheetPage(props) {
 	    _classCallCheck(this, SheetPage);
 
-	    var _this4 = _possibleConstructorReturn(this, (SheetPage.__proto__ || Object.getPrototypeOf(SheetPage)).call(this, props));
+	    var _this5 = _possibleConstructorReturn(this, (SheetPage.__proto__ || Object.getPrototypeOf(SheetPage)).call(this, props));
 
-	    _this4.state = {
+	    _this5.state = {
 	      sheetInfo: {
 	        sheetName: '',
 	        creator: '',
 	        creatorAvatar: '',
 	        lastModified: '',
-	        cover: ''
+	        cover: '/image/avatar.png'
 	      },
 	      audioList: []
 	    };
-
-	    return _this4;
+	    return _this5;
 	  }
 
 	  _createClass(SheetPage, [{
@@ -4016,13 +4373,12 @@ webpackJsonp([0,3],{
 	          'Authorization': $('#token').val()
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
-	        console.log(data.body);
 	        var sheetInfo = {
 	          sheetName: data.body.name,
-	          cover: data.body.cover === '' ? '/image/avatar' : (0, _oss.getURL)(data.body.cover),
+	          cover: data.body.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(data.body.cover),
 	          creator: data.body.user.name,
-	          creatorAvatar: data.body.user.avatar === '' ? '/image/avatar' : (0, _oss.getURL)(data.body.user.avatar),
-	          lastModified: ''
+	          creatorAvatar: data.body.user.avatar === '' ? '/image/avatar.png' : (0, _oss.getURL)(data.body.user.avatar),
+	          lastModified: (0, _utils.dateformat)(data.body.update_at * 1000)
 	        };
 	        var audioList = data.body.audio.map(function (audio) {
 	          return {
@@ -4047,7 +4403,8 @@ webpackJsonp([0,3],{
 	        _react2.default.createElement(SheetInfo, {
 	          sheetInfo: this.state.sheetInfo }),
 	        _react2.default.createElement(AudioContent, {
-	          audioList: this.state.audioList })
+	          audioList: this.state.audioList,
+	          sheetId: this.props.match.params.sheetId })
 	      );
 	    }
 	  }]);
@@ -4056,11 +4413,11 @@ webpackJsonp([0,3],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = SheetPage;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
 
 /***/ }),
 
-/***/ 553:
+/***/ 555:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4115,16 +4472,16 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 554:
+/***/ 556:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(555);
+	var content = __webpack_require__(557);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(548)(content, {});
+	var update = __webpack_require__(550)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -4142,15 +4499,15 @@ webpackJsonp([0,3],{
 
 /***/ }),
 
-/***/ 555:
+/***/ 557:
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(547)();
+	exports = module.exports = __webpack_require__(549)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  width: 220px; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 13px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold;\n  margin: 5px; }\n\n#app .sheet-page .audio-content .audio-list table .operations {\n  margin-left: 10px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n  width: 220px;\n  padding: 2px; }\n\n#app .sheet-page .sheet-info .item .content .sheetname {\n  font-size: 3em; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 13px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold;\n  margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

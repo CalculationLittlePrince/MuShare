@@ -10,18 +10,22 @@ type Sheet struct {
 }
 
 type Audio struct {
-  UserID     int
-  Name       string
-  AudioUrl   string
-  ImageUrl   string
-  Artist     string
-  ArtistID   int
-  ArtistName int
-  SheetID    int
+  UserID   int
+  Name     string
+  Duration int
+  AudioUrl string
+  Artist   string
+  ArtistID int
+  SheetID  int
 }
 
 type SheetMigration struct {
   UserID    int
   IdList    []int
   ToSheetId int
+}
+
+type Artist struct {
+  UserID int
+  Name   string
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 import logo from '../../../image/logo.png';
 import {guid} from '../../util/utils';
-import {uploadSheetCover} from '../../oss/upload';
+import {uploadToOss} from '../../oss/upload';
 import {getURL} from '../../oss/oss'
 import co from 'co';
 import '../../vendor/cropper.min.js';
@@ -115,7 +115,7 @@ class CreateSheetModal extends MuComponent {
     co(function*() {
       var token = $('#token').val();
       var objectId = 'sheetcover-' + guid();
-      var cover = yield uploadSheetCover(objectId, self.sheet.coverFile, token);
+      var cover = yield uploadToOss(objectId, self.sheet.coverFile, token);
       console.log(cover);
       var result = yield fetch('/api/music/sheet/create', {
         method: 'POST',
@@ -298,8 +298,6 @@ class Sheets extends MuComponent {
         var publicSheet = sheets.filter(function (sheet) {
           return sheet.privilege === 'public' || sheet.privilege === 'friend';
         });
-        console.log(privateSheet);
-        console.log(publicSheet);
         self.setState({
           privateSheet: privateSheet,
           publicSheet: publicSheet
