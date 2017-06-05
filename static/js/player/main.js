@@ -2,16 +2,19 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './header';
+import Player from './player';
+import '../../scss/player.scss'
 
-
-class Player extends React.Component {
+class Main extends React.Component {
   render() {
     return (
-      <div className="player">
-
+      <div id="player">
+        <Header/>
+        <Player/>
       </div>
     );
   }
 }
 
-ReactDOM.render(<Player/>, $('#react-root')[0]);
+ReactDOM.render(<Main/>, $('#react-root')[0]);

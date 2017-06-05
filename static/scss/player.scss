@@ -1,0 +1,217 @@
+#react-root {
+  position: relative;
+}
+
+#player {
+  .grid, .column {
+    padding: 0;
+    margin: 0;
+  }
+
+  .header {
+    a {
+      color: black;
+    }
+    .icon {
+      margin: 0;
+    }
+    .segment {
+      box-shadow: none;
+      border: none;
+    }
+
+    .header-top {
+      .item {
+        padding-top: 0.1em;
+        padding-bottom: 0.1em;
+      }
+    }
+  }
+
+  .player {
+
+    .container {
+      width: 80%;
+      padding: 1em;
+    }
+
+    .audio-list {
+      padding-right: 6em;
+      .title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .divider {
+        height: 3px;
+      }
+      .list {
+        overflow-y: scroll;
+        max-height: 350px;
+        .item {
+          cursor: pointer;
+          padding: 1em;
+          font-size: 16px;
+          color: rgba(153, 153, 153, 100);
+        }
+        .item:hover {
+          color: rgba(187, 187, 187, 100);
+          background-color: rgba(95, 79, 73, 0.06);
+        }
+        .item.active {
+          color: rgba(187, 187, 187, 100);
+          background-color: rgba(95, 79, 73, 0.06);
+        }
+      }
+    }
+
+    .audio-info {
+      padding-top: 2rem;
+      .cover {
+        width: 80%;
+        margin: 0 auto;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .name {
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 5px;
+        font-size: 24px;
+        color: rgba(51, 51, 51, 100);
+      }
+      .artist {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 5px;
+        font-size: 14px;
+        color: rgba(153, 153, 153, 100);
+      }
+      .sheet {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        color: rgba(153, 153, 153, 100);
+      }
+    }
+
+    .footer {
+      padding-top: 0.5em;
+      position: absolute;
+      height: 100px;
+      width: 100%;
+      bottom: 0px;
+      background: rgba(238, 238, 238, 100);
+      .audio-controller {
+        .mod1 {
+          .hd {
+            margin-bottom: 1em;
+          }
+          .song-title {
+            width: auto;
+            float: left;
+            font-size: 24px;
+            font-weight: 500;
+            color: rgba(51, 51, 51, 100);
+          }
+          .time {
+            font-size: 14px;
+            color: rgba(153, 153, 153, 100);
+          }
+          .progress {
+            margin-top: 5px;
+            height: 4px;
+            position: relative;
+            .progress-slider {
+              position: absolute;
+              border-radius: 50%;
+              outline: 0;
+              border: 0;
+              width: 12px;
+              height: 12px;
+              margin-top: -4px;
+              margin-left: -4px;
+              background: black;
+              left: 10%;
+              z-index: 2;
+            }
+            .progress-player {
+              position: absolute;
+              height: 4px;
+              background: black;
+              width: 10%;
+            }
+            .progress-loaded {
+              cursor: pointer;
+              position: absolute;
+              height: 4px;
+              background: #9d9d9d;
+              width: 20%;
+            }
+          }
+        }
+        .mod2 {
+          .btn-mode, .btn-volume {
+            cursor: pointer;
+          }
+          .btn-mode {
+            margin-top: 24px;
+            margin-left: 40px;
+            display: inline-block;
+            font-size: 23px;
+          }
+          .btn-volume {
+            margin-left: 10px;
+            margin-top: 22px;
+            display: inline-block;
+            font-size: 27px;
+          }
+          .volume-progress {
+            margin-top: 31px;
+            background: rgba(0, 0, 0, .1);
+            width: 100%;
+            height: 3px;
+            position: relative;
+            .current {
+              position: absolute;
+              width: 10%;
+              height: 3px;
+              background: black;
+            }
+            .slider {
+              position: absolute;
+              border-radius: 50%;
+              outline: 0;
+              border: 0;
+              width: 10px;
+              height: 10px;
+              margin-top: -3px;
+              margin-left: -3px;
+              background: black;
+              left: 10%;
+              z-index: 2;
+            }
+          }
+        }
+        .mod3 {
+          padding: 20px 0px 15px 40px;
+          .btn-preview, .btn-playpause, .btn-next {
+            .icon {
+              margin: 0;
+            }
+            text-align: center;
+            color: black;
+            font-size: 24px;
+            padding: 0 18px;
+          }
+          .btn-playpause {
+            margin-left: 6px;
+          }
+        }
+      }
+    }
+  }
+
+}

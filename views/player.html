@@ -2,73 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>歌曲名</title>
-    <link rel="stylesheet" href="css/app.css">
-    <script data-main="js/player/main" src="js/require.js"></script>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MuShare</title>
+    <link rel="stylesheet" href="/semantic/dist/semantic.min.css">
+    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+    <link id="favicon_id" rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
-<body class="player">
-{{template "header"}}
-<div class="pl-container">
-    <div class="pl-container-inner">
-        <div class="wrapper row page-width">
-            <div class="title column large-8">
-                <span>Music List </span>
-                <span class="title-index"></span>
-            </div>
-            <div class="song-list column large-8"></div>
-            <div class="right-container column large-4">
-                <div class="wrapper">
-                    <div class="cover">
-                        <img src="/image/hot_sheet_1.png" alt="">
-                    </div>
-                    <div class="author"></div>
-                    <div class="album"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="pl-control">
-        <div class="wrapper row page-width">
-            <div class="mod1 column large-6">
-                <div class="hd clearfix">
-                    <div class="song-title"></div>
-                    <div class="time">
-                        <span>-</span>
-                        <span class="rest">00:00</span>
-                    </div>
-                </div>
-                <div class="bd">
-                    <div class="progress">
-                        <div class="progress-player"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="mod2 column large-2">
-                <div class="row">
-                    <div class="column large-5">
-                        <span class="btn-mode icon ion-loop"></span>
-                    </div>
-                    <div class="column large-7">
-                        <span class="btn-volume icon ion-volume-low"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="mod3 column large-4">
-                <div class="row">
-                    <a href="#"
-                       class="column large-3 btn-preview icon ion-skip-backward"
-                       title="上一首"></a>
-                    <a href="#"
-                       class="column large-3 btn-playpause icon ion-play"
-                       title="播放/暂停"></a>
-                    <a href="#"
-                       class="column large-3 btn-next icon ion-skip-forward"
-                       title="下一首"></a>
-                    <div class="column large-3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<body>
+<div id="react-root" style="height: 100%"></div>
+<input type="hidden" id="token" value="{{.Token}}">
+<script type="text/javascript" src="/dist/manifest.js"></script>
+<script type="text/javascript" src="/dist/vendor.js"></script>
+<script type="text/javascript" src="/dist/player.js"></script>
 </body>
 </html>

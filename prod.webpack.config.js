@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     index: ['babel-polyfill', './static/js/index/main.js'],
     app: ['babel-polyfill', './static/js/app/main.js'],
+    player: ['babel-polyfill', './static/js/player/main.js']
   },
   output: {
     filename: '[name].js',

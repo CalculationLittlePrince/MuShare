@@ -28,6 +28,7 @@ func Include(m *martini.ClassicMartini) {
 
 func includePages(m *martini.ClassicMartini) {
   m.Get("/", pages.Index)
+  m.Get("/player", pages.Player)
   m.Get("/app**", UserSessionAuth, pages.App)
 }
 
