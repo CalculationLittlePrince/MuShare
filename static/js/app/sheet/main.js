@@ -1,7 +1,7 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 import {getURL} from '../../oss/oss'
-import {dateformat, guid} from '../../util/utils'
+import {dateformat, guid, openPlayer} from '../../util/utils'
 import logo from '../../../image/logo.png';
 import co from 'co';
 import {uploadAudio} from '../../oss/upload'
@@ -40,6 +40,11 @@ class SheetInfo extends MuComponent {
 
 class AudioList extends MuComponent {
 
+  constructor(props) {
+    super(props);
+    this.play = this.play.bind(this);
+  }
+
   timeConvert(time) {
     var min;
     var sec;
@@ -48,6 +53,32 @@ class AudioList extends MuComponent {
     sec = Math.floor(time % 60);
     sec = sec >= 10 ? '' + sec : '0' + sec;
     return min + ':' + sec;
+  }
+
+  play(audio) {
+    var self = this;
+    var token = $('#token').val();
+    fetch('/api/user/player/add', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        audioId: audio.id
+      })
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function () {
+        console.log("add into play list");
+        var array = [];
+        array.push(audio);
+        openPlayer(array);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 
   render() {
@@ -61,7 +92,8 @@ class AudioList extends MuComponent {
           </td>
           <td>
             <span className="operations">
-            <i className="play icon"></i>
+            <i className="play icon"
+               onClick={() => self.play(audio)}></i>
             <i className="plus icon"></i>
             <i className="remove icon"></i>
             </span>
@@ -147,7 +179,6 @@ class UploadAudioModal extends MuComponent {
     co(function*() {
       try {
         var audio = yield uploadAudio(`audio-${guid()}`, self.audio.audioFile, token);
-        console.log(audio);
         var result = yield fetch('/api/music/audio/add', {
           method: 'POST',
           credentials: 'same-origin',
@@ -365,8 +396,11 @@ class SheetPage extends MuComponent {
           return {
             id: audio.id,
             name: audio.name,
+            audioUrl: audio.audioUrl,
             artist: audio.artist.name,
             duration: audio.duration,
+            sheet: data.body.name,
+            cover: data.body.cover,
           }
         });
         self.setState({

@@ -53,7 +53,6 @@ func (this *Friend) NewRequest(body *user.Friend) datatype.Response {
     return forbidden("Request User Doesn't Exist")
   }
 
-
   tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.UserID),
     strconv.Itoa(body.FriendID)).First(&friend)
 

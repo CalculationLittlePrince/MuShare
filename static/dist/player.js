@@ -84,6 +84,76 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
+/***/ 527:
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(fetch, Promise) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var OSSClient = {
+	  client: null,
+	  expiration: ''
+	};
+
+	function checkStatus(response) {
+	  if (response.status >= 200 && response.status < 300) {
+	    return response;
+	  } else {
+	    var error = new Error(response.statusText);
+	    error.response = response;
+	    throw error;
+	  }
+	}
+
+	function parseJSON(response) {
+	  return response.json();
+	}
+
+	function checkExpiration() {
+	  var exp = new Date(OSSClient.expiration).getTime();
+	  var now = new Date().getTime();
+	  return exp <= now;
+	}
+
+	function getOssClient(token) {
+	  if (OSSClient.client === null || checkExpiration()) {
+	    return fetch('/api/oss/sts/get', {
+	      method: 'GET',
+	      credentials: 'same-origin',
+	      headers: {
+	        'Authorization': token
+	      }
+	    }).then(checkStatus).then(parseJSON).then(function (data) {
+	      console.log(data);
+	      OSSClient.expiration = data.body.expiration;
+	      OSSClient.client = new OSS.Wrapper({
+	        region: 'oss-cn-hangzhou',
+	        accessKeyId: data.body.accessKeyId,
+	        accessKeySecret: data.body.accessKeySecret,
+	        stsToken: data.body.securityToken,
+	        bucket: 'mushare-store'
+	      });
+	      return OSSClient.client;
+	    });
+	  } else {
+	    return new Promise(function (resolve, reject) {
+	      resolve(OSSClient.client);
+	    });
+	  }
+	}
+
+	function getURL(objectId) {
+	  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	}
+
+	exports.getOssClient = getOssClient;
+	exports.getURL = getURL;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(294)))
+
+/***/ }),
+
 /***/ 564:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -233,7 +303,7 @@ webpackJsonp([2,4],{
 /***/ 566:
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -249,6 +319,8 @@ webpackJsonp([2,4],{
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -260,15 +332,213 @@ webpackJsonp([2,4],{
 	var AudioList = function (_MuComponent) {
 	  _inherits(AudioList, _MuComponent);
 
-	  function AudioList() {
+	  function AudioList(props) {
 	    _classCallCheck(this, AudioList);
 
-	    return _possibleConstructorReturn(this, (AudioList.__proto__ || Object.getPrototypeOf(AudioList)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (AudioList.__proto__ || Object.getPrototypeOf(AudioList)).call(this, props));
+
+	    _this.state = {
+	      audioList: [],
+	      current: null
+	    };
+	    _this.receiveAudioList = _this.receiveAudioList.bind(_this);
+	    _this.deleteAudioFromList = _this.deleteAudioFromList.bind(_this);
+	    _this.next = _this.next.bind(_this);
+	    _this.previous = _this.previous.bind(_this);
+	    _this.play = _this.play.bind(_this);
+	    _this.props.eventEmitter.addListener('audio-list-receive-audiolist', _this.receiveAudioList);
+	    _this.props.eventEmitter.addListener('audio-list-next', _this.next);
+	    _this.props.eventEmitter.addListener('audio-list-previous', _this.previous);
+	    return _this;
 	  }
 
 	  _createClass(AudioList, [{
+	    key: 'receiveAudioList',
+	    value: function receiveAudioList(audioList) {
+	      console.log(audioList);
+	      audioList = audioList.concat(this.state.audioList);
+	      this.setState({
+	        audioList: audioList,
+	        current: audioList[0]
+	      });
+	      this.props.eventEmitter.emit('audio-controller-load-audio', audioList[0]);
+	      this.props.eventEmitter.emit('audio-info-receive-audio', audioList[0]);
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play(audio) {
+	      console.log(audio);
+	      this.setState({
+	        current: audio
+	      });
+	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
+	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	    }
+	  }, {
+	    key: 'previous',
+	    value: function previous() {
+	      var index = -1;
+	      for (var i in this.state.audioList) {
+	        if (this.state.audioList[i].id === this.state.current.id) {
+	          index = parseInt(i);
+	          break;
+	        }
+	      }
+	      var audio = this.state.audioList[index - 1 === -1 ? this.state.audioList.length - 1 : index - 1];
+	      this.setState({
+	        current: audio
+	      });
+	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
+	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	    }
+	  }, {
+	    key: 'next',
+	    value: function next() {
+	      var index = -1;
+	      for (var i in this.state.audioList) {
+	        if (this.state.audioList[i].id === this.state.current.id) {
+	          index = parseInt(i);
+	          break;
+	        }
+	      }
+	      var audio = this.state.audioList[(index + 1) % this.state.audioList.length];
+	      this.setState({
+	        current: audio
+	      });
+	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
+	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	    }
+	  }, {
+	    key: 'deleteAudioFromList',
+	    value: function deleteAudioFromList(audioId, index) {
+	      var self = this;
+	      var token = $('#token').val();
+	      fetch('/api/user/player/delete', {
+	        method: 'DELETE',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': token
+	        },
+	        body: JSON.stringify({
+	          audioId: audioId
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function () {
+	        console.log("delete from play list");
+	        if (audioId === self.state.current.id) {
+	          self.next();
+	        }
+	        var audioList = self.state.audioList;
+	        audioList.splice(index, 1);
+	        self.setState({
+	          audioList: audioList
+	        });
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var self = this;
+	      var token = $('#token').val();
+	      fetch('/api/user/player/list', {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': token
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var audioList = result.body.map(function (audio) {
+	          return {
+	            id: audio.id,
+	            name: audio.name,
+	            audioUrl: audio.audioUrl,
+	            artist: audio.artist.name,
+	            duration: audio.duration,
+	            sheet: audio.sheet.name,
+	            cover: audio.sheet.cover
+	          };
+	        });
+	        self.receiveAudioList(audioList);
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var self = this;
+	      var al = this.state.audioList.map(function (audio, index) {
+	        if (audio.id === self.state.current.id) {
+	          return _react2.default.createElement(
+	            'div',
+	            { className: 'item active' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'ui grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'one wide column' },
+	                index + 1,
+	                '.'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'seven wide column' },
+	                audio.name
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'four wide column' },
+	                audio.artist
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'four wide column' },
+	                _react2.default.createElement('i', { className: 'remove icon',
+	                  onClick: function onClick() {
+	                    return self.deleteAudioFromList(audio.id, index);
+	                  } })
+	              )
+	            )
+	          );
+	        }
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'item', onClick: function onClick() {
+	              return self.play(audio);
+	            } },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui grid' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'one wide column' },
+	              index + 1,
+	              '.'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'seven wide column' },
+	              audio.name
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'four wide column' },
+	              audio.artist
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'four wide column' },
+	              _react2.default.createElement('i', { className: 'remove icon',
+	                onClick: function onClick() {
+	                  return self.deleteAudioFromList(audio.id, index);
+	                } })
+	            )
+	          )
+	        );
+	      });
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'audio-list' },
@@ -286,454 +556,7 @@ webpackJsonp([2,4],{
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'ui middle aligned divided list' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '2.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'item' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'ui grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'one wide column' },
-	                '1.'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seven wide column' },
-	                'test'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                'liyifan'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'four wide column' },
-	                _react2.default.createElement('i', { className: 'remove icon' })
-	              )
-	            )
-	          )
+	          al
 	        )
 	      );
 	    }
@@ -745,13 +568,32 @@ webpackJsonp([2,4],{
 	var AudioInfo = function (_MuComponent2) {
 	  _inherits(AudioInfo, _MuComponent2);
 
-	  function AudioInfo() {
+	  function AudioInfo(props) {
 	    _classCallCheck(this, AudioInfo);
 
-	    return _possibleConstructorReturn(this, (AudioInfo.__proto__ || Object.getPrototypeOf(AudioInfo)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (AudioInfo.__proto__ || Object.getPrototypeOf(AudioInfo)).call(this, props));
+
+	    _this2.state = {
+	      audio: {
+	        cover: '',
+	        name: '',
+	        artist: '',
+	        sheet: ''
+	      }
+	    };
+	    _this2.receiveAudioInfo = _this2.receiveAudioInfo.bind(_this2);
+	    _this2.props.eventEmitter.addListener('audio-info-receive-audio', _this2.receiveAudioInfo);
+	    return _this2;
 	  }
 
 	  _createClass(AudioInfo, [{
+	    key: 'receiveAudioInfo',
+	    value: function receiveAudioInfo(audio) {
+	      this.setState({
+	        audio: audio
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -763,22 +605,24 @@ webpackJsonp([2,4],{
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui centered medium rounded' },
-	            _react2.default.createElement('img', { src: '/image/hot_sheet_1.png', alt: '' })
+	            _react2.default.createElement('img', {
+	              src: this.state.audio.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(this.state.audio.cover),
+	              alt: '' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'name' },
-	            'test'
+	            this.state.audio.name
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'artist' },
-	            'liyifan'
+	            this.state.audio.artist
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'sheet' },
-	            '\u4F60\u5728\u6211\u7684\u6B4C\u5355\u91CC'
+	            this.state.audio.sheet
 	          )
 	        )
 	      );
@@ -791,15 +635,138 @@ webpackJsonp([2,4],{
 	var AudioController = function (_MuComponent3) {
 	  _inherits(AudioController, _MuComponent3);
 
-	  function AudioController() {
+	  function AudioController(props) {
 	    _classCallCheck(this, AudioController);
 
-	    return _possibleConstructorReturn(this, (AudioController.__proto__ || Object.getPrototypeOf(AudioController)).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, (AudioController.__proto__ || Object.getPrototypeOf(AudioController)).call(this, props));
+
+	    _this3.audioObj = null;
+	    _this3.state = {
+	      name: '',
+	      time: 0,
+	      play: false,
+	      playProgress: 0,
+	      loadProgress: 0
+	    };
+	    _this3.loadAudio = _this3.loadAudio.bind(_this3);
+	    _this3.playpause = _this3.playpause.bind(_this3);
+	    _this3.next = _this3.next.bind(_this3);
+	    _this3.previous = _this3.previous.bind(_this3);
+	    _this3.seek = _this3.seek.bind(_this3);
+	    _this3.volume = _this3.volume.bind(_this3);
+	    _this3.changePlayMode = _this3.changePlayMode.bind(_this3);
+	    _this3.timeConvert = _this3.timeConvert.bind(_this3);
+	    _this3.props.eventEmitter.addListener('audio-controller-load-audio', _this3.loadAudio);
+	    return _this3;
 	  }
 
 	  _createClass(AudioController, [{
+	    key: 'loadAudio',
+	    value: function loadAudio(audio) {
+	      var self = this;
+	      if (this.audioObj !== null && !this.audioObj.paused) {
+	        this.audioObj.pause();
+	        this.audioObj = null;
+	      }
+	      this.setState({
+	        name: audio.name,
+	        time: audio.duration,
+	        playProgress: 0,
+	        loadProgress: 0
+	      });
+	      this.audioObj = new Audio((0, _oss.getURL)(audio.audioUrl));
+	      this.audioObj.onerror = function () {
+	        alert('cant play file');
+	      };
+	      this.audioObj.onprogress = function () {
+	        var load = self.audioObj.buffered.end(0) / self.audioObj.duration * 100;
+	        self.setState({
+	          loadProgress: load
+	        });
+	      };
+	      this.audioObj.ontimeupdate = function () {
+	        self.setState({
+	          loadProgress: self.audioObj.buffered.end(0) / self.audioObj.duration * 100,
+	          time: self.audioObj.duration - self.audioObj.currentTime,
+	          playProgress: self.audioObj.currentTime / self.audioObj.duration * 100
+	        });
+	      };
+	      this.playpause();
+	    }
+	  }, {
+	    key: 'playpause',
+	    value: function playpause() {
+	      if (this.audioObj === null) {
+	        alert('cant play audio');
+	      }
+	      if (!this.audioObj.paused) {
+	        this.audioObj.pause();
+	        this.setState({
+	          play: false
+	        });
+	      } else {
+	        this.audioObj.play();
+	        this.setState({
+	          play: true
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'next',
+	    value: function next() {
+	      this.props.eventEmitter.emit('audio-list-next');
+	    }
+	  }, {
+	    key: 'previous',
+	    value: function previous() {
+	      this.props.eventEmitter.emit('audio-list-previous');
+	    }
+	  }, {
+	    key: 'seek',
+	    value: function seek() {}
+	  }, {
+	    key: 'volume',
+	    value: function volume() {}
+	  }, {
+	    key: 'changePlayMode',
+	    value: function changePlayMode() {
+	      this.props.eventEmitter.emit('audio-list-play-mode');
+	    }
+	  }, {
+	    key: 'timeConvert',
+	    value: function timeConvert(time) {
+	      var min;
+	      var sec;
+	      min = Math.floor(time / 60);
+	      min = min >= 10 ? '' + min : '0' + min;
+	      sec = Math.floor(time % 60);
+	      sec = sec >= 10 ? '' + sec : '0' + sec;
+	      return min + ':' + sec;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var playpause = null;
+	      if (this.state.play) {
+	        playpause = _react2.default.createElement('i', { className: 'pause icon',
+	          onClick: this.playpause });
+	      } else {
+	        playpause = _react2.default.createElement('i', { className: 'play icon',
+	          onClick: this.playpause });
+	      }
+
+	      var sliderProgressStyle = {
+	        left: this.state.playProgress + '%'
+	      };
+
+	      var playProgressStyle = {
+	        width: this.state.playProgress + '%'
+	      };
+
+	      var loadProgressStyle = {
+	        width: this.state.loadProgress + '%'
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'audio-controller' },
@@ -821,7 +788,7 @@ webpackJsonp([2,4],{
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'song-title' },
-	                    'test'
+	                    this.state.name
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
@@ -833,8 +800,9 @@ webpackJsonp([2,4],{
 	                    ),
 	                    _react2.default.createElement(
 	                      'span',
-	                      { className: 'rest' },
-	                      '00:00'
+	                      {
+	                        className: 'rest' },
+	                      this.timeConvert(this.state.time)
 	                    )
 	                  )
 	                )
@@ -846,9 +814,11 @@ webpackJsonp([2,4],{
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'ui progress' },
-	                _react2.default.createElement('div', { className: 'progress-slider' }),
-	                _react2.default.createElement('div', { className: 'progress-loaded' }),
-	                _react2.default.createElement('div', { className: 'progress-player' })
+	                _react2.default.createElement('div', { className: 'progress-slider', style: sliderProgressStyle }),
+	                _react2.default.createElement('div', { className: 'progress-loaded',
+	                  style: loadProgressStyle }),
+	                _react2.default.createElement('div', { className: 'progress-player',
+	                  style: playProgressStyle })
 	              )
 	            )
 	          ),
@@ -908,7 +878,8 @@ webpackJsonp([2,4],{
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'btn-preview' },
-	                  _react2.default.createElement('i', { className: 'step backward icon' })
+	                  _react2.default.createElement('i', { className: 'step backward icon',
+	                    onClick: this.previous })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -917,7 +888,7 @@ webpackJsonp([2,4],{
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'btn-playpause' },
-	                  _react2.default.createElement('i', { className: 'play icon' })
+	                  playpause
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -926,7 +897,8 @@ webpackJsonp([2,4],{
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'btn-next' },
-	                  _react2.default.createElement('i', { className: 'step forward icon' })
+	                  _react2.default.createElement('i', { className: 'step forward icon',
+	                    onClick: this.next })
 	                )
 	              ),
 	              _react2.default.createElement('div', { className: 'four wide column' })
@@ -943,13 +915,25 @@ webpackJsonp([2,4],{
 	var Player = function (_MuComponent4) {
 	  _inherits(Player, _MuComponent4);
 
-	  function Player() {
+	  function Player(props) {
 	    _classCallCheck(this, Player);
 
-	    return _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).apply(this, arguments));
+	    var _this4 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, props));
+
+	    _this4.eventEmitter = new EventEmitter();
+	    return _this4;
 	  }
 
 	  _createClass(Player, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var self = this;
+	      window.addEventListener("message", function (event) {
+	        event.source;
+	        self.eventEmitter.emit('audio-list-receive-audiolist', JSON.parse(event.data));
+	      }, false);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -967,12 +951,14 @@ webpackJsonp([2,4],{
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'eleven wide column' },
-	                _react2.default.createElement(AudioList, null)
+	                _react2.default.createElement(AudioList, {
+	                  eventEmitter: this.eventEmitter })
 	              ),
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'five wide column' },
-	                _react2.default.createElement(AudioInfo, null)
+	                _react2.default.createElement(AudioInfo, {
+	                  eventEmitter: this.eventEmitter })
 	              )
 	            )
 	          )
@@ -983,7 +969,8 @@ webpackJsonp([2,4],{
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui container' },
-	            _react2.default.createElement(AudioController, null)
+	            _react2.default.createElement(AudioController, {
+	              eventEmitter: this.eventEmitter })
 	          )
 	        )
 	      );
@@ -994,188 +981,7 @@ webpackJsonp([2,4],{
 	}(_mushareReactComponent2.default);
 
 	exports.default = Player;
-
-	// define([], function () {
-	//   function MPlayer(option) {
-	//     this.songList = option.songList ? option.songList : [];
-	//     //use in song index in list
-	//     this.compare = option.compare;
-	//     this.mode = option.mode;
-	//     this.audio = null;
-	//     this.currentSong = null;
-	//     this.listener = {};
-	//   }
-	//
-	//   MPlayer.prototype.setOnSongLoadListener = function (listener) {
-	//     this.listener.onSongLoad = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnPlayPauseListener = function (listener) {
-	//     this.listener.onPlayPause = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnProgressListener = function (listener) {
-	//     this.listener.onProgress = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnMetaLoadedListener = function (listener) {
-	//     this.listener.onMetaLoaded = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnSongRemoveListener = function (listener) {
-	//     this.listener.onSongRemove = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnSongListChangeListener = function (listener) {
-	//     this.listener.onSongListChange = listener;
-	//   };
-	//
-	//   MPlayer.prototype.setOnEndedListener = function (listener) {
-	//     this.listener.onEnded = listener;
-	//   };
-	//
-	//   MPlayer.prototype.insertSongList = function (list) {
-	//     var i;
-	//     for (i = list.length - 1; i >= 0; i--) {
-	//       this.songList.unshift(list[i]);
-	//     }
-	//     if (this.listener.onSongListChange) {
-	//       this.listener.onSongListChange(this.songList);
-	//     }
-	//     //play first song in list
-	//     this.load();
-	//   };
-	//
-	//   MPlayer.prototype.removeSong = function (mid) {
-	//     var position = this.compare({mid: mid}, this.songList);
-	//     if (mid == this.currentSong.mid && this.songList.length > 1) {
-	//       this.next();
-	//     }
-	//     this.songList.splice(position, 1);
-	//     if (this.listener.onSongRemove) {
-	//       this.listener.onSongRemove(this.currentSong, this.songList);
-	//     }
-	//   };
-	//
-	//   MPlayer.prototype.load = function (song) {
-	//     console.log('load music');
-	//     if (this.songList.length == 0) {
-	//       return;
-	//     }
-	//     if (typeof song === 'number') {
-	//       var index = this.compare({mid: song}, this.songList);
-	//       this.currentSong = index != -1 ? this.songList[index] : this.songList[0];
-	//     } else {
-	//       this.currentSong = song ? song : this.songList[0];
-	//     }
-	//     if (this.audio && !this.audio.paused) {
-	//       //stop current song
-	//       this.audio.pause();
-	//       this.audio = null;
-	//       if (this.listener.onEnded) {
-	//         this.listener.onEnded();
-	//       }
-	//     }
-	//     this.audio = new Audio(this.currentSong.url);
-	//     this.setAudioListener();
-	//     if (this.listener.onSongLoad) {
-	//       this.listener.onSongLoad(this.currentSong);
-	//     }
-	//     this.playpause();
-	//   };
-	//
-	//   MPlayer.prototype.setAudioListener = function () {
-	//     //load metadata
-	//     var self = this;
-	//     this.audio.onloadedmetadata = function () {
-	//       var meta = {
-	//         duration: timeConvert(self.audio.duration),
-	//         cover: self.currentSong.cover,
-	//         author: self.currentSong.author,
-	//         album: self.currentSong.album,
-	//         title: self.currentSong.title,
-	//       };
-	//       if (self.listener.onMetaLoaded) {
-	//         self.listener.onMetaLoaded(meta);
-	//       }
-	//     };
-	//
-	//     //progress
-	//     this.audio.ontimeupdate = function () {
-	//       if (self.listener.onProgress) {
-	//         self.listener.onProgress({
-	//           percent: self.audio.currentTime / self.audio.duration * 100,
-	//           rest: timeConvert(self.audio.duration - self.audio.currentTime)
-	//         });
-	//       }
-	//     };
-	//
-	//     this.audio.onended = function () {
-	//       if (self.listener.onEnded) {
-	//         self.listener.onEnded();
-	//       }
-	//       self.next();
-	//     };
-	//   };
-	//
-	//   MPlayer.prototype.playpause = function () {
-	//     if (this.listener.onPlayPause) {
-	//       this.listener.onPlayPause(this.audio.paused);
-	//     }
-	//     if (this.audio && !this.audio.paused) {
-	//       console.log('pause');
-	//       this.audio.pause();
-	//     } else if (this.audio && this.audio.paused) {
-	//       console.log('play');
-	//       this.audio.play();
-	//     }
-	//   };
-	//
-	//   MPlayer.prototype.next = function () {
-	//     var nextIndex = 0;
-	//     if (this.compare) {
-	//       nextIndex = (this.compare(this.currentSong, this.songList) + 1) % this.songList.length;
-	//     }
-	//     this.load(this.songList[nextIndex]);
-	//   };
-	//
-	//   MPlayer.prototype.preview = function () {
-	//     var previewIndex = 0;
-	//     if (this.compare) {
-	//       previewIndex = (this.compare(this.currentSong, this.songList) - 1) % this.songList.length;
-	//     }
-	//     if (previewIndex < 0) {
-	//       previewIndex = this.songList.length - 1;
-	//     }
-	//     this.load(this.songList[previewIndex]);
-	//   };
-	//
-	//   MPlayer.prototype.seek = function (percent) {
-	//     if (this.audio) {
-	//       this.audio.currentTime = this.audio.duration * percent;
-	//     }
-	//   };
-	//
-	//   MPlayer.prototype.volume = function (volume) {
-	//     if (this.audio) {
-	//       this.audio.volume = volume;
-	//     }
-	//   };
-	//
-	//   function timeConvert(time) {
-	//     var min;
-	//     var sec;
-	//     min = Math.floor(time / 60);
-	//     min = min >= 10 ? '' + min : '0' + min;
-	//     sec = Math.floor(time % 60);
-	//     sec = sec >= 10 ? '' + sec : '0' + sec;
-	//     return min + ':' + sec;
-	//   }
-	//
-	//   return {
-	//     MPlayer: MPlayer
-	//   };
-	// });
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), __webpack_require__(524), __webpack_require__(540)))
 
 /***/ }),
 
@@ -1214,7 +1020,7 @@ webpackJsonp([2,4],{
 
 
 	// module
-	exports.push([module.id, "#react-root {\n  position: relative; }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: #eeeeee; }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 24px;\n    font-weight: 500;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #999999; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 4px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 12px;\n      height: 12px;\n      margin-top: -4px;\n      margin-left: -4px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 4px;\n      background: black;\n      width: 10%; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 4px;\n      background: #9d9d9d;\n      width: 20%; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 23px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 27px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 20px 0px 15px 40px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: black;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        margin: 0; }\n    #player .player .footer .audio-controller .mod3 .btn-playpause {\n      margin-left: 6px; }\n", ""]);
+	exports.push([module.id, "#react-root {\n  position: relative; }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: #eeeeee; }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 24px;\n    font-weight: 500;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #999999; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 3px;\n      background: #9d9d9d; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 20px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 24px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 20px 0px 15px 40px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: black;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        cursor: pointer;\n        margin: 0; }\n    #player .player .footer .audio-controller .mod3 .btn-playpause {\n      margin-left: 6px; }\n", ""]);
 
 	// exports
 

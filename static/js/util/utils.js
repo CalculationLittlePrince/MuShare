@@ -1,5 +1,7 @@
 import dateformater from 'dateformater'
 
+var player = null;
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -18,4 +20,12 @@ function dateformat(date, format) {
   return  dateformater.format(date, format);
 }
 
-export {guid, dateformat}
+var openPlayer = function(audio){
+  if(player == null) {
+    player = window.open('/player', 'mushareplayer');
+  } else {
+    player.postMessage(JSON.stringify(audio), '*');
+  }
+};
+
+export {guid, dateformat, openPlayer}

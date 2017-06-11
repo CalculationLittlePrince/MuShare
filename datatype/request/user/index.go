@@ -28,3 +28,8 @@ type Search struct {
   Keyword string
 }
 
+type Player struct {
+  UserID  int
+  AudioID int
+}
+
