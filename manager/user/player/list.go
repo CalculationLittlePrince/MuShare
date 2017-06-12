@@ -10,7 +10,7 @@ func (this *Player) GetPlayList(body *user.Player) datatype.Response {
   players := []models.Player{}
 
   tx := this.DB.Begin()
-  if err := tx.Preload("Audio").Where("user_id = ?", body.UserID).Order("created_at desc").Find(&players).Error; err != nil {
+  if err := tx.Preload("Audio").Where("user_id = ?", body.UserID).Order("updated_at desc").Find(&players).Error; err != nil {
     panic(err.Error())
   }
 

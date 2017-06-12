@@ -38,11 +38,11 @@ function getOssClient(token) {
         console.log(data);
         OSSClient.expiration = data.body.expiration;
         OSSClient.client = new OSS.Wrapper({
-          region: 'oss-cn-hangzhou',
+          region: 'oss-ap-northeast-1',
           accessKeyId: data.body.accessKeyId,
           accessKeySecret: data.body.accessKeySecret,
           stsToken: data.body.securityToken,
-          bucket: 'mushare-store'
+          bucket: 'mushare-jp'
         });
         return OSSClient.client
       })
@@ -54,7 +54,8 @@ function getOssClient(token) {
 }
 
 function getURL(objectId) {
-  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+  // return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+  return 'http://mushare-jp.oss-ap-northeast-1.aliyuncs.com/' + objectId;
 }
 
 export {getOssClient, getURL}

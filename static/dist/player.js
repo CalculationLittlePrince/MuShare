@@ -129,11 +129,11 @@ webpackJsonp([2,4],{
 	      console.log(data);
 	      OSSClient.expiration = data.body.expiration;
 	      OSSClient.client = new OSS.Wrapper({
-	        region: 'oss-cn-hangzhou',
+	        region: 'oss-ap-northeast-1',
 	        accessKeyId: data.body.accessKeyId,
 	        accessKeySecret: data.body.accessKeySecret,
 	        stsToken: data.body.securityToken,
-	        bucket: 'mushare-store'
+	        bucket: 'mushare-jp'
 	      });
 	      return OSSClient.client;
 	    });
@@ -145,7 +145,8 @@ webpackJsonp([2,4],{
 	}
 
 	function getURL(objectId) {
-	  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	  // return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	  return 'http://mushare-jp.oss-ap-northeast-1.aliyuncs.com/' + objectId;
 	}
 
 	exports.getOssClient = getOssClient;
@@ -355,24 +356,32 @@ webpackJsonp([2,4],{
 	  _createClass(AudioList, [{
 	    key: 'receiveAudioList',
 	    value: function receiveAudioList(audioList) {
-	      console.log(audioList);
 	      audioList = audioList.concat(this.state.audioList);
-	      this.setState({
-	        audioList: audioList,
-	        current: audioList[0]
+	      var dupList = audioList.filter(function (item, pos) {
+	        var index = -1;
+	        for (var i = 0; i < audioList.length; i++) {
+	          if (item.id === audioList[i].id) {
+	            index = i;
+	            break;
+	          }
+	        }
+	        return index === pos;
 	      });
-	      this.props.eventEmitter.emit('audio-controller-load-audio', audioList[0]);
-	      this.props.eventEmitter.emit('audio-info-receive-audio', audioList[0]);
+	      this.setState({
+	        audioList: dupList,
+	        current: dupList[0]
+	      });
+	      this.play(dupList[0]);
 	    }
 	  }, {
 	    key: 'play',
 	    value: function play(audio) {
-	      console.log(audio);
 	      this.setState({
 	        current: audio
 	      });
 	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
 	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	      this.props.eventEmitter.emit('player-bg', audio.cover);
 	    }
 	  }, {
 	    key: 'previous',
@@ -385,11 +394,7 @@ webpackJsonp([2,4],{
 	        }
 	      }
 	      var audio = this.state.audioList[index - 1 === -1 ? this.state.audioList.length - 1 : index - 1];
-	      this.setState({
-	        current: audio
-	      });
-	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
-	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	      this.play(audio);
 	    }
 	  }, {
 	    key: 'next',
@@ -402,11 +407,7 @@ webpackJsonp([2,4],{
 	        }
 	      }
 	      var audio = this.state.audioList[(index + 1) % this.state.audioList.length];
-	      this.setState({
-	        current: audio
-	      });
-	      this.props.eventEmitter.emit('audio-controller-load-audio', audio);
-	      this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+	      this.play(audio);
 	    }
 	  }, {
 	    key: 'deleteAudioFromList',
@@ -596,6 +597,7 @@ webpackJsonp([2,4],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'audio-info' },
@@ -646,8 +648,10 @@ webpackJsonp([2,4],{
 	      time: 0,
 	      play: false,
 	      playProgress: 0,
-	      loadProgress: 0
+	      loadProgress: 0,
+	      volume: 0.5
 	    };
+	    _this3.onseek = false;
 	    _this3.loadAudio = _this3.loadAudio.bind(_this3);
 	    _this3.playpause = _this3.playpause.bind(_this3);
 	    _this3.next = _this3.next.bind(_this3);
@@ -675,8 +679,9 @@ webpackJsonp([2,4],{
 	        loadProgress: 0
 	      });
 	      this.audioObj = new Audio((0, _oss.getURL)(audio.audioUrl));
+	      this.audioObj.volume = this.state.volume;
 	      this.audioObj.onerror = function () {
-	        alert('cant play file');
+	        alert('cant play audio');
 	      };
 	      this.audioObj.onprogress = function () {
 	        var load = self.audioObj.buffered.end(0) / self.audioObj.duration * 100;
@@ -685,11 +690,17 @@ webpackJsonp([2,4],{
 	        });
 	      };
 	      this.audioObj.ontimeupdate = function () {
+	        if (self.onseek) {
+	          return;
+	        }
 	        self.setState({
 	          loadProgress: self.audioObj.buffered.end(0) / self.audioObj.duration * 100,
 	          time: self.audioObj.duration - self.audioObj.currentTime,
 	          playProgress: self.audioObj.currentTime / self.audioObj.duration * 100
 	        });
+	      };
+	      this.audioObj.onended = function () {
+	        self.next();
 	      };
 	      this.playpause();
 	    }
@@ -698,6 +709,7 @@ webpackJsonp([2,4],{
 	    value: function playpause() {
 	      if (this.audioObj === null) {
 	        alert('cant play audio');
+	        return;
 	      }
 	      if (!this.audioObj.paused) {
 	        this.audioObj.pause();
@@ -723,10 +735,39 @@ webpackJsonp([2,4],{
 	    }
 	  }, {
 	    key: 'seek',
-	    value: function seek() {}
+	    value: function seek(event) {
+	      var left = $('.audio-controller .bd .progress').offset().left;
+	      var width = $('.audio-controller .bd .progress').width();
+	      var seek;
+	      if (event.pageX - left < 0) {
+	        seek = 0;
+	      } else if (event.pageX - left >= width) {
+	        seek = 100;
+	      } else {
+	        seek = parseFloat(event.pageX - left) / parseFloat(width) * 100;
+	      }
+	      this.setState({
+	        playProgress: seek
+	      });
+	    }
 	  }, {
 	    key: 'volume',
-	    value: function volume() {}
+	    value: function volume(event) {
+	      var left = $('.audio-controller .volume-progress').offset().left;
+	      var width = $('.audio-controller .volume-progress').width();
+	      var volume;
+	      if (event.pageX - left < 0) {
+	        volume = 0;
+	      } else if (event.pageX - left >= width) {
+	        volume = 1;
+	      } else {
+	        volume = parseFloat(event.pageX - left) / parseFloat(width);
+	      }
+	      this.audioObj.volume = volume;
+	      this.setState({
+	        volume: volume
+	      });
+	    }
 	  }, {
 	    key: 'changePlayMode',
 	    value: function changePlayMode() {
@@ -746,6 +787,8 @@ webpackJsonp([2,4],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this4 = this;
+
 	      var playpause = null;
 	      if (this.state.play) {
 	        playpause = _react2.default.createElement('i', { className: 'pause icon',
@@ -766,6 +809,23 @@ webpackJsonp([2,4],{
 	      var loadProgressStyle = {
 	        width: this.state.loadProgress + '%'
 	      };
+
+	      var volumeStyle = {
+	        width: this.state.volume * 100 + '%'
+	      };
+
+	      var sliderStyle = {
+	        left: this.state.volume * 100 + '%'
+	      };
+
+	      var volumeIcon = null;
+	      if (this.state.volume <= 0) {
+	        volumeIcon = _react2.default.createElement('i', { className: 'volume off icon' });
+	      } else if (this.state.volume <= 0.4) {
+	        volumeIcon = _react2.default.createElement('i', { className: 'volume down icon' });
+	      } else {
+	        volumeIcon = _react2.default.createElement('i', { className: 'volume up icon' });
+	      }
 
 	      return _react2.default.createElement(
 	        'div',
@@ -814,7 +874,23 @@ webpackJsonp([2,4],{
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'ui progress' },
-	                _react2.default.createElement('div', { className: 'progress-slider', style: sliderProgressStyle }),
+	                _react2.default.createElement('div', {
+	                  className: 'progress-slider', style: sliderProgressStyle,
+	                  onMouseDown: function onMouseDown() {
+	                    var self = _this4;
+	                    console.log('mouse down');
+	                    window.addEventListener("mousemove", _this4.seek);
+	                    _this4.onseek = true;
+	                    function mouseup() {
+	                      console.log('mouse up');
+	                      window.removeEventListener("mouseup", mouseup);
+	                      window.removeEventListener("mousemove", self.seek);
+	                      self.audioObj.currentTime = self.state.playProgress * self.audioObj.duration / 100;
+	                      self.onseek = false;
+	                    }
+
+	                    window.addEventListener("mouseup", mouseup);
+	                  } }),
 	                _react2.default.createElement('div', { className: 'progress-loaded',
 	                  style: loadProgressStyle }),
 	                _react2.default.createElement('div', { className: 'progress-player',
@@ -834,7 +910,7 @@ webpackJsonp([2,4],{
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'btn-mode' },
-	                  _react2.default.createElement('i', { className: 'random icon' })
+	                  _react2.default.createElement('i', { className: 'refresh icon' })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -849,7 +925,7 @@ webpackJsonp([2,4],{
 	                    _react2.default.createElement(
 	                      'div',
 	                      { className: 'btn-volume' },
-	                      _react2.default.createElement('i', { className: 'volume up icon' })
+	                      volumeIcon
 	                    )
 	                  ),
 	                  _react2.default.createElement(
@@ -858,8 +934,21 @@ webpackJsonp([2,4],{
 	                    _react2.default.createElement(
 	                      'div',
 	                      { className: 'volume-progress' },
-	                      _react2.default.createElement('div', { className: 'current' }),
-	                      _react2.default.createElement('div', { className: 'slider' })
+	                      _react2.default.createElement('div', {
+	                        className: 'current',
+	                        style: volumeStyle }),
+	                      _react2.default.createElement('div', {
+	                        style: sliderStyle,
+	                        className: 'slider',
+	                        onMouseDown: function onMouseDown() {
+	                          var self = _this4;
+	                          window.addEventListener("mousemove", _this4.volume);
+	                          function mouseup() {
+	                            window.removeEventListener("mousemove", self.volume);
+	                            window.removeEventListener("mouseup", mouseup);
+	                          }
+	                          window.addEventListener("mouseup", mouseup);
+	                        } })
 	                    )
 	                  )
 	                )
@@ -918,13 +1007,25 @@ webpackJsonp([2,4],{
 	  function Player(props) {
 	    _classCallCheck(this, Player);
 
-	    var _this4 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, props));
+	    var _this5 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, props));
 
-	    _this4.eventEmitter = new EventEmitter();
-	    return _this4;
+	    _this5.state = {
+	      bg: ''
+	    };
+	    _this5.receivePlayerBg = _this5.receivePlayerBg.bind(_this5);
+	    _this5.eventEmitter = new EventEmitter();
+	    _this5.eventEmitter.addListener('player-bg', _this5.receivePlayerBg);
+	    return _this5;
 	  }
 
 	  _createClass(Player, [{
+	    key: 'receivePlayerBg',
+	    value: function receivePlayerBg(bg) {
+	      this.setState({
+	        bg: bg
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var self = this;
@@ -936,9 +1037,13 @@ webpackJsonp([2,4],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var bgStyle = {
+	        backgroundImage: 'url("' + (0, _oss.getURL)(this.state.bg) + '")'
+	      };
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'player' },
+	        _react2.default.createElement('div', { className: 'bg', style: bgStyle }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'middle' },
@@ -1020,7 +1125,7 @@ webpackJsonp([2,4],{
 
 
 	// module
-	exports.push([module.id, "#react-root {\n  position: relative; }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.06); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: #eeeeee; }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 24px;\n    font-weight: 500;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #999999; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 3px;\n      background: #9d9d9d; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 20px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 24px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 20px 0px 15px 40px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: black;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        cursor: pointer;\n        margin: 0; }\n    #player .player .footer .audio-controller .mod3 .btn-playpause {\n      margin-left: 6px; }\n", ""]);
+	exports.push([module.id, "#react-root {\n  position: relative;\n  overflow: hidden; }\n\n.bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n.bg {\n  background-position: center;\n  background-size: cover;\n  z-index: -2;\n  filter: blur(20px) brightness(0.35);\n  -webkit-transform: scale(1.07); }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  background: none;\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list::-webkit-scrollbar {\n    display: none; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: rgba(238, 238, 238, 0.5); }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 24px;\n    font-weight: 500;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 3px;\n      background: #9d9d9d; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 20px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 24px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 23px 0px 15px 60px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: #333333;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        cursor: pointer;\n        margin: 0; }\n", ""]);
 
 	// exports
 

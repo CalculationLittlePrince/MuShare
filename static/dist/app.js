@@ -192,9 +192,6 @@ webpackJsonp([0,4],{
 	        action: 'hide'
 	      });
 	      this.loadUserProfile();
-	      setInterval(function () {
-	        self.loadUserProfile();
-	      }, 1000);
 	    }
 	  }, {
 	    key: 'loadUserProfile',
@@ -556,11 +553,11 @@ webpackJsonp([0,4],{
 	      console.log(data);
 	      OSSClient.expiration = data.body.expiration;
 	      OSSClient.client = new OSS.Wrapper({
-	        region: 'oss-cn-hangzhou',
+	        region: 'oss-ap-northeast-1',
 	        accessKeyId: data.body.accessKeyId,
 	        accessKeySecret: data.body.accessKeySecret,
 	        stsToken: data.body.securityToken,
-	        bucket: 'mushare-store'
+	        bucket: 'mushare-jp'
 	      });
 	      return OSSClient.client;
 	    });
@@ -572,7 +569,8 @@ webpackJsonp([0,4],{
 	}
 
 	function getURL(objectId) {
-	  return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	  // return 'http://mushare-store.oss-cn-hangzhou.aliyuncs.com/' + objectId;
+	  return 'http://mushare-jp.oss-ap-northeast-1.aliyuncs.com/' + objectId;
 	}
 
 	exports.getOssClient = getOssClient;
@@ -2699,7 +2697,7 @@ webpackJsonp([0,4],{
 	}
 
 	var openPlayer = function openPlayer(audio) {
-	  if (player == null) {
+	  if (player == null || player.closed) {
 	    player = window.open('/player', 'mushareplayer');
 	  } else {
 	    player.postMessage(JSON.stringify(audio), '*');
@@ -2743,13 +2741,12 @@ webpackJsonp([0,4],{
 
 	            case 2:
 	              if (!(i < 5)) {
-	                _context2.next = 18;
+	                _context2.next = 17;
 	                break;
 	              }
 
-	              console.log(i);
-	              _context2.prev = 4;
-	              _context2.next = 7;
+	              _context2.prev = 3;
+	              _context2.next = 6;
 	              return client.multipartUpload(objectKeyId, file, {
 	                checkpoint: checkpoint,
 	                progress: regeneratorRuntime.mark(function progress(percentage, cpt) {
@@ -2757,9 +2754,10 @@ webpackJsonp([0,4],{
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
 	                        case 0:
+	                          console.log(percentage);
 	                          checkpoint = cpt;
 
-	                        case 1:
+	                        case 2:
 	                        case 'end':
 	                          return _context.stop();
 	                      }
@@ -2768,32 +2766,32 @@ webpackJsonp([0,4],{
 	                })
 	              });
 
-	            case 7:
+	            case 6:
 	              result = _context2.sent;
 
 	              console.log(result);
 	              return _context2.abrupt('return', result);
 
-	            case 12:
-	              _context2.prev = 12;
-	              _context2.t0 = _context2['catch'](4);
+	            case 11:
+	              _context2.prev = 11;
+	              _context2.t0 = _context2['catch'](3);
 
 	              console.log(_context2.t0);
 
-	            case 15:
+	            case 14:
 	              i++;
 	              _context2.next = 2;
 	              break;
 
-	            case 18:
+	            case 17:
 	              throw new Error('Upload Failed');
 
-	            case 19:
+	            case 18:
 	            case 'end':
 	              return _context2.stop();
 	          }
 	        }
-	      }, _callee, this, [[4, 12]]);
+	      }, _callee, this, [[3, 11]]);
 	    }));
 	  });
 	}
@@ -3684,6 +3682,10 @@ webpackJsonp([0,4],{
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
+	var _reactRouterDom = __webpack_require__(483);
+
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3706,12 +3708,13 @@ webpackJsonp([0,4],{
 	    value: function render() {
 	      var cards = this.props.sheets.map(function (sheet) {
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'card' },
+	          _reactRouterDom.Link,
+	          { to: '/sheet/' + sheet.id,
+	            className: 'card' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'image' },
-	            _react2.default.createElement('img', { src: '/image/avatar.png' })
+	            _react2.default.createElement('img', { src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -3857,52 +3860,62 @@ webpackJsonp([0,4],{
 	  _createClass(SheetInfo, [{
 	    key: 'render',
 	    value: function render() {
+
+	      var bgStyle = {
+	        backgroundImage: 'url("' + this.props.sheetInfo.cover + '")'
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'sheet-info ui container' },
+	        { className: 'sheet-info' },
+	        _react2.default.createElement('div', { className: 'bg', style: bgStyle }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'ui two column centered grid' },
+	          { className: 'ui container' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'column' },
+	            { className: 'ui two column centered grid' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'ui items' },
+	              { className: 'column' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'item' },
+	                { className: 'ui items' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'ui middle raised cover aligned image' },
-	                  _react2.default.createElement('img', { src: this.props.sheetInfo.cover, alt: '' })
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'middle aligned content' },
+	                  { className: 'item' },
 	                  _react2.default.createElement(
 	                    'div',
-	                    {
-	                      className: 'ui huge header sheetname' },
-	                    this.props.sheetInfo.sheetName
+	                    { className: 'ui middle raised cover aligned image' },
+	                    _react2.default.createElement('img', { src: this.props.sheetInfo.cover, alt: '' })
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
-	                    { className: 'meta' },
-	                    _react2.default.createElement('img', { className: 'ui avatar image',
-	                      src: this.props.sheetInfo.creatorAvatar }),
+	                    { className: 'middle aligned content' },
 	                    _react2.default.createElement(
-	                      'a',
-	                      { href: '',
-	                        className: 'username' },
-	                      this.props.sheetInfo.creator
+	                      'div',
+	                      {
+	                        className: 'ui huge header sheetname' },
+	                      this.props.sheetInfo.sheetName
 	                    ),
 	                    _react2.default.createElement(
-	                      'span',
-	                      {
-	                        className: 'modify-date' },
-	                      '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A',
-	                      this.props.sheetInfo.lastModified
+	                      'div',
+	                      { className: 'meta' },
+	                      _react2.default.createElement('img', { className: 'ui avatar image',
+	                        src: this.props.sheetInfo.creatorAvatar }),
+	                      _react2.default.createElement(
+	                        'a',
+	                        { href: '',
+	                          className: 'username' },
+	                        this.props.sheetInfo.creator
+	                      ),
+	                      _react2.default.createElement(
+	                        'span',
+	                        {
+	                          className: 'modify-date' },
+	                        '\u4E0A\u6B21\u4FEE\u6539\u65E5\u671F\uFF1A',
+	                        this.props.sheetInfo.lastModified
+	                      )
 	                    )
 	                  )
 	                )
@@ -3966,6 +3979,12 @@ webpackJsonp([0,4],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      var delIcon = null;
+	      if (this.props.owner) {
+	        delIcon = _react2.default.createElement('i', { className: 'remove icon' });
+	      }
+
 	      var self = this;
 	      var rows = this.props.audioList.map(function (audio, index) {
 	        return _react2.default.createElement(
@@ -3996,7 +4015,7 @@ webpackJsonp([0,4],{
 	                  return self.play(audio);
 	                } }),
 	              _react2.default.createElement('i', { className: 'plus icon' }),
-	              _react2.default.createElement('i', { className: 'remove icon' })
+	              delIcon
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -4061,6 +4080,7 @@ webpackJsonp([0,4],{
 	    var _this3 = _possibleConstructorReturn(this, (UploadAudioModal.__proto__ || Object.getPrototypeOf(UploadAudioModal)).call(this, props));
 
 	    _this3.state = {
+	      filename: '',
 	      uploading: false,
 	      artists: []
 	    };
@@ -4180,6 +4200,9 @@ webpackJsonp([0,4],{
 	          if (duration) {
 	            self.audio.audioFile = file;
 	            self.audio.duration = duration;
+	            self.setState({
+	              filename: file.name
+	            });
 	          } else {
 	            alert('Not Audio File');
 	          }
@@ -4300,6 +4323,11 @@ webpackJsonp([0,4],{
 	                'label',
 	                { htmlFor: 'audio-file' },
 	                '\u6B4C\u66F2\u6587\u4EF6'
+	              ),
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                this.state.filename
 	              )
 	            ),
 	            button
@@ -4320,6 +4348,11 @@ webpackJsonp([0,4],{
 
 	    var _this4 = _possibleConstructorReturn(this, (AudioContent.__proto__ || Object.getPrototypeOf(AudioContent)).call(this, props));
 
+	    _this4.state = {
+	      owner: _this4.props.owner,
+	      subscribed: _this4.props.subscribed
+	    };
+	    _this4.subscribe = _this4.subscribe.bind(_this4);
 	    _this4.openUploadAudioModal = _this4.openUploadAudioModal.bind(_this4);
 	    return _this4;
 	  }
@@ -4332,8 +4365,68 @@ webpackJsonp([0,4],{
 	      }).modal('show');
 	    }
 	  }, {
+	    key: 'subscribe',
+	    value: function subscribe() {
+	      var token = $('#token').val();
+	      var self = this;
+	      fetch('/api/music/sheet/subscribe', {
+	        method: 'POST',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': token
+	        },
+	        body: JSON.stringify({
+	          toId: parseInt(this.props.sheetId)
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function () {
+	        alert("订阅成功");
+	        self.setState({
+	          subscribed: true
+	        });
+	      }).catch(function (error) {
+	        alert("订阅失败");
+	        console.error(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.setState({
+	        owner: nextProps.owner,
+	        subscribed: nextProps.subscribed
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      var button = null;
+
+	      if (this.state.owner && !this.state.subscribed) {
+	        button = _react2.default.createElement(
+	          'button',
+	          {
+	            className: 'ui primary button',
+	            onClick: this.openUploadAudioModal },
+	          '\u4E0A\u4F20\u6B4C\u66F2'
+	        );
+	      } else if (!this.state.owner && this.state.subscribed) {
+	        button = _react2.default.createElement(
+	          'button',
+	          {
+	            className: 'ui disabled button' },
+	          '\u5DF2\u8BA2\u9605'
+	        );
+	      } else if (!this.state.owner && !this.state.subscribed) {
+	        button = _react2.default.createElement(
+	          'button',
+	          {
+	            className: 'ui primary button',
+	            onClick: this.subscribe },
+	          '\u8BA2\u9605\u6B4C\u5355'
+	        );
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'audio-content ui container' },
@@ -4358,14 +4451,9 @@ webpackJsonp([0,4],{
 	            'data-tab': 'audioList' },
 	          _react2.default.createElement(UploadAudioModal, {
 	            sheetId: this.props.sheetId }),
-	          _react2.default.createElement(
-	            'button',
-	            {
-	              className: 'ui primary button',
-	              onClick: this.openUploadAudioModal },
-	            '\u4E0A\u4F20\u6B4C\u66F2'
-	          ),
+	          button,
 	          _react2.default.createElement(AudioList, {
+	            owner: this.props.owner,
 	            audioList: this.props.audioList })
 	        ),
 	        _react2.default.createElement('div', { className: 'ui bottom attached tab segment', 'data-tab': 'comments' })
@@ -4392,7 +4480,9 @@ webpackJsonp([0,4],{
 	        lastModified: '',
 	        cover: '/image/avatar.png'
 	      },
-	      audioList: []
+	      audioList: [],
+	      owner: true,
+	      subscribed: true
 	    };
 	    return _this5;
 	  }
@@ -4431,9 +4521,13 @@ webpackJsonp([0,4],{
 	        });
 	        self.setState({
 	          sheetInfo: sheetInfo,
-	          audioList: audioList
+	          audioList: audioList,
+	          owner: data.body.owner,
+	          subscribed: data.body.subscribed
 	        });
-	      }).then(function (error) {});
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -4445,7 +4539,9 @@ webpackJsonp([0,4],{
 	          sheetInfo: this.state.sheetInfo }),
 	        _react2.default.createElement(AudioContent, {
 	          audioList: this.state.audioList,
-	          sheetId: this.props.match.params.sheetId })
+	          sheetId: this.props.match.params.sheetId,
+	          owner: this.state.owner,
+	          subscribed: this.state.subscribed })
 	      );
 	    }
 	  }]);
@@ -4548,7 +4644,7 @@ webpackJsonp([0,4],{
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info .cover {\n  box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n  width: 220px;\n  padding: 2px; }\n\n#app .sheet-page .sheet-info .item .content .sheetname {\n  font-size: 3em; }\n\n#app .sheet-page .sheet-info .item .content .modify-date {\n  font-size: 13px;\n  margin-left: 5px; }\n\n#app .sheet-page .sheet-info .item .content .username {\n  font-size: 15px;\n  font-weight: bold;\n  margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#app .sheet-page .bg {\n  background-size: cover;\n  background-position: center;\n  z-index: -2;\n  filter: blur(10px) brightness(0.75);\n  -webkit-transform: scale(1.07); }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info {\n  position: relative;\n  overflow: hidden; }\n  #app .sheet-page .sheet-info .cover {\n    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n    width: 220px;\n    padding: 2px; }\n  #app .sheet-page .sheet-info .item .content .sheetname {\n    font-size: 3em; }\n  #app .sheet-page .sheet-info .item .content .modify-date {\n    font-size: 13px;\n    margin-left: 5px; }\n  #app .sheet-page .sheet-info .item .content .username {\n    font-size: 15px;\n    font-weight: bold;\n    margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

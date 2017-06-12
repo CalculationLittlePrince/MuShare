@@ -21,24 +21,32 @@ class AudioList extends MuComponent {
   }
 
   receiveAudioList(audioList) {
-    console.log(audioList);
     audioList = audioList.concat(this.state.audioList);
-    this.setState({
-      audioList: audioList,
-      current: audioList[0]
+    var dupList = audioList.filter(function (item, pos) {
+      var index = -1;
+      for (let i = 0; i < audioList.length; i++) {
+        if (item.id === audioList[i].id) {
+          index = i;
+          break;
+        }
+      }
+      return index === pos;
     });
-    this.props.eventEmitter.emit('audio-controller-load-audio', audioList[0]);
-    this.props.eventEmitter.emit('audio-info-receive-audio', audioList[0]);
+    this.setState({
+      audioList: dupList,
+      current: dupList[0]
+    });
+    this.play(dupList[0]);
   }
 
 
   play(audio) {
-    console.log(audio);
     this.setState({
       current: audio,
     });
     this.props.eventEmitter.emit('audio-controller-load-audio', audio);
     this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+    this.props.eventEmitter.emit('player-bg', audio.cover);
   }
 
   previous() {
@@ -50,11 +58,7 @@ class AudioList extends MuComponent {
       }
     }
     var audio = this.state.audioList[(index - 1) === -1 ? (this.state.audioList.length - 1) : (index - 1)];
-    this.setState({
-      current: audio
-    });
-    this.props.eventEmitter.emit('audio-controller-load-audio', audio);
-    this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+    this.play(audio);
   }
 
   next() {
@@ -65,12 +69,8 @@ class AudioList extends MuComponent {
         break;
       }
     }
-    var audio = this.state.audioList[(index+1) % this.state.audioList.length];
-    this.setState({
-      current: audio
-    });
-    this.props.eventEmitter.emit('audio-controller-load-audio', audio);
-    this.props.eventEmitter.emit('audio-info-receive-audio', audio);
+    var audio = this.state.audioList[(index + 1) % this.state.audioList.length];
+    this.play(audio);
   }
 
   deleteAudioFromList(audioId, index) {
@@ -210,6 +210,7 @@ class AudioInfo extends MuComponent {
   }
 
   render() {
+
     return (
       <div className="audio-info">
         <div className="ui segment cover">
@@ -244,7 +245,9 @@ class AudioController extends MuComponent {
       play: false,
       playProgress: 0,
       loadProgress: 0,
+      volume: 0.5,
     }
+    this.onseek = false;
     this.loadAudio = this.loadAudio.bind(this);
     this.playpause = this.playpause.bind(this);
     this.next = this.next.bind(this);
@@ -269,8 +272,9 @@ class AudioController extends MuComponent {
       loadProgress: 0
     });
     this.audioObj = new Audio(getURL(audio.audioUrl));
+    this.audioObj.volume = this.state.volume;
     this.audioObj.onerror = function () {
-      alert('cant play file');
+      alert('cant play audio');
     }
     this.audioObj.onprogress = function () {
       var load = self.audioObj.buffered.end(0) / self.audioObj.duration * 100;
@@ -279,11 +283,17 @@ class AudioController extends MuComponent {
       });
     }
     this.audioObj.ontimeupdate = function () {
+      if (self.onseek) {
+        return;
+      }
       self.setState({
         loadProgress: self.audioObj.buffered.end(0) / self.audioObj.duration * 100,
         time: self.audioObj.duration - self.audioObj.currentTime,
         playProgress: self.audioObj.currentTime / self.audioObj.duration * 100
       });
+    }
+    this.audioObj.onended = function () {
+      self.next();
     }
     this.playpause();
   }
@@ -291,6 +301,7 @@ class AudioController extends MuComponent {
   playpause() {
     if (this.audioObj === null) {
       alert('cant play audio');
+      return;
     }
     if (!this.audioObj.paused) {
       this.audioObj.pause();
@@ -313,12 +324,37 @@ class AudioController extends MuComponent {
     this.props.eventEmitter.emit('audio-list-previous');
   }
 
-  seek() {
-
+  seek(event) {
+    var left = $('.audio-controller .bd .progress').offset().left;
+    var width = $('.audio-controller .bd .progress').width();
+    var seek;
+    if (event.pageX - left < 0) {
+      seek = 0;
+    } else if (event.pageX - left >= width) {
+      seek = 100;
+    } else {
+      seek = parseFloat(event.pageX - left) / parseFloat(width) * 100;
+    }
+    this.setState({
+      playProgress: seek
+    });
   }
 
-  volume() {
-
+  volume(event) {
+    var left = $('.audio-controller .volume-progress').offset().left;
+    var width = $('.audio-controller .volume-progress').width();
+    var volume;
+    if (event.pageX - left < 0) {
+      volume = 0;
+    } else if (event.pageX - left >= width) {
+      volume = 1;
+    } else {
+      volume = parseFloat(event.pageX - left) / parseFloat(width);
+    }
+    this.audioObj.volume = volume;
+    this.setState({
+      volume: volume
+    });
   }
 
   changePlayMode() {
@@ -361,6 +397,29 @@ class AudioController extends MuComponent {
       width: this.state.loadProgress + '%'
     }
 
+    var volumeStyle = {
+      width: (this.state.volume * 100) + '%'
+    }
+
+    var sliderStyle = {
+      left: (this.state.volume * 100) + '%'
+    }
+
+    var volumeIcon = null;
+    if (this.state.volume <= 0) {
+      volumeIcon = (
+        <i className="volume off icon"></i>
+      );
+    } else if (this.state.volume <= 0.4) {
+      volumeIcon = (
+        <i className="volume down icon"></i>
+      );
+    } else {
+      volumeIcon = (
+        <i className="volume up icon"></i>
+      );
+    }
+
     return (
       <div className="audio-controller">
         <div className="ui grid">
@@ -381,7 +440,23 @@ class AudioController extends MuComponent {
             </div>
             <div className="bd">
               <div className="ui progress">
-                <div className="progress-slider" style={sliderProgressStyle}>
+                <div
+                  className="progress-slider" style={sliderProgressStyle}
+                  onMouseDown={() => {
+                    var self = this;
+                    console.log('mouse down');
+                    window.addEventListener("mousemove", this.seek);
+                    this.onseek = true;
+                    function mouseup() {
+                      console.log('mouse up');
+                      window.removeEventListener("mouseup", mouseup);
+                      window.removeEventListener("mousemove", self.seek);
+                      self.audioObj.currentTime = self.state.playProgress * self.audioObj.duration / 100;
+                      self.onseek = false;
+                    }
+
+                    window.addEventListener("mouseup", mouseup);
+                  }}>
                 </div>
                 <div className="progress-loaded"
                      style={loadProgressStyle}></div>
@@ -394,20 +469,33 @@ class AudioController extends MuComponent {
             <div className="ui grid">
               <div className="six wide column">
                 <div className="btn-mode">
-                  <i className="random icon"></i>
+                  <i className="refresh icon"></i>
                 </div>
               </div>
               <div className="ten wide column">
                 <div className="ui grid">
                   <div className="six wide column">
                     <div className="btn-volume">
-                      <i className="volume up icon"></i>
+                      {volumeIcon}
                     </div>
                   </div>
                   <div className="ten wide column">
                     <div className="volume-progress">
-                      <div className="current"></div>
-                      <div className="slider"></div>
+                      <div
+                        className="current"
+                        style={volumeStyle}></div>
+                      <div
+                        style={sliderStyle}
+                        className="slider"
+                        onMouseDown={() => {
+                          var self = this;
+                          window.addEventListener("mousemove", this.volume);
+                          function mouseup() {
+                            window.removeEventListener("mousemove", self.volume);
+                            window.removeEventListener("mouseup", mouseup);
+                          }
+                          window.addEventListener("mouseup", mouseup);
+                        }}></div>
                     </div>
                   </div>
                 </div>
@@ -446,7 +534,18 @@ class Player extends MuComponent {
 
   constructor(props) {
     super(props);
+    this.state = {
+      bg: ''
+    }
+    this.receivePlayerBg = this.receivePlayerBg.bind(this);
     this.eventEmitter = new EventEmitter();
+    this.eventEmitter.addListener('player-bg', this.receivePlayerBg)
+  }
+
+  receivePlayerBg(bg) {
+    this.setState({
+      bg: bg
+    });
   }
 
   componentDidMount() {
@@ -458,8 +557,12 @@ class Player extends MuComponent {
   }
 
   render() {
+    var bgStyle = {
+      backgroundImage: 'url("' + getURL(this.state.bg) + '")'
+    }
     return (
       <div className="player">
+        <div className="bg" style={bgStyle}></div>
         <div className="middle">
           <div className="ui container">
             <div className="ui grid">

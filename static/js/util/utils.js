@@ -21,7 +21,7 @@ function dateformat(date, format) {
 }
 
 var openPlayer = function(audio){
-  if(player == null) {
+  if(player == null || player.closed) {
     player = window.open('/player', 'mushareplayer');
   } else {
     player.postMessage(JSON.stringify(audio), '*');

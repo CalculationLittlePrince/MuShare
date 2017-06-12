@@ -21,9 +21,6 @@ class Top extends MuComponent {
       action: 'hide'
     });
     this.loadUserProfile();
-    setInterval(function () {
-      self.loadUserProfile();
-    }, 1000);
   }
 
   loadUserProfile() {

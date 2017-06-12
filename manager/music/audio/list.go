@@ -28,6 +28,7 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
   }
 
   if sheet.UserID == body.UserID {
+    sheet.Owner = true
     getAudios(tx, &sheet.Audios, body.SheetID)
     return ok("success", &sheet)
   }
@@ -40,8 +41,17 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
     tx.Where("from_id = ? AND to_id = ?",
       strconv.Itoa(body.UserID), strconv.Itoa(sheet.UserID)).First(&friend)
     if friend.ID == 0 {
-      return forbidden("not friend")
+      return forbidden("no enough privi")
     }
+  }
+
+  sheet.Owner = false
+  subscribe := models.Subscribe{}
+  tx.Where("user_id = ? and sheet_id = ?", body.UserID, body.SheetID).Find(&subscribe)
+  if subscribe.ID != 0 {
+    sheet.Subscribed = true
+  } else {
+    sheet.Subscribed = false
   }
 
   getAudios(tx, &sheet.Audios, body.SheetID)

@@ -1,5 +1,7 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
+import {Link} from 'react-router-dom';
+import {getURL} from '../../oss/oss'
 
 
 class SheetCards extends MuComponent {
@@ -10,16 +12,17 @@ class SheetCards extends MuComponent {
   render() {
     var cards = this.props.sheets.map(function (sheet) {
       return (
-        <div className="card">
+        <Link to={`/sheet/${sheet.id}`}
+              className="card">
           <div className="image">
-            <img src="/image/avatar.png"/>
+            <img src={sheet.cover === '' ? '/image/avatar.png' : getURL(sheet.cover)}/>
           </div>
           <div className="content">
             <div className="description">
               {sheet.name}
             </div>
           </div>
-        </div>
+        </Link>
       );
     });
     return (

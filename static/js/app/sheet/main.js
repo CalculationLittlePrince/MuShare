@@ -8,25 +8,33 @@ import {uploadAudio} from '../../oss/upload'
 
 class SheetInfo extends MuComponent {
   render() {
+
+    var bgStyle = {
+      backgroundImage: 'url("' + this.props.sheetInfo.cover + '")'
+    }
+
     return (
-      <div className="sheet-info ui container">
-        <div className="ui two column centered grid">
-          <div className="column">
-            <div className="ui items">
-              <div className="item">
-                <div className="ui middle raised cover aligned image">
-                  <img src={this.props.sheetInfo.cover} alt=""/>
-                </div>
-                <div className="middle aligned content">
-                  <div
-                    className="ui huge header sheetname">{this.props.sheetInfo.sheetName}</div>
-                  <div className="meta">
-                    <img className="ui avatar image"
-                         src={this.props.sheetInfo.creatorAvatar}/>
-                    <a href=""
-                       className="username">{this.props.sheetInfo.creator}</a>
-                    <span
-                      className="modify-date">上次修改日期：{this.props.sheetInfo.lastModified}</span>
+      <div className="sheet-info">
+        <div className="bg" style={bgStyle}></div>
+        <div className="ui container">
+          <div className="ui two column centered grid">
+            <div className="column">
+              <div className="ui items">
+                <div className="item">
+                  <div className="ui middle raised cover aligned image">
+                    <img src={this.props.sheetInfo.cover} alt=""/>
+                  </div>
+                  <div className="middle aligned content">
+                    <div
+                      className="ui huge header sheetname">{this.props.sheetInfo.sheetName}</div>
+                    <div className="meta">
+                      <img className="ui avatar image"
+                           src={this.props.sheetInfo.creatorAvatar}/>
+                      <a href=""
+                         className="username">{this.props.sheetInfo.creator}</a>
+                      <span
+                        className="modify-date">上次修改日期：{this.props.sheetInfo.lastModified}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -82,6 +90,14 @@ class AudioList extends MuComponent {
   }
 
   render() {
+
+    var delIcon = null;
+    if (this.props.owner) {
+      delIcon = (
+        <i className="remove icon"></i>
+      );
+    }
+
     var self = this;
     var rows = this.props.audioList.map(function (audio, index) {
       return (
@@ -95,7 +111,7 @@ class AudioList extends MuComponent {
             <i className="play icon"
                onClick={() => self.play(audio)}></i>
             <i className="plus icon"></i>
-            <i className="remove icon"></i>
+              {delIcon}
             </span>
           </td>
           <td>{audio.artist}</td>
@@ -128,6 +144,7 @@ class UploadAudioModal extends MuComponent {
   constructor(props) {
     super(props);
     this.state = {
+      filename: '',
       uploading: false,
       artists: [],
     }
@@ -228,6 +245,9 @@ class UploadAudioModal extends MuComponent {
         if (duration) {
           self.audio.audioFile = file;
           self.audio.duration = duration;
+          self.setState({
+            filename: file.name
+          });
         } else {
           alert('Not Audio File');
         }
@@ -303,6 +323,7 @@ class UploadAudioModal extends MuComponent {
                      className="audio-file"
                      onChange={this.handleChange}/>
               <label htmlFor="audio-file">歌曲文件</label>
+              <p>{this.state.filename}</p>
             </div>
             {button}
           </div>
@@ -316,6 +337,11 @@ class AudioContent extends MuComponent {
 
   constructor(props) {
     super(props);
+    this.state = {
+      owner: this.props.owner,
+      subscribed: this.props.subscribed
+    }
+    this.subscribe = this.subscribe.bind(this);
     this.openUploadAudioModal = this.openUploadAudioModal.bind(this);
   }
 
@@ -327,7 +353,69 @@ class AudioContent extends MuComponent {
       .modal('show');
   }
 
+  subscribe() {
+    var token = $('#token').val();
+    var self = this;
+    fetch('/api/music/sheet/subscribe', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        toId: parseInt(this.props.sheetId)
+      })
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function () {
+        alert("订阅成功");
+        self.setState({
+          subscribed: true
+        });
+      })
+      .catch(function (error) {
+        alert("订阅失败");
+        console.error(error);
+      });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      owner: nextProps.owner,
+      subscribed: nextProps.subscribed
+    });
+  }
+
   render() {
+
+    var button = null;
+
+    if (this.state.owner && !this.state.subscribed) {
+      button = (
+        <button
+          className="ui primary button"
+          onClick={this.openUploadAudioModal}>
+          上传歌曲
+        </button>
+      );
+    } else if (!this.state.owner && this.state.subscribed) {
+      button = (
+        <button
+          className="ui disabled button">
+          已订阅
+        </button>
+      );
+    } else if (!this.state.owner && !this.state.subscribed) {
+      button = (
+        <button
+          className="ui primary button"
+          onClick={this.subscribe}>
+          订阅歌单
+        </button>
+      );
+    }
+
     return (
       <div className="audio-content ui container">
         <div className="ui divider"></div>
@@ -339,12 +427,9 @@ class AudioContent extends MuComponent {
              data-tab="audioList">
           <UploadAudioModal
             sheetId={this.props.sheetId}/>
-          <button
-            className="ui primary button"
-            onClick={this.openUploadAudioModal}>
-            上传歌曲
-          </button>
+          {button}
           <AudioList
+            owner={this.props.owner}
             audioList={this.props.audioList}/>
         </div>
         <div className="ui bottom attached tab segment" data-tab="comments">
@@ -366,7 +451,9 @@ class SheetPage extends MuComponent {
         lastModified: '',
         cover: '/image/avatar.png',
       },
-      audioList: []
+      audioList: [],
+      owner: true,
+      subscribed: true,
     }
   }
 
@@ -405,11 +492,13 @@ class SheetPage extends MuComponent {
         });
         self.setState({
           sheetInfo: sheetInfo,
-          audioList: audioList
+          audioList: audioList,
+          owner: data.body.owner,
+          subscribed: data.body.subscribed
         });
       })
-      .then(function (error) {
-
+      .catch(function (error) {
+        console.error(error)
       });
   }
 
@@ -420,7 +509,9 @@ class SheetPage extends MuComponent {
           sheetInfo={this.state.sheetInfo}/>
         <AudioContent
           audioList={this.state.audioList}
-          sheetId={this.props.match.params.sheetId}/>
+          sheetId={this.props.match.params.sheetId}
+          owner={this.state.owner}
+          subscribed={this.state.subscribed}/>
       </div>
     );
   }

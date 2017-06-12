@@ -4,6 +4,7 @@ import (
   "MuShare/datatype/request/user"
   "MuShare/datatype"
   "MuShare/db/models"
+  "time"
 )
 
 func (this *Player) AddAudioToPlayList(body *user.Player) datatype.Response {
@@ -26,8 +27,18 @@ func (this *Player) AddAudioToPlayList(body *user.Player) datatype.Response {
 
   player.AudioID = body.AudioID
   player.UserID = body.UserID
-  if err := tx.Create(&player).Error; err != nil {
-    panic(err.Error())
+  tx.Where("audio_id = ? and user_id = ?", body.AudioID, body.UserID).Find(&player)
+
+  if player.ID == 0 {
+    if err := tx.Create(&player).Error; err != nil {
+      panic(err.Error())
+    }
+  } else {
+    update := make(map[string]interface{})
+    update["updated_at"] = time.Now()
+    if err := tx.Model(&player).Updates(update).Error; err != nil {
+      panic(err.Error())
+    }
   }
   tx.Commit()
 
