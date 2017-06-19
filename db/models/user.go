@@ -21,6 +21,7 @@ type User struct {
   Albums      []Album     `gorm:"ForeignKey:UserID" json:"albums,omitempty"`
   Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets,omitempty"`
   Subscribe   []Subscribe `gorm:"ForeignKey:UserID" json:"subscribe,omitempty"`
+  Friend      int         `sql:"-" json:"friend"`
   Token       string      `sql:"-" json:"token,omitempty"`
 }
 

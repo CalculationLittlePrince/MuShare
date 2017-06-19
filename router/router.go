@@ -36,7 +36,7 @@ func includePages(m *martini.ClassicMartini) {
 func includeUserApi(m *martini.ClassicMartini) {
   m.Group("/api/user/account", func(r martini.Router) {
     r.Post("/login", account.Login, account.LoginSetToken)
-    r.Post("/register", account.Register)
+    r.Post("/register", account.Register, account.LoginSetToken)
     r.Post("/logout", account.Logout)
   }, RetrieveBody(reflect.TypeOf(user.Account{})))
 
@@ -73,6 +73,7 @@ func includeMusicApi(m *martini.ClassicMartini) {
 
   m.Group("/api/music/artist", func(r martini.Router) {
     r.Get("/get", artists.GetArtist)
+    r.Post("/add", artists.AddArtist)
   }, RetrieveBody(reflect.TypeOf(music.Artist{})), TokenAuth)
 
   m.Group("/api/music/sheet", func(r martini.Router) {

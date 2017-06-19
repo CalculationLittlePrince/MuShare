@@ -146,6 +146,7 @@ class UploadAudioModal extends MuComponent {
     this.state = {
       filename: '',
       uploading: false,
+      progress: 0,
       artists: [],
     }
     this.audio = {
@@ -157,7 +158,25 @@ class UploadAudioModal extends MuComponent {
     this.loadArtists = this.loadArtists.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.uploadAudio = this.uploadAudio.bind(this);
+    this.clear = this.clear.bind(this);
   }
+
+  clear() {
+    this.audio = {
+      artistId: -1,
+      name: '',
+      audioFile: null,
+      duration: 0
+    }
+    this.setState({
+      filename: '',
+      uploading: false,
+      progress: 0,
+    });
+    $('#upload-audio-modal .form .audio-name').val('');
+    $('#upload-audio-modal .form .audio-file').val('');
+  }
+
 
   loadArtists() {
     var self = this;
@@ -171,13 +190,14 @@ class UploadAudioModal extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (result) {
+        console.log(result.body);
         self.setState({
           artists: result.body
         });
       })
       .catch(function (error) {
         console.error(error);
-      })
+      });
   }
 
   uploadAudio() {
@@ -195,7 +215,26 @@ class UploadAudioModal extends MuComponent {
     });
     co(function*() {
       try {
-        var audio = yield uploadAudio(`audio-${guid()}`, self.audio.audioFile, token);
+        var audio = yield uploadAudio(`audio-${guid()}`, self.audio.audioFile, token, function (progress) {
+          self.setState({
+            progress: parseInt(progress * 100)
+          });
+        });
+        var artist = null;
+        if (isNaN(parseInt(self.audio.artistId))) {
+          artist = yield fetch('/api/music/artist/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Authorization': token
+            },
+            body: JSON.stringify({
+              name: self.audio.artistId,
+            })
+          })
+            .then(self.checkStatus)
+            .then(self.parseJSON)
+        }
         var result = yield fetch('/api/music/audio/add', {
           method: 'POST',
           credentials: 'same-origin',
@@ -204,7 +243,7 @@ class UploadAudioModal extends MuComponent {
           },
           body: JSON.stringify({
             name: self.audio.name,
-            artistId: parseInt(self.audio.artistId),
+            artistId: artist === null ? parseInt(self.audio.artistId) : artist.body.id,
             audioUrl: audio.name,
             sheetId: parseInt(self.props.sheetId),
             duration: self.audio.duration
@@ -217,10 +256,14 @@ class UploadAudioModal extends MuComponent {
         throw error
       }
     }).then(function (result) {
-      console.log(result);
       $('#upload-audio-modal').modal('hide');
+      self.clear();
+      self.props.loadSheet();
     }, function (error) {
       console.log(error);
+      $('#upload-audio-modal').modal('hide');
+      alert("上传失败");
+      self.clear();
     });
   }
 
@@ -259,12 +302,17 @@ class UploadAudioModal extends MuComponent {
 
   componentDidMount() {
     var self = this;
-    this.loadArtists();
     $('#upload-audio-modal .form .dropdown').dropdown({
+      allowAdditions: true,
       onChange: function (artistId) {
+        console.log(artistId);
         self.audio.artistId = artistId;
       }
     });
+    this.loadArtists();
+  }
+
+  componentDidUpdate() {
   }
 
   render() {
@@ -278,6 +326,7 @@ class UploadAudioModal extends MuComponent {
       button = (
         <button className="ui fluid button" onClick={this.uploadAudio}>
           <i className="spinner loading icon"></i>上传中...
+          <span>{`${this.state.progress}%`}</span>
         </button>
       );
     } else {
@@ -311,7 +360,7 @@ class UploadAudioModal extends MuComponent {
             </div>
             <div className="field">
               <label>歌手</label>
-              <select name="privilege" className="ui fluid dropdown">
+              <select name="privilege" className="ui fluid search dropdown">
                 <option value="">选择歌手</option>
                 {artists}
               </select>
@@ -426,6 +475,7 @@ class AudioContent extends MuComponent {
         <div className="ui bottom active attached tab segment audio-list"
              data-tab="audioList">
           <UploadAudioModal
+            loadSheet={this.props.loadSheet}
             sheetId={this.props.sheetId}/>
           {button}
           <AudioList
@@ -455,10 +505,10 @@ class SheetPage extends MuComponent {
       owner: true,
       subscribed: true,
     }
+    this.loadSheet = this.loadSheet.bind(this);
   }
 
-  componentDidMount() {
-    $('.sheet-page .audio-list .menu .item').tab();
+  loadSheet() {
     var self = this;
     var sheetId = this.props.match.params.sheetId;
     var url = '/api/music/audio/list?sheetId=' + sheetId;
@@ -502,12 +552,18 @@ class SheetPage extends MuComponent {
       });
   }
 
+  componentDidMount() {
+    $('.sheet-page .audio-list .menu .item').tab();
+    this.loadSheet();
+  }
+
   render() {
     return (
       <div className="sheet-page">
         <SheetInfo
           sheetInfo={this.state.sheetInfo}/>
         <AudioContent
+          loadSheet={this.loadSheet}
           audioList={this.state.audioList}
           sheetId={this.props.match.params.sheetId}
           owner={this.state.owner}

@@ -4,7 +4,7 @@ webpackJsonp([1,4],{
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(558);
+	module.exports = __webpack_require__(559);
 
 
 /***/ }),
@@ -84,50 +84,10 @@ webpackJsonp([1,4],{
 
 /***/ }),
 
-/***/ 558:
+/***/ 559:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {// var $ = require('jquery');
-	// require('../vendor/bootstrap');
-	// $(document).ready(function ($) {
-	//   $(".scroll").click(function (event) {
-	//     event.preventDefault();
-	//     $('html,body').animate({
-	//       scrollTop: $(this.hash).offset().top
-	//     }, 1000);
-	//   });
-	// });
-	//
-	// require('../vendor/jarallax');
-	// require('../vendor/SmoothScroll.min');
-	//
-	// $('.jarallax').jarallax({
-	//   speed: 0.3,
-	//   imgWidth: 1366,
-	//   imgHeight: 768
-	// })
-	//
-	// require('../vendor/responsiveslides.min');
-	// require('../vendor/move-top');
-	// require('../vendor/easing');
-	//
-	// $(document).ready(function () {
-	//   /*
-	//    var defaults = {
-	//    containerID: 'toTop', // fading element id
-	//    containerHoverID: 'toTopHover', // fading element hover id
-	//    scrollSpeed: 1200,
-	//    easingType: 'linear'
-	//    };
-	//    */
-	//
-	//   $().UItoTop({
-	//     easingType: 'easeOutQuart'
-	//   });
-	//
-	// });
-
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -139,11 +99,11 @@ webpackJsonp([1,4],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _header = __webpack_require__(559);
+	var _header = __webpack_require__(560);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	__webpack_require__(562);
+	__webpack_require__(563);
 
 	__webpack_require__(528);
 
@@ -186,7 +146,7 @@ webpackJsonp([1,4],{
 
 /***/ }),
 
-/***/ 559:
+/***/ 560:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -205,11 +165,11 @@ webpackJsonp([1,4],{
 
 	var _logo2 = _interopRequireDefault(_logo);
 
-	var _login = __webpack_require__(560);
+	var _login = __webpack_require__(561);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _register = __webpack_require__(561);
+	var _register = __webpack_require__(562);
 
 	var _register2 = _interopRequireDefault(_register);
 
@@ -337,7 +297,7 @@ webpackJsonp([1,4],{
 
 /***/ }),
 
-/***/ 560:
+/***/ 561:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
@@ -567,16 +527,20 @@ webpackJsonp([1,4],{
 
 /***/ }),
 
-/***/ 561:
+/***/ 562:
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
 	var _react = __webpack_require__(302);
 
@@ -588,99 +552,264 @@ webpackJsonp([1,4],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Register = function (_React$Component) {
-	  _inherits(Register, _React$Component);
+	var RegisterMessage = function (_MuComponent) {
+	  _inherits(RegisterMessage, _MuComponent);
+
+	  function RegisterMessage(props) {
+	    _classCallCheck(this, RegisterMessage);
+
+	    return _possibleConstructorReturn(this, (RegisterMessage.__proto__ || Object.getPrototypeOf(RegisterMessage)).call(this, props));
+	  }
+
+	  _createClass(RegisterMessage, [{
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.message == 0) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'ui success message' },
+	          '\u6CE8\u518C\u6210\u529F\uFF0C\u6B63\u5728\u4E3A\u60A8\u8DF3\u8F6C...'
+	        );
+	      } else if (this.props.message == 1) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'ui error message' },
+	          '\u6CE8\u518C\u5931\u8D25'
+	        );
+	      } else {
+	        return null;
+	      }
+	    }
+	  }]);
+
+	  return RegisterMessage;
+	}(_mushareReactComponent2.default);
+
+	var LoginButton = function (_MuComponent2) {
+	  _inherits(LoginButton, _MuComponent2);
+
+	  function LoginButton() {
+	    _classCallCheck(this, LoginButton);
+
+	    return _possibleConstructorReturn(this, (LoginButton.__proto__ || Object.getPrototypeOf(LoginButton)).apply(this, arguments));
+	  }
+
+	  _createClass(LoginButton, [{
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.buttonLoading == 0) {
+	        return _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.props.handleLogin },
+	          '\u6CE8\u518C'
+	        );
+	      } else if (this.props.buttonLoading == 1) {
+	        return _react2.default.createElement(
+	          'button',
+	          { className: 'ui fluid button', onClick: this.props.handleLogin },
+	          _react2.default.createElement('i', { className: 'spinner loading icon' }),
+	          '\u6CE8\u518C'
+	        );
+	      }
+	    }
+	  }]);
+
+	  return LoginButton;
+	}(_mushareReactComponent2.default);
+
+	var Register = function (_MuComponent3) {
+	  _inherits(Register, _MuComponent3);
 
 	  function Register(props) {
 	    _classCallCheck(this, Register);
 
-	    return _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
+
+	    _this3.state = {
+	      mail: '',
+	      username: '',
+	      password: '',
+	      checkpassword: '',
+	      registerMessage: -1,
+	      buttonLoading: 0
+	    };
+
+	    _this3.handleChange = _this3.handleChange.bind(_this3);
+	    _this3.handleRegister = _this3.handleRegister.bind(_this3);
+	    return _this3;
 	  }
 
 	  _createClass(Register, [{
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      this.setState(_defineProperty({}, event.target.name, event.target.value));
+	    }
+	  }, {
+	    key: 'handleRegister',
+	    value: function handleRegister() {
+	      var self = this;
+	      if (this.state.password !== this.state.checkpassword) {
+	        alert("两次密码输入不同");
+	        return;
+	      }
+	      this.setState({
+	        buttonLoading: 1
+	      });
+	      fetch('/api/user/account/register', {
+	        method: 'POST',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({
+	          name: self.state.username,
+	          mail: self.state.mail,
+	          password: self.state.password
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        self.setState({
+	          registerMessage: 0
+	        });
+	        setInterval(function () {
+	          window.location.href = "/app";
+	        }, 500);
+	      }).catch(function (error) {
+	        self.setState({
+	          buttonLoading: 0,
+	          registerMessage: 1
+	        });
+	      });
+	      event.preventDefault();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'ui register modal', id: 'register' },
+	        { className: 'ui small register modal', id: 'register' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'ui middle center aligned grid' },
+	          { className: 'ui container' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'column' },
+	            { className: 'ui items' },
 	            _react2.default.createElement(
-	              'h2',
-	              { className: 'ui teal image header' },
-	              _react2.default.createElement('img', { src: _logo2.default, className: 'image' }),
+	              'div',
+	              { className: 'item' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'content' },
-	                '\u7528\u6237\u6CE8\u518C'
+	                { className: 'ui image' },
+	                _react2.default.createElement('img', { src: _logo2.default, alt: '' })
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'middle aligned content' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  '\u6CE8\u518C'
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui form' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u90AE\u7BB1'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ui input' },
+	                _react2.default.createElement('input', { type: 'text', name: 'mail', value: this.state.mail,
+	                  placeholder: '\u90AE\u7BB1', onChange: this.handleChange })
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'form',
-	              { className: 'ui large form' },
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u7528\u6237\u540D'
+	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'ui stacked segment' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'field' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'ui left icon input' },
-	                    _react2.default.createElement('i', { className: 'user icon' }),
-	                    _react2.default.createElement('input', { type: 'text', name: 'email',
-	                      placeholder: 'E-mail address' })
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'field' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'ui left icon input' },
-	                    _react2.default.createElement('i', { className: 'lock icon' }),
-	                    _react2.default.createElement('input', { type: 'password', name: 'password',
-	                      placeholder: 'Password' })
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'ui fluid large teal submit button' },
-	                  'Login'
-	                )
+	                { className: 'ui input' },
+	                _react2.default.createElement('input', { type: 'text', name: 'username', value: this.state.username,
+	                  placeholder: '\u7528\u6237\u540D', onChange: this.handleChange })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u5BC6\u7801'
 	              ),
-	              _react2.default.createElement('div', { className: 'ui error message' })
-	            )
-	          )
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ui input' },
+	                _react2.default.createElement('input', { type: 'password', name: 'password',
+	                  value: this.state.password,
+	                  placeholder: '\u5BC6\u7801', onChange: this.handleChange })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement(
+	                'label',
+	                null,
+	                '\u786E\u8BA4\u5BC6\u7801'
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'ui input' },
+	                _react2.default.createElement('input', { type: 'password', name: 'checkpassword',
+	                  value: this.state.checkpassword,
+	                  placeholder: '\u786E\u8BA4\u5BC6\u7801', onChange: this.handleChange })
+	              )
+	            ),
+	            _react2.default.createElement(LoginButton, {
+	              buttonLoading: this.state.buttonLoading,
+	              handleLogin: this.handleRegister })
+	          ),
+	          _react2.default.createElement(RegisterMessage, { message: this.state.registerMessage })
 	        )
 	      );
 	    }
 	  }]);
 
 	  return Register;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Register;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524)))
 
 /***/ }),
 
-/***/ 562:
+/***/ 563:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(563);
+	var content = __webpack_require__(564);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(550)(content, {});
@@ -701,7 +830,7 @@ webpackJsonp([1,4],{
 
 /***/ }),
 
-/***/ 563:
+/***/ 564:
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(549)();

@@ -239,7 +239,7 @@
       background-size: cover;
       background-position: center;
       z-index: -2;
-      filter: blur(10px) brightness(0.75);
+      filter: blur(10px) brightness(0.45);
       -webkit-transform: scale(1.07);
     }
     .container {
@@ -255,14 +255,17 @@
       }
 
       .item .content .sheetname {
+        color: whitesmoke;
         font-size: 3em;
       }
 
       .item .content .modify-date {
+        color: whitesmoke;
         font-size: 13px;
         margin-left: 5px;
       }
       .item .content .username {
+        color: whitesmoke;
         font-size: 15px;
         font-weight: bold;
         margin: 5px;
@@ -414,7 +417,7 @@
           background-color: red;
         }
       }
-      .public-sheet, .private-sheet {
+      .public-sheet, .private-sheet, .friend-sheet {
         padding: 0 6em 2em 0;
         .content {
           .description {
@@ -451,6 +454,44 @@
     }
   }
 
+  .user {
+    .container {
+      padding: 1em 2em 1em 2em;
+    }
+    .info {
+      padding-top: 2em;
+      .name {
+        padding: 1em;
+        font-size: 20px;
+        font-weight: 500;
+      }
+      .description {
+        padding: 0.5em 1em;
+      }
+      .friend {
+        padding-top: 1em;
+        padding-bottom: 1em;
+        .button {
+          display: block;
+        }
+      }
+    }
+
+    .sheets {
+      .ui.header:first-child {
+        margin-top: 2em;
+      }
+      padding: 0 4em;
+      .public-sheet, .private-sheet, friend-sheet {
+        .content {
+          .description {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
   .footer {
     position: absolute;
     right: 0;
@@ -461,7 +502,6 @@
     }
   }
   .footer.segment {
-    padding: 3em 0em;
-
+    padding: 3em 0em
   }
 }

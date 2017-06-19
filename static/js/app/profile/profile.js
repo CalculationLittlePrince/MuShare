@@ -283,7 +283,10 @@ class Profile extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (result) {
-        console.log(result)
+        alert("更新成功");
+        self.setState({
+          updateButtonDisabled: true
+        });
       })
       .catch(function (error) {
         console.error(error);

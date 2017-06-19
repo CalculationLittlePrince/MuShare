@@ -73,7 +73,11 @@ webpackJsonp([0,4],{
 
 	var _main8 = _interopRequireDefault(_main7);
 
-	__webpack_require__(556);
+	var _main9 = __webpack_require__(556);
+
+	var _main10 = _interopRequireDefault(_main9);
+
+	__webpack_require__(557);
 
 	__webpack_require__(528);
 
@@ -97,7 +101,7 @@ webpackJsonp([0,4],{
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      $('.ui.sidebar.chat').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+	      $('.ui.sidebar.chat').sidebar('setting', 'transition', 'overlay');
 	    }
 	  }, {
 	    key: 'render',
@@ -116,6 +120,7 @@ webpackJsonp([0,4],{
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/community', component: _main2.default }),
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/personal', component: _main4.default }),
 	          _react2.default.createElement(_reactRouterDom.Route, { path: '/sheet/:sheetId', component: _main6.default }),
+	          _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:userId', component: _main10.default }),
 	          _react2.default.createElement(_footer2.default, null),
 	          _react2.default.createElement(_main8.default, null)
 	        )
@@ -177,10 +182,12 @@ webpackJsonp([0,4],{
 	    var _this = _possibleConstructorReturn(this, (Top.__proto__ || Object.getPrototypeOf(Top)).call(this, props));
 
 	    _this.state = {
-	      avatar: '/image/avatar.png'
+	      avatar: '/image/avatar.png',
+	      userId: -1
 	    };
 	    _this.loadUserProfile = _this.loadUserProfile.bind(_this);
 	    _this.loadUserAvatar = _this.loadUserAvatar.bind(_this);
+	    _this.logOut = _this.logOut.bind(_this);
 	    return _this;
 	  }
 
@@ -192,6 +199,9 @@ webpackJsonp([0,4],{
 	        action: 'hide'
 	      });
 	      this.loadUserProfile();
+	      setInterval(function () {
+	        self.loadUserProfile();
+	      }, 5000);
 	    }
 	  }, {
 	    key: 'loadUserProfile',
@@ -205,7 +215,10 @@ webpackJsonp([0,4],{
 	          'Authorization': token
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
-	        self.loadUserAvatar(data.body.avatar);
+	        self.setState({
+	          avatar: data.body.avatar === '' ? '/image/avatar.png' : (0, _oss.getURL)(data.body.avatar),
+	          userId: data.body.id
+	        });
 	      }).catch(function (error) {
 	        console.error(error);
 	      });
@@ -221,8 +234,40 @@ webpackJsonp([0,4],{
 	      }
 	    }
 	  }, {
+	    key: 'logOut',
+	    value: function logOut() {
+	      var self = this;
+	      fetch('/api/user/account/logout', {
+	        method: 'POST',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Content-Type': 'application/json'
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        window.location.href = "/";
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      var userPage = null;
+	      if (this.state.userId == -1) {
+	        userPage = _react2.default.createElement(
+	          'div',
+	          { className: 'item' },
+	          '\u4E2A\u4EBA\u4E3B\u9875'
+	        );
+	      } else {
+	        userPage = _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          { to: '/user/' + this.state.userId, className: 'item' },
+	          '\u4E2A\u4EBA\u4E3B\u9875'
+	        );
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'header-top' },
@@ -305,14 +350,11 @@ webpackJsonp([0,4],{
 	                      _react2.default.createElement(
 	                        'div',
 	                        { className: 'menu' },
-	                        _react2.default.createElement(
-	                          'div',
-	                          { className: 'item' },
-	                          '\u4E2A\u4EBA\u4E3B\u9875'
-	                        ),
+	                        userPage,
 	                        _react2.default.createElement(
 	                          _reactRouterDom.Link,
-	                          { to: '/personal/profile', className: 'item' },
+	                          { to: '/personal/profile',
+	                            className: 'item' },
 	                          '\u4E2A\u4EBA\u4E2D\u5FC3'
 	                        ),
 	                        _react2.default.createElement('div', { className: 'divider' }),
@@ -323,7 +365,7 @@ webpackJsonp([0,4],{
 	                        ),
 	                        _react2.default.createElement(
 	                          'div',
-	                          { className: 'item' },
+	                          { className: 'item', onClick: this.logOut },
 	                          '\u6CE8\u9500'
 	                        )
 	                      )
@@ -2488,7 +2530,10 @@ webpackJsonp([0,4],{
 	          gender: self.state.gender
 	        })
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
-	        console.log(result);
+	        alert("更新成功");
+	        self.setState({
+	          updateButtonDisabled: true
+	        });
 	      }).catch(function (error) {
 	        console.error(error);
 	      });
@@ -2728,7 +2773,7 @@ webpackJsonp([0,4],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function uploadAudio(objectKeyId, file, token, progress) {
+	function uploadAudio(objectKeyId, file, token, _progress) {
 	  return (0, _oss.getOssClient)(token).then(function (client) {
 	    return (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
 	      var checkpoint, i, result;
@@ -2754,8 +2799,10 @@ webpackJsonp([0,4],{
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
 	                        case 0:
-	                          console.log(percentage);
 	                          checkpoint = cpt;
+	                          if (_progress) {
+	                            _progress(percentage);
+	                          }
 
 	                        case 2:
 	                        case 'end':
@@ -3285,7 +3332,8 @@ webpackJsonp([0,4],{
 
 	    _this4.state = {
 	      privateSheet: [],
-	      publicSheet: []
+	      publicSheet: [],
+	      friendSheet: []
 	    };
 	    _this4.eventEmitter = new EventEmitter();
 	    _this4.onSheetCreated = _this4.onSheetCreated.bind(_this4);
@@ -3315,16 +3363,20 @@ webpackJsonp([0,4],{
 	          'Authorization': $('#token').val()
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
-	        var sheets = data.body;
+	        var sheets = data.body.sheets;
 	        var privateSheet = sheets.filter(function (sheet) {
 	          return sheet.privilege === 'private';
 	        });
 	        var publicSheet = sheets.filter(function (sheet) {
-	          return sheet.privilege === 'public' || sheet.privilege === 'friend';
+	          return sheet.privilege === 'public';
+	        });
+	        var friendSheet = sheets.filter(function (sheet) {
+	          return sheet.privilege === 'friend';
 	        });
 	        self.setState({
 	          privateSheet: privateSheet,
-	          publicSheet: publicSheet
+	          publicSheet: publicSheet,
+	          friendSheet: friendSheet
 	        });
 	      }).catch(function (error) {
 	        console.log(error);
@@ -3363,6 +3415,20 @@ webpackJsonp([0,4],{
 	          { className: 'public-sheet' },
 	          _react2.default.createElement(SheetCards, {
 	            sheets: this.state.publicSheet,
+	            openCreateSheetModal: this.openCreateSheetModal,
+	            createSheet: this.createSheet })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui medium header' },
+	          '\u5BF9\u597D\u53CB\u516C\u5F00\u6B4C\u5355'
+	        ),
+	        _react2.default.createElement('div', { className: 'ui divider' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'friend-sheet' },
+	          _react2.default.createElement(SheetCards, {
+	            sheets: this.state.friendSheet,
 	            openCreateSheetModal: this.openCreateSheetModal,
 	            createSheet: this.createSheet })
 	        ),
@@ -3411,6 +3477,10 @@ webpackJsonp([0,4],{
 
 	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
 
+	var _oss = __webpack_require__(527);
+
+	var _reactRouterDom = __webpack_require__(483);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3435,13 +3505,13 @@ webpackJsonp([0,4],{
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'item' },
-	          _react2.default.createElement('img', { className: 'ui avatar image', src: '/image/avatar.png' }),
+	          _react2.default.createElement('img', { className: 'ui avatar image', src: friend.avatar === '' ? "/image/avatar.png" : (0, _oss.getURL)(friend.avatar) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'content' },
 	            _react2.default.createElement(
-	              'a',
-	              { className: 'header' },
+	              _reactRouterDom.Link,
+	              { to: '/user/' + friend.id, className: 'header' },
 	              friend.name
 	            )
 	          )
@@ -3505,13 +3575,13 @@ webpackJsonp([0,4],{
 	              accept: friend.accept,
 	              acceptFriendRequest: self.props.acceptFriendRequest })
 	          ),
-	          _react2.default.createElement('img', { className: 'ui avatar image', src: '/image/avatar.png' }),
+	          _react2.default.createElement('img', { className: 'ui avatar image', src: friend.avatar === '' ? "/image/avatar.png" : (0, _oss.getURL)(friend.avatar) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'content' },
 	            _react2.default.createElement(
-	              'a',
-	              { className: 'header' },
+	              _reactRouterDom.Link,
+	              { to: '/user/' + friend.id, className: 'header' },
 	              friend.name
 	            )
 	          )
@@ -4082,6 +4152,7 @@ webpackJsonp([0,4],{
 	    _this3.state = {
 	      filename: '',
 	      uploading: false,
+	      progress: 0,
 	      artists: []
 	    };
 	    _this3.audio = {
@@ -4093,10 +4164,28 @@ webpackJsonp([0,4],{
 	    _this3.loadArtists = _this3.loadArtists.bind(_this3);
 	    _this3.handleChange = _this3.handleChange.bind(_this3);
 	    _this3.uploadAudio = _this3.uploadAudio.bind(_this3);
+	    _this3.clear = _this3.clear.bind(_this3);
 	    return _this3;
 	  }
 
 	  _createClass(UploadAudioModal, [{
+	    key: 'clear',
+	    value: function clear() {
+	      this.audio = {
+	        artistId: -1,
+	        name: '',
+	        audioFile: null,
+	        duration: 0
+	      };
+	      this.setState({
+	        filename: '',
+	        uploading: false,
+	        progress: 0
+	      });
+	      $('#upload-audio-modal .form .audio-name').val('');
+	      $('#upload-audio-modal .form .audio-file').val('');
+	    }
+	  }, {
 	    key: 'loadArtists',
 	    value: function loadArtists() {
 	      var self = this;
@@ -4107,6 +4196,7 @@ webpackJsonp([0,4],{
 	          'Authorization': $('#token').val()
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        console.log(result.body);
 	        self.setState({
 	          artists: result.body
 	        });
@@ -4127,18 +4217,45 @@ webpackJsonp([0,4],{
 	        uploading: true
 	      });
 	      (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-	        var audio, result;
+	        var audio, artist, result;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
 	                _context.prev = 0;
 	                _context.next = 3;
-	                return (0, _upload.uploadAudio)('audio-' + (0, _utils.guid)(), self.audio.audioFile, token);
+	                return (0, _upload.uploadAudio)('audio-' + (0, _utils.guid)(), self.audio.audioFile, token, function (progress) {
+	                  self.setState({
+	                    progress: parseInt(progress * 100)
+	                  });
+	                });
 
 	              case 3:
 	                audio = _context.sent;
-	                _context.next = 6;
+	                artist = null;
+
+	                if (!isNaN(parseInt(self.audio.artistId))) {
+	                  _context.next = 9;
+	                  break;
+	                }
+
+	                _context.next = 8;
+	                return fetch('/api/music/artist/add', {
+	                  method: 'POST',
+	                  credentials: 'same-origin',
+	                  headers: {
+	                    'Authorization': token
+	                  },
+	                  body: JSON.stringify({
+	                    name: self.audio.artistId
+	                  })
+	                }).then(self.checkStatus).then(self.parseJSON);
+
+	              case 8:
+	                artist = _context.sent;
+
+	              case 9:
+	                _context.next = 11;
 	                return fetch('/api/music/audio/add', {
 	                  method: 'POST',
 	                  credentials: 'same-origin',
@@ -4147,33 +4264,37 @@ webpackJsonp([0,4],{
 	                  },
 	                  body: JSON.stringify({
 	                    name: self.audio.name,
-	                    artistId: parseInt(self.audio.artistId),
+	                    artistId: artist === null ? parseInt(self.audio.artistId) : artist.body.id,
 	                    audioUrl: audio.name,
 	                    sheetId: parseInt(self.props.sheetId),
 	                    duration: self.audio.duration
 	                  })
 	                }).then(self.checkStatus).then(self.parseJSON);
 
-	              case 6:
+	              case 11:
 	                result = _context.sent;
 	                return _context.abrupt('return', result);
 
-	              case 10:
-	                _context.prev = 10;
+	              case 15:
+	                _context.prev = 15;
 	                _context.t0 = _context['catch'](0);
 	                throw _context.t0;
 
-	              case 13:
+	              case 18:
 	              case 'end':
 	                return _context.stop();
 	            }
 	          }
-	        }, _callee, this, [[0, 10]]);
+	        }, _callee, this, [[0, 15]]);
 	      })).then(function (result) {
-	        console.log(result);
 	        $('#upload-audio-modal').modal('hide');
+	        self.clear();
+	        self.props.loadSheet();
 	      }, function (error) {
 	        console.log(error);
+	        $('#upload-audio-modal').modal('hide');
+	        alert("上传失败");
+	        self.clear();
 	      });
 	    }
 	  }, {
@@ -4215,13 +4336,18 @@ webpackJsonp([0,4],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var self = this;
-	      this.loadArtists();
 	      $('#upload-audio-modal .form .dropdown').dropdown({
+	        allowAdditions: true,
 	        onChange: function onChange(artistId) {
+	          console.log(artistId);
 	          self.audio.artistId = artistId;
 	        }
 	      });
+	      this.loadArtists();
 	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -4238,7 +4364,12 @@ webpackJsonp([0,4],{
 	          'button',
 	          { className: 'ui fluid button', onClick: this.uploadAudio },
 	          _react2.default.createElement('i', { className: 'spinner loading icon' }),
-	          '\u4E0A\u4F20\u4E2D...'
+	          '\u4E0A\u4F20\u4E2D...',
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            this.state.progress + '%'
+	          )
 	        );
 	      } else {
 	        button = _react2.default.createElement(
@@ -4302,7 +4433,7 @@ webpackJsonp([0,4],{
 	              ),
 	              _react2.default.createElement(
 	                'select',
-	                { name: 'privilege', className: 'ui fluid dropdown' },
+	                { name: 'privilege', className: 'ui fluid search dropdown' },
 	                _react2.default.createElement(
 	                  'option',
 	                  { value: '' },
@@ -4450,6 +4581,7 @@ webpackJsonp([0,4],{
 	          { className: 'ui bottom active attached tab segment audio-list',
 	            'data-tab': 'audioList' },
 	          _react2.default.createElement(UploadAudioModal, {
+	            loadSheet: this.props.loadSheet,
 	            sheetId: this.props.sheetId }),
 	          button,
 	          _react2.default.createElement(AudioList, {
@@ -4484,13 +4616,13 @@ webpackJsonp([0,4],{
 	      owner: true,
 	      subscribed: true
 	    };
+	    _this5.loadSheet = _this5.loadSheet.bind(_this5);
 	    return _this5;
 	  }
 
 	  _createClass(SheetPage, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      $('.sheet-page .audio-list .menu .item').tab();
+	    key: 'loadSheet',
+	    value: function loadSheet() {
 	      var self = this;
 	      var sheetId = this.props.match.params.sheetId;
 	      var url = '/api/music/audio/list?sheetId=' + sheetId;
@@ -4530,6 +4662,12 @@ webpackJsonp([0,4],{
 	      });
 	    }
 	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $('.sheet-page .audio-list .menu .item').tab();
+	      this.loadSheet();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -4538,6 +4676,7 @@ webpackJsonp([0,4],{
 	        _react2.default.createElement(SheetInfo, {
 	          sheetInfo: this.state.sheetInfo }),
 	        _react2.default.createElement(AudioContent, {
+	          loadSheet: this.loadSheet,
 	          audioList: this.state.audioList,
 	          sheetId: this.props.match.params.sheetId,
 	          owner: this.state.owner,
@@ -4612,10 +4751,422 @@ webpackJsonp([0,4],{
 /***/ 556:
 /***/ (function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(302);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	var _oss = __webpack_require__(527);
+
+	var _reactRouterDom = __webpack_require__(483);
+
+	var _utils = __webpack_require__(541);
+
+	var _logo = __webpack_require__(526);
+
+	var _logo2 = _interopRequireDefault(_logo);
+
+	var _co = __webpack_require__(545);
+
+	var _co2 = _interopRequireDefault(_co);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Info = function (_MuComponent) {
+	  _inherits(Info, _MuComponent);
+
+	  function Info(props) {
+	    _classCallCheck(this, Info);
+
+	    var _this = _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).call(this, props));
+
+	    _this.requestFriend = _this.requestFriend.bind(_this);
+	    _this.state = {
+	      friend: -1
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Info, [{
+	    key: 'requestFriend',
+	    value: function requestFriend() {
+	      var self = this;
+	      fetch('/api/user/friend/request', {
+	        method: 'POST',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val(),
+	          'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({
+	          friendId: self.props.info.id
+	        })
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        self.setState({
+	          friend: 3
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.setState({
+	        friend: nextProps.info.friend
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+
+	      var friendButton = null;
+	      if (this.state.friend === 2) {
+	        friendButton = _react2.default.createElement(
+	          'div',
+	          { className: 'ui primary button', onClick: this.requestFriend },
+	          '\u6DFB\u52A0\u597D\u53CB'
+	        );
+	      } else if (this.state.friend === 3) {
+	        friendButton = _react2.default.createElement(
+	          'div',
+	          { className: 'ui button disabled' },
+	          '\u597D\u53CB\u8BF7\u6C42\u4E2D'
+	        );
+	      } else if (this.state.friend === 4) {
+	        friendButton = _react2.default.createElement(
+	          'div',
+	          { className: 'ui button disabled' },
+	          '\u5DF2\u662F\u597D\u53CB'
+	        );
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'info' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'avatar' },
+	            _react2.default.createElement('img', { className: 'ui medium circular image',
+	              src: this.props.info.avatar === '' ? '/image/avatar.png' : (0, _oss.getURL)(this.props.info.avatar) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'name' },
+	            this.props.info.name
+	          ),
+	          _react2.default.createElement('div', { className: 'ui divider' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'description' },
+	            this.props.info.description
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'friend' },
+	            friendButton
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Info;
+	}(_mushareReactComponent2.default);
+
+	var Sheets = function (_MuComponent2) {
+	  _inherits(Sheets, _MuComponent2);
+
+	  function Sheets() {
+	    _classCallCheck(this, Sheets);
+
+	    return _possibleConstructorReturn(this, (Sheets.__proto__ || Object.getPrototypeOf(Sheets)).apply(this, arguments));
+	  }
+
+	  _createClass(Sheets, [{
+	    key: 'render',
+	    value: function render() {
+
+	      var publicSheets = this.props.publicSheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+
+	      var privateSheets = this.props.privateSheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+
+	      var friendSheets = this.props.friendSheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+
+	      var publicHeader = null;
+	      var friendHeader = null;
+	      var privateHeader = null;
+
+	      if (publicSheets.length > 0) {
+	        publicHeader = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui medium header' },
+	            '\u516C\u5F00\u6B4C\u5355'
+	          ),
+	          _react2.default.createElement('div', { className: 'ui divider' })
+	        );
+	      }
+
+	      if (friendSheets.length > 0) {
+	        friendHeader = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui medium header' },
+	            '\u5BF9\u597D\u53CB\u516C\u5F00\u6B4C\u5355'
+	          ),
+	          _react2.default.createElement('div', { className: 'ui divider' })
+	        );
+	      }
+
+	      if (privateSheets.length > 0) {
+	        privateHeader = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui medium header' },
+	            '\u79C1\u6709\u6B4C\u5355'
+	          ),
+	          _react2.default.createElement('div', { className: 'ui divider' })
+	        );
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'sheets' },
+	        publicHeader,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui four link cards public-sheet' },
+	          publicSheets
+	        ),
+	        friendHeader,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui four link cards friend-sheet' },
+	          friendSheets
+	        ),
+	        privateHeader,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui four link cards private-sheet' },
+	          privateSheets
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Sheets;
+	}(_mushareReactComponent2.default);
+
+	var User = function (_MuComponent3) {
+	  _inherits(User, _MuComponent3);
+
+	  function User(props) {
+	    _classCallCheck(this, User);
+
+	    var _this3 = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+
+	    _this3.state = {
+	      info: {
+	        avatar: '',
+	        name: '',
+	        description: '',
+	        friend: -1
+	      },
+	      publicSheets: [],
+	      friendSheets: [],
+	      privateSheets: []
+	    };
+	    _this3.loadUserInfo = _this3.loadUserInfo.bind(_this3);
+	    return _this3;
+	  }
+
+	  _createClass(User, [{
+	    key: 'loadUserInfo',
+	    value: function loadUserInfo() {
+	      var self = this;
+	      var userId = this.props.match.params.userId;
+	      fetch('/api/music/sheet/list?toId=' + userId, {
+	        method: 'GET',
+	        credentials: 'same-origin',
+	        headers: {
+	          'Authorization': $('#token').val()
+	        }
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
+	        console.log(data);
+	        var info = {
+	          id: data.body.id,
+	          friend: data.body.friend,
+	          avatar: data.body.avatar,
+	          name: data.body.name,
+	          description: data.body.description
+	        };
+	        var publicSheets = data.body.sheets.filter(function (sheet) {
+	          return sheet.privilege === 'public';
+	        });
+	        var friendSheets = data.body.sheets.filter(function (sheet) {
+	          return sheet.privilege === 'friend';
+	        });
+	        var privateSheets = data.body.sheets.filter(function (sheet) {
+	          return sheet.privilege === 'private';
+	        });
+	        self.setState({
+	          info: info,
+	          publicSheets: publicSheets,
+	          friendSheets: friendSheets,
+	          privateSheets: privateSheets
+	        });
+	      }).catch(function (error) {
+	        console.error(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadUserInfo();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'user' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui grid' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'four wide column' },
+	              _react2.default.createElement(Info, {
+	                info: this.state.info })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'twelve wide column' },
+	              _react2.default.createElement(Sheets, {
+	                publicSheets: this.state.publicSheets,
+	                friendSheets: this.state.friendSheets,
+	                privateSheets: this.state.privateSheets })
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return User;
+	}(_mushareReactComponent2.default);
+
+	exports.default = User;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
+
+/***/ }),
+
+/***/ 557:
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(557);
+	var content = __webpack_require__(558);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(550)(content, {});
@@ -4636,7 +5187,7 @@ webpackJsonp([0,4],{
 
 /***/ }),
 
-/***/ 557:
+/***/ 558:
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(549)();
@@ -4644,7 +5195,7 @@ webpackJsonp([0,4],{
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#app .sheet-page .bg {\n  background-size: cover;\n  background-position: center;\n  z-index: -2;\n  filter: blur(10px) brightness(0.75);\n  -webkit-transform: scale(1.07); }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info {\n  position: relative;\n  overflow: hidden; }\n  #app .sheet-page .sheet-info .cover {\n    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n    width: 220px;\n    padding: 2px; }\n  #app .sheet-page .sheet-info .item .content .sheetname {\n    font-size: 3em; }\n  #app .sheet-page .sheet-info .item .content .modify-date {\n    font-size: 13px;\n    margin-left: 5px; }\n  #app .sheet-page .sheet-info .item .content .username {\n    font-size: 15px;\n    font-weight: bold;\n    margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#app .sheet-page .bg {\n  background-size: cover;\n  background-position: center;\n  z-index: -2;\n  filter: blur(10px) brightness(0.45);\n  -webkit-transform: scale(1.07); }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info {\n  position: relative;\n  overflow: hidden; }\n  #app .sheet-page .sheet-info .cover {\n    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n    width: 220px;\n    padding: 2px; }\n  #app .sheet-page .sheet-info .item .content .sheetname {\n    color: whitesmoke;\n    font-size: 3em; }\n  #app .sheet-page .sheet-info .item .content .modify-date {\n    color: whitesmoke;\n    font-size: 13px;\n    margin-left: 5px; }\n  #app .sheet-page .sheet-info .item .content .username {\n    color: whitesmoke;\n    font-size: 15px;\n    font-weight: bold;\n    margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet, #app .personal .sheets .friend-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description, #app .personal .sheets .friend-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content, #app .personal .sheets .friend-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid, #app .personal .sheets .friend-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column, #app .personal .sheets .friend-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .user .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .user .info {\n  padding-top: 2em; }\n  #app .user .info .name {\n    padding: 1em;\n    font-size: 20px;\n    font-weight: 500; }\n  #app .user .info .description {\n    padding: 0.5em 1em; }\n  #app .user .info .friend {\n    padding-top: 1em;\n    padding-bottom: 1em; }\n    #app .user .info .friend .button {\n      display: block; }\n\n#app .user .sheets {\n  padding: 0 4em; }\n  #app .user .sheets .ui.header:first-child {\n    margin-top: 2em; }\n  #app .user .sheets .public-sheet .content .description, #app .user .sheets .private-sheet .content .description, #app .user .sheets friend-sheet .content .description {\n    text-align: center; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

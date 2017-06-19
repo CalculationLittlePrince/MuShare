@@ -262,7 +262,8 @@ class Sheets extends MuComponent {
     super(props);
     this.state = {
       privateSheet: [],
-      publicSheet: []
+      publicSheet: [],
+      friendSheet: []
     };
     this.eventEmitter = new EventEmitter();
     this.onSheetCreated = this.onSheetCreated.bind(this);
@@ -291,16 +292,20 @@ class Sheets extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (data) {
-        var sheets = data.body;
+        var sheets = data.body.sheets;
         var privateSheet = sheets.filter(function (sheet) {
           return sheet.privilege === 'private';
         });
         var publicSheet = sheets.filter(function (sheet) {
-          return sheet.privilege === 'public' || sheet.privilege === 'friend';
+          return sheet.privilege === 'public';
+        });
+        var friendSheet = sheets.filter(function (sheet) {
+          return sheet.privilege === 'friend';
         });
         self.setState({
           privateSheet: privateSheet,
-          publicSheet: publicSheet
+          publicSheet: publicSheet,
+          friendSheet: friendSheet
         });
       })
       .catch(function (error) {
@@ -337,6 +342,18 @@ class Sheets extends MuComponent {
             openCreateSheetModal={this.openCreateSheetModal}
             createSheet={this.createSheet}/>
         </div>
+
+        <div className="ui medium header">
+          对好友公开歌单
+        </div>
+        <div className="ui divider"></div>
+        <div className="friend-sheet">
+          <SheetCards
+            sheets={this.state.friendSheet}
+            openCreateSheetModal={this.openCreateSheetModal}
+            createSheet={this.createSheet}/>
+        </div>
+
         <div className="ui medium header">
           私有歌单
         </div>

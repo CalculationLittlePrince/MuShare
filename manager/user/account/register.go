@@ -94,6 +94,7 @@ func (this *Account) Register(body *user.Account, ossConf conf.OSS) datatype.Res
     fmt.Println(err)
   }
 
+  u.Token = utils.TokenEncode(strconv.Itoa(u.ID))
   return ok("register success", u)
 
 }

@@ -4,7 +4,7 @@ webpackJsonp([2,4],{
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(564);
+	module.exports = __webpack_require__(565);
 
 
 /***/ }),
@@ -155,7 +155,7 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
-/***/ 564:
+/***/ 565:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -170,15 +170,15 @@ webpackJsonp([2,4],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _header = __webpack_require__(565);
+	var _header = __webpack_require__(566);
 
 	var _header2 = _interopRequireDefault(_header);
 
-	var _player = __webpack_require__(566);
+	var _player = __webpack_require__(567);
 
 	var _player2 = _interopRequireDefault(_player);
 
-	__webpack_require__(567);
+	__webpack_require__(568);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -217,7 +217,7 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
-/***/ 565:
+/***/ 566:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -301,7 +301,7 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
-/***/ 566:
+/***/ 567:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($, fetch, EventEmitter) {'use strict';
@@ -1090,13 +1090,13 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
-/***/ 567:
+/***/ 568:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(568);
+	var content = __webpack_require__(569);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(550)(content, {});
@@ -1117,7 +1117,7 @@ webpackJsonp([2,4],{
 
 /***/ }),
 
-/***/ 568:
+/***/ 569:
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(549)();
@@ -1125,7 +1125,7 @@ webpackJsonp([2,4],{
 
 
 	// module
-	exports.push([module.id, "#react-root {\n  position: relative;\n  overflow: hidden; }\n\n.bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n.bg {\n  background-position: center;\n  background-size: cover;\n  z-index: -2;\n  filter: blur(20px) brightness(0.35);\n  -webkit-transform: scale(1.07); }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  background: none;\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list::-webkit-scrollbar {\n    display: none; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: rgba(238, 238, 238, 0.5); }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 24px;\n    font-weight: 500;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 3px;\n      background: #9d9d9d; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 20px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 24px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 23px 0px 15px 60px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: #333333;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        cursor: pointer;\n        margin: 0; }\n", ""]);
+	exports.push([module.id, "#react-root {\n  position: relative;\n  overflow: hidden; }\n\n.bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n.bg {\n  background-position: center;\n  background-size: cover;\n  z-index: -2;\n  filter: blur(20px) brightness(0.35);\n  -webkit-transform: scale(1.07); }\n\n#player .grid, #player .column {\n  padding: 0;\n  margin: 0; }\n\n#player .header a {\n  color: black; }\n\n#player .header .icon {\n  margin: 0; }\n\n#player .header .segment {\n  background: none;\n  box-shadow: none;\n  border: none; }\n\n#player .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#player .player .container {\n  width: 80%;\n  padding: 1em; }\n\n#player .player .audio-list {\n  padding-right: 6em; }\n  #player .player .audio-list .title {\n    font-size: 18px;\n    font-weight: bold; }\n  #player .player .audio-list .divider {\n    height: 3px; }\n  #player .player .audio-list .list::-webkit-scrollbar {\n    display: none; }\n  #player .player .audio-list .list {\n    overflow-y: scroll;\n    max-height: 350px; }\n    #player .player .audio-list .list .item {\n      cursor: pointer;\n      padding: 1em;\n      font-size: 16px;\n      color: #999999; }\n    #player .player .audio-list .list .item:hover {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n    #player .player .audio-list .list .item.active {\n      color: #bbbbbb;\n      background-color: rgba(95, 79, 73, 0.6); }\n\n#player .player .audio-info {\n  padding-top: 2rem; }\n  #player .player .audio-info .cover {\n    width: 80%;\n    margin: 0 auto; }\n    #player .player .audio-info .cover img {\n      width: 100%;\n      height: 100%; }\n  #player .player .audio-info .name {\n    width: 100%;\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 5px;\n    font-size: 24px;\n    color: #333333; }\n  #player .player .audio-info .artist {\n    width: 100%;\n    text-align: center;\n    padding-bottom: 5px;\n    font-size: 14px;\n    color: #999999; }\n  #player .player .audio-info .sheet {\n    width: 100%;\n    text-align: center;\n    font-size: 14px;\n    color: #999999; }\n\n#player .player .footer {\n  padding-top: 0.5em;\n  position: absolute;\n  height: 100px;\n  width: 100%;\n  bottom: 0px;\n  background: rgba(238, 238, 238, 0.7); }\n  #player .player .footer .audio-controller .mod1 .hd {\n    margin-bottom: 1em; }\n  #player .player .footer .audio-controller .mod1 .song-title {\n    width: auto;\n    float: left;\n    font-size: 18px;\n    color: black; }\n  #player .player .footer .audio-controller .mod1 .time {\n    font-size: 14px;\n    color: #333333; }\n  #player .player .footer .audio-controller .mod1 .progress {\n    margin-top: 5px;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      z-index: 2; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-player {\n      position: absolute;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod1 .progress .progress-loaded {\n      cursor: pointer;\n      position: absolute;\n      height: 3px;\n      background: #696969; }\n  #player .player .footer .audio-controller .mod2 .btn-mode, #player .player .footer .audio-controller .mod2 .btn-volume {\n    cursor: pointer; }\n  #player .player .footer .audio-controller .mod2 .btn-mode {\n    margin-top: 24px;\n    margin-left: 40px;\n    display: inline-block;\n    font-size: 20px; }\n  #player .player .footer .audio-controller .mod2 .btn-volume {\n    margin-left: 10px;\n    margin-top: 22px;\n    display: inline-block;\n    font-size: 24px; }\n  #player .player .footer .audio-controller .mod2 .volume-progress {\n    margin-top: 31px;\n    background: rgba(0, 0, 0, 0.1);\n    width: 100%;\n    height: 3px;\n    position: relative; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .current {\n      position: absolute;\n      width: 10%;\n      height: 3px;\n      background: black; }\n    #player .player .footer .audio-controller .mod2 .volume-progress .slider {\n      cursor: pointer;\n      position: absolute;\n      border-radius: 50%;\n      outline: 0;\n      border: 0;\n      width: 10px;\n      height: 10px;\n      margin-top: -3px;\n      margin-left: -3px;\n      background: black;\n      left: 10%;\n      z-index: 2; }\n  #player .player .footer .audio-controller .mod3 {\n    padding: 23px 0px 15px 60px; }\n    #player .player .footer .audio-controller .mod3 .btn-preview, #player .player .footer .audio-controller .mod3 .btn-playpause, #player .player .footer .audio-controller .mod3 .btn-next {\n      text-align: center;\n      color: #333333;\n      font-size: 24px;\n      padding: 0 18px; }\n      #player .player .footer .audio-controller .mod3 .btn-preview .icon, #player .player .footer .audio-controller .mod3 .btn-playpause .icon, #player .player .footer .audio-controller .mod3 .btn-next .icon {\n        cursor: pointer;\n        margin: 0; }\n", ""]);
 
 	// exports
 

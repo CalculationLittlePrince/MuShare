@@ -1,15 +1,16 @@
 import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
-
+import {getURL} from '../../oss/oss'
+import {Link} from 'react-router-dom';
 
 class FriendList extends MuComponent {
   render() {
     var friendList = this.props.friends.map(function (friend) {
       return (
         <div className="item">
-          <img className="ui avatar image" src="/image/avatar.png"/>
+          <img className="ui avatar image" src={friend.avatar === '' ? "/image/avatar.png" : getURL(friend.avatar)}/>
           <div className="content">
-            <a className="header">{friend.name}</a>
+            <Link to={`/user/${friend.id}`} className="header">{friend.name}</Link>
           </div>
         </div>
       );
@@ -58,9 +59,9 @@ class FriendRequestList extends MuComponent {
               accept={friend.accept}
               acceptFriendRequest={self.props.acceptFriendRequest}/>
           </div>
-          <img className="ui avatar image" src="/image/avatar.png"/>
+          <img className="ui avatar image" src={friend.avatar === '' ? "/image/avatar.png" : getURL(friend.avatar)}/>
           <div className="content">
-            <a className="header">{friend.name}</a>
+            <Link to={`/user/${friend.id}`} className="header">{friend.name}</Link>
           </div>
         </div>
       );

@@ -38,8 +38,8 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response {
       return forbidden("no enough privi")
     }
   } else if sheet.Privilege == priFriend {
-    tx.Where("from_id = ? AND to_id = ?",
-      strconv.Itoa(body.UserID), strconv.Itoa(sheet.UserID)).First(&friend)
+    tx.Where("user_id = ? AND friend_id = ? AND state = ?",
+      strconv.Itoa(body.UserID), strconv.Itoa(sheet.UserID), "agree").First(&friend)
     if friend.ID == 0 {
       return forbidden("no enough privi")
     }

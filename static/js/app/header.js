@@ -9,10 +9,12 @@ class Top extends MuComponent {
   constructor(props) {
     super(props);
     this.state = {
-      avatar: '/image/avatar.png'
+      avatar: '/image/avatar.png',
+      userId: -1
     }
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadUserAvatar = this.loadUserAvatar.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +23,9 @@ class Top extends MuComponent {
       action: 'hide'
     });
     this.loadUserProfile();
+    setInterval(function () {
+      self.loadUserProfile();
+    }, 5000);
   }
 
   loadUserProfile() {
@@ -36,7 +41,10 @@ class Top extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (data) {
-        self.loadUserAvatar(data.body.avatar);
+        self.setState({
+          avatar: data.body.avatar === '' ? '/image/avatar.png' : getURL(data.body.avatar),
+          userId: data.body.id
+        });
       })
       .catch(function (error) {
         console.error(error);
@@ -52,7 +60,38 @@ class Top extends MuComponent {
     }
   }
 
+  logOut() {
+    var self = this;
+    fetch('/api/user/account/logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then(function (result) {
+        window.location.href = "/";
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   render() {
+
+    var userPage = null;
+    if (this.state.userId == -1) {
+      userPage = (
+        <div className="item">个人主页</div>
+      );
+    } else {
+      userPage = (
+        <Link to={`/user/${this.state.userId}`} className="item">个人主页</Link>
+      );
+    }
+
     return (
       <div className="header-top">
         <div className="ui grid container">
@@ -92,11 +131,12 @@ class Top extends MuComponent {
                            src={this.state.avatar}/>
                       <i className="dropdown icon"></i>
                       <div className="menu">
-                        <div className="item">个人主页</div>
-                        <Link to="/personal/profile" className="item">个人中心</Link>
+                        {userPage}
+                        <Link to="/personal/profile"
+                              className="item">个人中心</Link>
                         <div className="divider"></div>
                         <div className="item">设置</div>
-                        <div className="item">注销</div>
+                        <div className="item" onClick={this.logOut}>注销</div>
                       </div>
                     </div>
                   </div>

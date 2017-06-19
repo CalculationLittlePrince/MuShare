@@ -13,6 +13,7 @@ import Community from './community/main';
 import Personal from './profile/main';
 import SheetPage from './sheet/main'
 import Chat from './chat/main';
+import User from './user/main';
 import '../../scss/app.scss';
 import '../../semantic/dist/semantic.min.js';
 
@@ -25,7 +26,6 @@ class App extends React.Component {
   componentDidMount() {
     $('.ui.sidebar.chat')
       .sidebar('setting', 'transition', 'overlay')
-      .sidebar('toggle');
   }
 
   render() {
@@ -40,6 +40,7 @@ class App extends React.Component {
           <Route path="/community" component={Community}/>
           <Route path="/personal" component={Personal}/>
           <Route path="/sheet/:sheetId" component={SheetPage}/>
+          <Route path="/user/:userId" component={User}/>
           <Footer/>
           <Chat/>
         </div>

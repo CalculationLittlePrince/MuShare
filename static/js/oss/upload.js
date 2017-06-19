@@ -12,8 +12,10 @@ function uploadAudio(objectKeyId, file, token, progress) {
             var result = yield client.multipartUpload(objectKeyId, file, {
               checkpoint: checkpoint,
               progress: function*(percentage, cpt) {
-                console.log(percentage);
                 checkpoint = cpt;
+                if(progress) {
+                  progress(percentage);
+                }
               }
             });
             console.log(result);
