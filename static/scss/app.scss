@@ -42,6 +42,9 @@
     }
 
     .header-top {
+      .logo {
+        margin: 0 auto;
+      }
       .item {
         padding-top: 0.1em;
         padding-bottom: 0.1em;
@@ -166,13 +169,17 @@
     }
 
     .container {
-      padding: 1em 2em 1em 2em;
+      padding: 1em 6em;
     }
     .hot, .recommend, .original {
+      .header {
+        padding: 0 2em;
+      }
       .cards {
         padding: 0 2em;
         .description {
-          font-size: 20px;
+          font-size: 15px;
+          color: #0a0a0a;
           text-align: center;
         }
       }
@@ -181,12 +188,19 @@
 
   .hot {
     .container {
-      padding: 1em 2em 1em 2em;
+      padding: 1em 5em;
+    }
+    .header {
+      padding: 0 1em;
     }
     .cards {
       padding: 0 2em;
       .description {
-        font-size: 20px;
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+        font-size: 15px;
+        color: #0a0a0a;
         text-align: center;
       }
     }
@@ -194,12 +208,19 @@
 
   .recommend {
     .container {
-      padding: 1em 2em 1em 2em;
+      padding: 1em 5em;
+    }
+    .header {
+      padding: 0 1em;
     }
     .cards {
       padding: 0 2em;
       .description {
-        font-size: 20px;
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+        font-size: 15px;
+        color: #0a0a0a;
         text-align: center;
       }
     }
@@ -207,12 +228,19 @@
 
   .original {
     .container {
-      padding: 1em 2em 1em 2em;
+      padding: 1em 5em;
+    }
+    .header {
+      padding: 0 1em;
     }
     .cards {
       padding: 0 2em;
       .description {
-        font-size: 20px;
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+        font-size: 15px;
+        color: #0a0a0a;
         text-align: center;
       }
     }
@@ -255,6 +283,7 @@
       }
 
       .item .content .sheetname {
+        word-wrap: break-word;
         color: whitesmoke;
         font-size: 3em;
       }
@@ -421,6 +450,9 @@
         padding: 0 6em 2em 0;
         .content {
           .description {
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
             text-align: center;
           }
         }
@@ -442,6 +474,9 @@
         padding: 0 6em 2em 0;
         .content {
           .description {
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
             text-align: center;
           }
         }
@@ -482,9 +517,12 @@
         margin-top: 2em;
       }
       padding: 0 4em;
-      .public-sheet, .private-sheet, friend-sheet {
+      .public-sheet, .private-sheet, .friend-sheet {
         .content {
           .description {
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
             text-align: center;
           }
         }

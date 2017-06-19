@@ -306,7 +306,7 @@ webpackJsonp([0,4],{
 	                { className: 'ui secondary menu' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'item' },
+	                  { className: 'item logo' },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'image' },
@@ -439,8 +439,8 @@ webpackJsonp([0,4],{
 	              '\u6700\u65B0\u539F\u521B'
 	            ),
 	            _react2.default.createElement(
-	              _reactRouterDom.NavLink,
-	              { to: '/community', activeClassName: 'active', className: 'item' },
+	              'a',
+	              { className: 'item' },
 	              '\u97F3\u4E50\u793E\u533A'
 	            )
 	          )
@@ -756,7 +756,7 @@ webpackJsonp([0,4],{
 /***/ 530:
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch, $) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -768,9 +768,17 @@ webpackJsonp([0,4],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	var _reactRouterDom = __webpack_require__(483);
+
 	var _reactDom = __webpack_require__(336);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _oss = __webpack_require__(527);
 
 	__webpack_require__(531);
 
@@ -781,6 +789,246 @@ webpackJsonp([0,4],{
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Hot = function (_MuComponent) {
+	  _inherits(Hot, _MuComponent);
+
+	  function Hot(props) {
+	    _classCallCheck(this, Hot);
+
+	    var _this = _possibleConstructorReturn(this, (Hot.__proto__ || Object.getPrototypeOf(Hot)).call(this, props));
+
+	    _this.state = {
+	      sheets: []
+	    };
+	    _this.loadHot = _this.loadHot.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Hot, [{
+	    key: 'loadHot',
+	    value: function loadHot() {
+	      var self = this;
+	      fetch('/api/admin/hot/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadHot();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui four link cards' },
+	        sheets
+	      );
+	    }
+	  }]);
+
+	  return Hot;
+	}(_mushareReactComponent2.default);
+
+	var Recommend = function (_MuComponent2) {
+	  _inherits(Recommend, _MuComponent2);
+
+	  function Recommend(props) {
+	    _classCallCheck(this, Recommend);
+
+	    var _this2 = _possibleConstructorReturn(this, (Recommend.__proto__ || Object.getPrototypeOf(Recommend)).call(this, props));
+
+	    _this2.state = {
+	      sheets: []
+	    };
+	    _this2.loadRecommend = _this2.loadRecommend.bind(_this2);
+	    return _this2;
+	  }
+
+	  _createClass(Recommend, [{
+	    key: 'loadRecommend',
+	    value: function loadRecommend() {
+	      var self = this;
+	      fetch('/api/admin/recommend/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadRecommend();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui four link cards' },
+	        sheets
+	      );
+	    }
+	  }]);
+
+	  return Recommend;
+	}(_mushareReactComponent2.default);
+
+	var Original = function (_MuComponent3) {
+	  _inherits(Original, _MuComponent3);
+
+	  function Original(props) {
+	    _classCallCheck(this, Original);
+
+	    var _this3 = _possibleConstructorReturn(this, (Original.__proto__ || Object.getPrototypeOf(Original)).call(this, props));
+
+	    _this3.state = {
+	      sheets: []
+	    };
+	    _this3.loadOriginal = _this3.loadOriginal.bind(_this3);
+	    return _this3;
+	  }
+
+	  _createClass(Original, [{
+	    key: 'loadOriginal',
+	    value: function loadOriginal() {
+	      var self = this;
+	      fetch('/api/admin/original/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadOriginal();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'ui four link cards' },
+	        sheets
+	      );
+	    }
+	  }]);
+
+	  return Original;
+	}(_mushareReactComponent2.default);
 
 	var Home = function (_React$Component) {
 	  _inherits(Home, _React$Component);
@@ -826,22 +1074,22 @@ webpackJsonp([0,4],{
 	              _react2.default.createElement(
 	                'li',
 	                null,
-	                _react2.default.createElement('img', { src: '/image/zt1.png', alt: '' })
+	                _react2.default.createElement('img', { src: '/image/bg1.jpg', alt: '' })
 	              ),
 	              _react2.default.createElement(
 	                'li',
 	                null,
-	                _react2.default.createElement('img', { src: '/image/zt2.png', alt: '' })
+	                _react2.default.createElement('img', { src: '/image/bg2.jpg', alt: '' })
 	              ),
 	              _react2.default.createElement(
 	                'li',
 	                null,
-	                _react2.default.createElement('img', { src: '/image/zt3.png', alt: '' })
+	                _react2.default.createElement('img', { src: '/image/bg3.jpg', alt: '' })
 	              ),
 	              _react2.default.createElement(
 	                'li',
 	                null,
-	                _react2.default.createElement('img', { src: '/image/zt4.png', alt: '' })
+	                _react2.default.createElement('img', { src: '/image/bg4.jpg', alt: '' })
 	              )
 	            )
 	          ),
@@ -855,82 +1103,7 @@ webpackJsonp([0,4],{
 	            { className: 'ui medium header' },
 	            '\u672C\u5468\u70ED\u95E8'
 	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'ui four link cards' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            )
-	          )
+	          _react2.default.createElement(Hot, null)
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -940,82 +1113,7 @@ webpackJsonp([0,4],{
 	            { className: 'ui medium header' },
 	            '\u6728\u5C51\u63A8\u8350'
 	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'ui four link cards' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            )
-	          )
+	          _react2.default.createElement(Recommend, null)
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -1025,82 +1123,7 @@ webpackJsonp([0,4],{
 	            { className: 'ui medium header' },
 	            '\u6700\u65B0\u539F\u521B'
 	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'ui four link cards' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            )
-	          )
+	          _react2.default.createElement(Original, null)
 	        )
 	      );
 	    }
@@ -1110,14 +1133,14 @@ webpackJsonp([0,4],{
 	}(_react2.default.Component);
 
 	exports.default = Home;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524), __webpack_require__(301)))
 
 /***/ }),
 
 /***/ 532:
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1133,6 +1156,14 @@ webpackJsonp([0,4],{
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	var _reactRouterDom = __webpack_require__(483);
+
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1141,21 +1172,76 @@ webpackJsonp([0,4],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Hot = function (_React$Component) {
-	  _inherits(Hot, _React$Component);
+	var Hot = function (_MuComponent) {
+	  _inherits(Hot, _MuComponent);
 
 	  function Hot(props) {
 	    _classCallCheck(this, Hot);
 
-	    return _possibleConstructorReturn(this, (Hot.__proto__ || Object.getPrototypeOf(Hot)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Hot.__proto__ || Object.getPrototypeOf(Hot)).call(this, props));
+
+	    _this.state = {
+	      sheets: []
+	    };
+	    _this.loadHot = _this.loadHot.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Hot, [{
+	    key: 'loadHot',
+	    value: function loadHot() {
+	      var self = this;
+	      fetch('/api/admin/hot/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      this.loadHot();
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'description' },
+	              sheet.name
+	            )
+	          )
+	        );
+	      });
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'hot' },
@@ -1170,78 +1256,7 @@ webpackJsonp([0,4],{
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ui four link cards' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'card' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'image' },
-	                _react2.default.createElement('img', { src: '/image/avatar.png' })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'content' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'description' },
-	                  'test'
-	                )
-	              )
-	            )
+	            sheets
 	          )
 	        )
 	      );
@@ -1249,16 +1264,17 @@ webpackJsonp([0,4],{
 	  }]);
 
 	  return Hot;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Hot;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524)))
 
 /***/ }),
 
 /***/ 533:
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1270,6 +1286,14 @@ webpackJsonp([0,4],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	var _reactRouterDom = __webpack_require__(483);
+
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1278,107 +1302,90 @@ webpackJsonp([0,4],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Recommend = function (_React$Component) {
-	  _inherits(Recommend, _React$Component);
+	var Recommend = function (_MuComponent) {
+	  _inherits(Recommend, _MuComponent);
 
 	  function Recommend(props) {
 	    _classCallCheck(this, Recommend);
 
-	    return _possibleConstructorReturn(this, (Recommend.__proto__ || Object.getPrototypeOf(Recommend)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Recommend.__proto__ || Object.getPrototypeOf(Recommend)).call(this, props));
+
+	    _this.state = {
+	      sheets: []
+	    };
+	    _this.loadRecommend = _this.loadRecommend.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Recommend, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {}
+	    key: 'loadRecommend',
+	    value: function loadRecommend() {
+	      var self = this;
+	      fetch('/api/admin/recommend/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
 	  }, {
-	    key: "render",
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadRecommend();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "recommend" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "ui container" },
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "ui medium header" },
-	            "\u6728\u5C51\u63A8\u8350"
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
 	          ),
 	          _react2.default.createElement(
-	            "div",
-	            { className: "ui four link cards" },
+	            'div',
+	            { className: 'content' },
 	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
+	              'div',
+	              { className: 'description' },
+	              sheet.name
 	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'recommend' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui medium header' },
+	            '\u6728\u5C51\u63A8\u8350'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui four link cards' },
+	            sheets
 	          )
 	        )
 	      );
@@ -1386,16 +1393,17 @@ webpackJsonp([0,4],{
 	  }]);
 
 	  return Recommend;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Recommend;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524)))
 
 /***/ }),
 
 /***/ 534:
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(fetch) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1407,6 +1415,14 @@ webpackJsonp([0,4],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _mushareReactComponent = __webpack_require__(525);
+
+	var _mushareReactComponent2 = _interopRequireDefault(_mushareReactComponent);
+
+	var _reactRouterDom = __webpack_require__(483);
+
+	var _oss = __webpack_require__(527);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1415,107 +1431,90 @@ webpackJsonp([0,4],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Original = function (_React$Component) {
-	  _inherits(Original, _React$Component);
+	var Original = function (_MuComponent) {
+	  _inherits(Original, _MuComponent);
 
 	  function Original(props) {
 	    _classCallCheck(this, Original);
 
-	    return _possibleConstructorReturn(this, (Original.__proto__ || Object.getPrototypeOf(Original)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Original.__proto__ || Object.getPrototypeOf(Original)).call(this, props));
+
+	    _this.state = {
+	      sheets: []
+	    };
+	    _this.loadOriginal = _this.loadOriginal.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Original, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {}
+	    key: 'loadOriginal',
+	    value: function loadOriginal() {
+	      var self = this;
+	      fetch('/api/admin/original/get', {
+	        method: 'GET',
+	        credentials: 'same-origin'
+	      }).then(self.checkStatus).then(self.parseJSON).then(function (result) {
+	        var sheets = result.body.map(function (sheet) {
+	          return {
+	            id: sheet.id,
+	            cover: sheet.cover,
+	            name: sheet.name
+	          };
+	        });
+	        self.setState({
+	          sheets: sheets
+	        });
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
 	  }, {
-	    key: "render",
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.loadOriginal();
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "original" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "ui container" },
+	      var sheets = this.state.sheets.map(function (sheet) {
+	        return _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          {
+	            to: '/sheet/' + sheet.id,
+	            className: 'card',
+	            'data-id': sheet.id },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "ui medium header" },
-	            "\u6700\u65B0\u539F\u521B"
+	            'div',
+	            { className: 'image' },
+	            _react2.default.createElement('img', {
+	              src: sheet.cover === '' ? "/image/avatar.png" : (0, _oss.getURL)(sheet.cover) })
 	          ),
 	          _react2.default.createElement(
-	            "div",
-	            { className: "ui four link cards" },
+	            'div',
+	            { className: 'content' },
 	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card" },
-	              _react2.default.createElement(
-	                "div",
-	                { className: "image" },
-	                _react2.default.createElement("img", { src: "/image/avatar.png" })
-	              ),
-	              _react2.default.createElement(
-	                "div",
-	                { className: "content" },
-	                _react2.default.createElement(
-	                  "div",
-	                  { className: "description" },
-	                  "test"
-	                )
-	              )
+	              'div',
+	              { className: 'description' },
+	              sheet.name
 	            )
+	          )
+	        );
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'original' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'ui container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui medium header' },
+	            '\u6700\u65B0\u539F\u521B'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ui four link cards' },
+	            sheets
 	          )
 	        )
 	      );
@@ -1523,9 +1522,10 @@ webpackJsonp([0,4],{
 	  }]);
 
 	  return Original;
-	}(_react2.default.Component);
+	}(_mushareReactComponent2.default);
 
 	exports.default = Original;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(524)))
 
 /***/ }),
 
@@ -3900,6 +3900,8 @@ webpackJsonp([0,4],{
 
 	var _utils = __webpack_require__(541);
 
+	var _reactRouterDom = __webpack_require__(483);
+
 	var _logo = __webpack_require__(526);
 
 	var _logo2 = _interopRequireDefault(_logo);
@@ -3974,8 +3976,8 @@ webpackJsonp([0,4],{
 	                      _react2.default.createElement('img', { className: 'ui avatar image',
 	                        src: this.props.sheetInfo.creatorAvatar }),
 	                      _react2.default.createElement(
-	                        'a',
-	                        { href: '',
+	                        _reactRouterDom.Link,
+	                        { to: '/user/' + this.props.sheetInfo.userId,
 	                          className: 'username' },
 	                        this.props.sheetInfo.creator
 	                      ),
@@ -4634,6 +4636,7 @@ webpackJsonp([0,4],{
 	        }
 	      }).then(self.checkStatus).then(self.parseJSON).then(function (data) {
 	        var sheetInfo = {
+	          userId: data.body.user.id,
 	          sheetName: data.body.name,
 	          cover: data.body.cover === '' ? '/image/avatar.png' : (0, _oss.getURL)(data.body.cover),
 	          creator: data.body.user.name,
@@ -5195,7 +5198,7 @@ webpackJsonp([0,4],{
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 2em 1em 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 20px;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    font-size: 20px;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#app .sheet-page .bg {\n  background-size: cover;\n  background-position: center;\n  z-index: -2;\n  filter: blur(10px) brightness(0.45);\n  -webkit-transform: scale(1.07); }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info {\n  position: relative;\n  overflow: hidden; }\n  #app .sheet-page .sheet-info .cover {\n    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n    width: 220px;\n    padding: 2px; }\n  #app .sheet-page .sheet-info .item .content .sheetname {\n    color: whitesmoke;\n    font-size: 3em; }\n  #app .sheet-page .sheet-info .item .content .modify-date {\n    color: whitesmoke;\n    font-size: 13px;\n    margin-left: 5px; }\n  #app .sheet-page .sheet-info .item .content .username {\n    color: whitesmoke;\n    font-size: 15px;\n    font-weight: bold;\n    margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet, #app .personal .sheets .friend-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description, #app .personal .sheets .friend-sheet .content .description {\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content, #app .personal .sheets .friend-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid, #app .personal .sheets .friend-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column, #app .personal .sheets .friend-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .user .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .user .info {\n  padding-top: 2em; }\n  #app .user .info .name {\n    padding: 1em;\n    font-size: 20px;\n    font-weight: 500; }\n  #app .user .info .description {\n    padding: 0.5em 1em; }\n  #app .user .info .friend {\n    padding-top: 1em;\n    padding-bottom: 1em; }\n    #app .user .info .friend .button {\n      display: block; }\n\n#app .user .sheets {\n  padding: 0 4em; }\n  #app .user .sheets .ui.header:first-child {\n    margin-top: 2em; }\n  #app .user .sheets .public-sheet .content .description, #app .user .sheets .private-sheet .content .description, #app .user .sheets friend-sheet .content .description {\n    text-align: center; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n#chat.ui[class*=\"very wide\"].left.sidebar, #chat.ui[class*=\"very wide\"].right.sidebar {\n  width: 600px; }\n\n#chat .content {\n  width: 100%;\n  height: 100%;\n  background-color: cornflowerblue; }\n\n#avatar-upload-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n.pusher {\n  position: relative;\n  margin: 0;\n  padding-bottom: 15rem;\n  min-height: 100%; }\n\n#app .grid, #app .column {\n  padding: 0;\n  margin: 0; }\n\n#app .header a {\n  color: black; }\n\n#app .header .icon {\n  margin: 0; }\n\n#app .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#app .header .header-top .logo {\n  margin: 0 auto; }\n\n#app .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n\n#app .header .header-top .icon-home, #app .header .header-top .icon-user {\n  border-color: #E6E6E6;\n  border-style: solid;\n  border-width: 0 1px;\n  border-radius: 0; }\n\n#app .header .header-top .icon-home i:hover, #app .header .header-top .icon-user .dropdown:hover {\n  color: #535353; }\n\n#app .header .header-top .dropdown .menu {\n  z-index: 200; }\n\n#app .header .divider {\n  border-width: 1px;\n  margin: 0; }\n\n#app .header .navigation {\n  border-bottom-color: #E6E6E6;\n  border-bottom-width: 1px;\n  border-bottom-style: solid; }\n  #app .header .navigation .menu {\n    box-shadow: none;\n    border-top: none;\n    border-bottom: none;\n    border-radius: 0; }\n  #app .header .navigation .item a {\n    color: #181818;\n    font-weight: 500; }\n\n#app .home {\n  /**********roundabout**********/ }\n  #app .home .carousel {\n    background-color: #2a2a2a; }\n  #app .home .exhibition_hall {\n    text-align: center;\n    position: relative;\n    overflow: hidden; }\n  #app .home .exhibition_hall h4 {\n    font-size: 30px;\n    text-align: center;\n    margin: 0px auto;\n    padding-top: 50px;\n    color: #000; }\n  #app .home .tline {\n    color: #dedede; }\n  #app .home .roundabout_box {\n    width: 100%; }\n  #app .home .roundabout_box img {\n    width: 100%; }\n  #app .home .roundabout_box {\n    height: 430px;\n    width: 100%;\n    margin: 0px auto 20px auto; }\n  #app .home .roundabout-holder {\n    list-style: none;\n    width: 500px;\n    height: 425px;\n    margin: 0px auto; }\n  #app .home .roundabout-moveable-item {\n    font-size: 12px !important;\n    height: 425px;\n    width: 650px;\n    cursor: pointer;\n    background: #f9f9f9; }\n  #app .home .roundabout-moveable-item img {\n    height: 100%;\n    width: 100%;\n    background-color: #FFFFFF;\n    margin: 0; }\n  #app .home .roundabout-in-focus {\n    cursor: auto; }\n  #app .home .roundabout-in-focus000:hover {\n    -webkit-box-shadow: 0px 0px 20px #787878;\n    -moz-box-shadow: 0px 0px 20px #787878;\n    background: #f9f9f9; }\n  #app .home .roundabout-holder .text {\n    color: #999; }\n  #app .home .roundabout-in-focus000:hover span {\n    display: inline;\n    position: absolute;\n    bottom: 5px;\n    right: 5px;\n    padding: 8px 20px;\n    background: #f9f9f9;\n    color: #3366cc;\n    z-index: 999;\n    -webkit-border-top-left-radius: 5px;\n    -moz-border-radius-topLeft: 5px;\n    border-left: 1px solid #aaaaaa;\n    border-top: 1px solid #aaaaaa; }\n  #app .home .roundabout a:active, #app .home .roundabout a:focus, #app .home .roundabout a:visited {\n    outline: none;\n    text-decoration: none; }\n  #app .home .roundabout li {\n    margin: 0; }\n  #app .home .container {\n    padding: 1em 6em; }\n  #app .home .hot .header, #app .home .recommend .header, #app .home .original .header {\n    padding: 0 2em; }\n  #app .home .hot .cards, #app .home .recommend .cards, #app .home .original .cards {\n    padding: 0 2em; }\n    #app .home .hot .cards .description, #app .home .recommend .cards .description, #app .home .original .cards .description {\n      font-size: 15px;\n      color: #0a0a0a;\n      text-align: center; }\n\n#app .hot .container {\n  padding: 1em 5em; }\n\n#app .hot .header {\n  padding: 0 1em; }\n\n#app .hot .cards {\n  padding: 0 2em; }\n  #app .hot .cards .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    font-size: 15px;\n    color: #0a0a0a;\n    text-align: center; }\n\n#app .recommend .container {\n  padding: 1em 5em; }\n\n#app .recommend .header {\n  padding: 0 1em; }\n\n#app .recommend .cards {\n  padding: 0 2em; }\n  #app .recommend .cards .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    font-size: 15px;\n    color: #0a0a0a;\n    text-align: center; }\n\n#app .original .container {\n  padding: 1em 5em; }\n\n#app .original .header {\n  padding: 0 1em; }\n\n#app .original .cards {\n  padding: 0 2em; }\n  #app .original .cards .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    font-size: 15px;\n    color: #0a0a0a;\n    text-align: center; }\n\n#app .community .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .bg {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0; }\n\n#app .sheet-page .bg {\n  background-size: cover;\n  background-position: center;\n  z-index: -2;\n  filter: blur(10px) brightness(0.45);\n  -webkit-transform: scale(1.07); }\n\n#app .sheet-page .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .sheet-page .sheet-info {\n  position: relative;\n  overflow: hidden; }\n  #app .sheet-page .sheet-info .cover {\n    box-shadow: 0 0 0 1px #d4d4d5, 0 2px 4px 0 rgba(34, 36, 38, 0.12), 0 2px 10px 0 rgba(34, 36, 38, 0.15);\n    width: 220px;\n    padding: 2px; }\n  #app .sheet-page .sheet-info .item .content .sheetname {\n    word-wrap: break-word;\n    color: whitesmoke;\n    font-size: 3em; }\n  #app .sheet-page .sheet-info .item .content .modify-date {\n    color: whitesmoke;\n    font-size: 13px;\n    margin-left: 5px; }\n  #app .sheet-page .sheet-info .item .content .username {\n    color: whitesmoke;\n    font-size: 15px;\n    font-weight: bold;\n    margin: 5px; }\n\n#app .sheet-page .audio-content #upload-audio-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .sheet-page .audio-content #upload-audio-modal .audio-file:focus + label,\n#app .sheet-page .audio-content #upload-audio-modal .audio-file + label:hover {\n  background-color: red; }\n\n#app .sheet-page .audio-content .audio-list table .operations i {\n  cursor: pointer;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .play {\n  font-size: 14px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .plus {\n  font-size: 15px; }\n\n#app .sheet-page .audio-content .audio-list table .operations .remove {\n  font-size: 15px; }\n\n#app .personal .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .profile #avatar-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .profile .form {\n  padding: 0 6em 0 0; }\n\n#app .personal .profile .avatar .avatar-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .profile .avatar .avatar-file + label {\n  cursor: pointer;\n  font-size: 18px;\n  font-weight: 500;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .profile .avatar .avatar-file:focus + label,\n#app .personal .profile .avatar .avatar-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper {\n  height: 364px;\n  width: 100%;\n  margin-top: 15px;\n  margin-bottom: 15px;\n  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);\n  background-color: #fcfcfc;\n  overflow: hidden; }\n\n#app .personal .sheets #sheet-cover-cropper-modal .avatar-wrapper img {\n  display: block;\n  height: auto;\n  max-width: 100%; }\n\n#app .personal .sheets #create-sheet-modal .container {\n  width: 80%;\n  padding: 2em; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label {\n  cursor: pointer;\n  font-size: 13px;\n  font-weight: 400;\n  color: white;\n  padding: 0.625rem 1.25rem;\n  background-color: black;\n  display: inline-block; }\n\n#app .personal .sheets #create-sheet-modal .sheet-cover-file:focus + label,\n#app .personal .sheets #create-sheet-modal .sheet-cover-file + label:hover {\n  background-color: red; }\n\n#app .personal .sheets .public-sheet, #app .personal .sheets .private-sheet, #app .personal .sheets .friend-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .sheets .public-sheet .content .description, #app .personal .sheets .private-sheet .content .description, #app .personal .sheets .friend-sheet .content .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    text-align: center; }\n  #app .personal .sheets .public-sheet .cards:last-child .content, #app .personal .sheets .private-sheet .cards:last-child .content, #app .personal .sheets .friend-sheet .cards:last-child .content {\n    height: 100%; }\n    #app .personal .sheets .public-sheet .cards:last-child .content .grid, #app .personal .sheets .private-sheet .cards:last-child .content .grid, #app .personal .sheets .friend-sheet .cards:last-child .content .grid {\n      height: 100%; }\n      #app .personal .sheets .public-sheet .cards:last-child .content .grid .column, #app .personal .sheets .private-sheet .cards:last-child .content .grid .column, #app .personal .sheets .friend-sheet .cards:last-child .content .grid .column {\n        text-align: center; }\n\n#app .personal .subscription .subs-sheet {\n  padding: 0 6em 2em 0; }\n  #app .personal .subscription .subs-sheet .content .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    text-align: center; }\n\n#app .personal .friends .friends-list  {\n  padding: 0 12em 2em 0; }\n\n#app .user .container {\n  padding: 1em 2em 1em 2em; }\n\n#app .user .info {\n  padding-top: 2em; }\n  #app .user .info .name {\n    padding: 1em;\n    font-size: 20px;\n    font-weight: 500; }\n  #app .user .info .description {\n    padding: 0.5em 1em; }\n  #app .user .info .friend {\n    padding-top: 1em;\n    padding-bottom: 1em; }\n    #app .user .info .friend .button {\n      display: block; }\n\n#app .user .sheets {\n  padding: 0 4em; }\n  #app .user .sheets .ui.header:first-child {\n    margin-top: 2em; }\n  #app .user .sheets .public-sheet .content .description, #app .user .sheets .private-sheet .content .description, #app .user .sheets .friend-sheet .content .description {\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    text-align: center; }\n\n#app .footer {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0; }\n  #app .footer .column {\n    padding: 0 2em; }\n\n#app .footer.segment {\n  padding: 3em 0em; }\n", ""]);
 
 	// exports
 

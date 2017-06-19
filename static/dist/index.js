@@ -121,19 +121,64 @@ webpackJsonp([1,4],{
 	  function Index(props) {
 	    _classCallCheck(this, Index);
 
-	    return _possibleConstructorReturn(this, (Index.__proto__ || Object.getPrototypeOf(Index)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Index.__proto__ || Object.getPrototypeOf(Index)).call(this, props));
+
+	    _this.state = {
+	      height: '100%'
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Index, [{
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      this.setState({
+	        height: $(window).height() - 10 + 'px'
+	      });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      var videoStyle = {
+	        height: this.state.height
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
 	        { id: 'index' },
-	        _react2.default.createElement(_header2.default, null)
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'video-bg' },
+	          _react2.default.createElement(_header2.default, null),
+	          _react2.default.createElement(
+	            'video',
+	            { className: 'video-elem', style: videoStyle, preload: 'auto', autoPlay: 'true', loop: 'loop',
+	              muted: 'muted' },
+	            _react2.default.createElement('source', {
+	              src: 'http://mushare-jp.oss-ap-northeast-1.aliyuncs.com/A_plate_playing_the_rhythm_of_the_music.mp4',
+	              type: 'video/mp4' }),
+	            'Video not supported'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'video-overlay' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'text' },
+	              _react2.default.createElement(
+	                'h1',
+	                null,
+	                'MuShare'
+	              ),
+	              _react2.default.createElement(
+	                'h1',
+	                null,
+	                '\u5206.\u4EAB'
+	              )
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -238,7 +283,7 @@ webpackJsonp([1,4],{
 	                  { className: 'ui secondary menu' },
 	                  _react2.default.createElement(
 	                    'div',
-	                    { className: 'item' },
+	                    { className: 'item logo' },
 	                    _react2.default.createElement(
 	                      'div',
 	                      { className: 'image' },
@@ -267,7 +312,7 @@ webpackJsonp([1,4],{
 	                        'div',
 	                        { className: 'ui primary button',
 	                          onClick: this.showRegister },
-	                        'Sign up'
+	                        '\u6CE8\u518C'
 	                      )
 	                    ),
 	                    _react2.default.createElement(
@@ -275,8 +320,9 @@ webpackJsonp([1,4],{
 	                      { className: 'item' },
 	                      _react2.default.createElement(
 	                        'div',
-	                        { className: 'ui button', onClick: this.showLogin },
-	                        'Login'
+	                        { className: 'ui button',
+	                          onClick: this.showLogin },
+	                        '\u767B\u9646'
 	                      )
 	                    )
 	                  )
@@ -838,7 +884,7 @@ webpackJsonp([1,4],{
 
 
 	// module
-	exports.push([module.id, "#register .grid, #register .column, #login .grid, #login .column {\n  padding: 0;\n  margin: 0; }\n\n#register .container, #login .container {\n  width: 80%;\n  padding: 2em; }\n\n#index .grid, #index .column {\n  padding: 0;\n  margin: 0; }\n\n#index .header a {\n  color: black; }\n\n#index .header .icon {\n  margin: 0; }\n\n#index .header .segment {\n  box-shadow: none;\n  border: none; }\n\n#index .header .header-top .item {\n  padding-top: 0.1em;\n  padding-bottom: 0.1em; }\n", ""]);
+	exports.push([module.id, "#register .grid, #register .column, #login .grid, #login .column {\n  padding: 0;\n  margin: 0; }\n\n#register .container, #login .container {\n  width: 80%;\n  padding: 2em; }\n\n#index .grid, #index .column {\n  padding: 0;\n  margin: 0; }\n\n#index .video-bg {\n  position: relative; }\n  #index .video-bg .video-elem {\n    width: 100%; }\n  #index .video-bg video {\n    object-fit: cover; }\n  #index .video-bg video::-webkit-media-controls {\n    display: none !important; }\n  #index .video-bg .video-overlay {\n    position: absolute;\n    top: 5em;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    background: none;\n    opacity: 0;\n    transition: opacity 0.3s ease; }\n  #index .video-bg .video-overlay:hover {\n    opacity: 1; }\n  #index .video-bg .video-overlay .text {\n    position: absolute;\n    left: 50%;\n    top: 50%;\n    transform: translateX(-50%) translateY(-50%); }\n    #index .video-bg .video-overlay .text h1 {\n      text-transform: uppercase;\n      font-size: 4em;\n      color: white;\n      text-align: center; }\n\n#index .header {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%; }\n  #index .header .logo {\n    margin: 0 auto; }\n  #index .header a {\n    color: black; }\n  #index .header .icon {\n    margin: 0; }\n  #index .header .segment {\n    background: none;\n    box-shadow: none;\n    border: none; }\n  #index .header .header-top .item {\n    padding-top: 0.1em;\n    padding-bottom: 0.1em; }\n", ""]);
 
 	// exports
 

@@ -44,7 +44,7 @@ class Header extends React.Component {
             <div className="four wide column">
               <div className="ui center aligned segment">
                 <div className="ui secondary menu">
-                  <div className="item">
+                  <div className="item logo">
                     <div className="image">
                       <img src={logo}/>
                     </div>
@@ -58,12 +58,14 @@ class Header extends React.Component {
                   <div className="right menu">
                     <div className="item">
                       <div className="ui primary button"
-                           onClick={this.showRegister}>Sign up
+                           onClick={this.showRegister}>
+                        注册
                       </div>
                     </div>
                     <div className="item">
-                      <div className="ui button" onClick={this.showLogin}>
-                        Login
+                      <div className="ui button"
+                           onClick={this.showLogin}>
+                        登陆
                       </div>
                     </div>
                   </div>

@@ -18,6 +18,9 @@ import (
   "MuShare/datatype/request/oss"
   "MuShare/controllers/api/music/artist"
   "MuShare/controllers/api/user/player"
+  "MuShare/controllers/api/admin/hot"
+  "MuShare/controllers/api/admin/recommend"
+  "MuShare/controllers/api/admin/original"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -25,12 +28,25 @@ func Include(m *martini.ClassicMartini) {
   includeUserApi(m)
   includeMusicApi(m)
   includeOSSApi(m)
+  includeAdimnApi(m)
 }
 
 func includePages(m *martini.ClassicMartini) {
   m.Get("/", pages.Index)
   m.Get("/player", pages.Player)
   m.Get("/app**", UserSessionAuth, pages.App)
+}
+
+func includeAdimnApi(m *martini.ClassicMartini) {
+  m.Group("/api/admin/hot", func(r martini.Router) {
+    m.Get("/get", hot.Get)
+  })
+  m.Group("/api/admin/recommend", func(r martini.Router) {
+    m.Get("/get", recommend.Get)
+  })
+  m.Group("/api/admin/original", func(r martini.Router) {
+    m.Get("/get", original.Get)
+  })
 }
 
 func includeUserApi(m *martini.ClassicMartini) {

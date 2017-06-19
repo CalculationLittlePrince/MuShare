@@ -107,7 +107,7 @@ class Top extends MuComponent {
           <div className="four wide column">
             <div className="ui center aligned segment">
               <div className="ui secondary menu">
-                <div className="item">
+                <div className="item logo">
                   <div className="image">
                     <img src={logo}/>
                   </div>
@@ -175,9 +175,9 @@ class Navigation extends React.Component {
             <NavLink to="/original" activeClassName="active" className="item">
               最新原创
             </NavLink>
-            <NavLink to="/community" activeClassName="active" className="item">
+            <a className="item">
               音乐社区
-            </NavLink>
+            </a>
           </div>
         </div>
       </div>

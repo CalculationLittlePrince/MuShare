@@ -2,6 +2,7 @@ import React from 'react';
 import MuComponent from '../../util/mushare-react-component';
 import {getURL} from '../../oss/oss'
 import {dateformat, guid, openPlayer} from '../../util/utils'
+import {Link} from 'react-router-dom';
 import logo from '../../../image/logo.png';
 import co from 'co';
 import {uploadAudio} from '../../oss/upload'
@@ -30,8 +31,8 @@ class SheetInfo extends MuComponent {
                     <div className="meta">
                       <img className="ui avatar image"
                            src={this.props.sheetInfo.creatorAvatar}/>
-                      <a href=""
-                         className="username">{this.props.sheetInfo.creator}</a>
+                      <Link to={`/user/${this.props.sheetInfo.userId}`}
+                         className="username">{this.props.sheetInfo.creator}</Link>
                       <span
                         className="modify-date">上次修改日期：{this.props.sheetInfo.lastModified}</span>
                     </div>
@@ -523,6 +524,7 @@ class SheetPage extends MuComponent {
       .then(self.parseJSON)
       .then(function (data) {
         var sheetInfo = {
+          userId: data.body.user.id,
           sheetName: data.body.name,
           cover: data.body.cover === '' ? '/image/avatar.png' : getURL(data.body.cover),
           creator: data.body.user.name,
