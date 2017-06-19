@@ -31,7 +31,7 @@ class Index extends React.Component {
       <div id="index">
         <div className="video-bg">
           <Header/>
-          <video className="video-elem" style={videoStyle} preload="auto" autoPlay="true" loop="loop"
+          <video className="video-elem" style={videoStyle} preload="none" autoPlay="true" loop="loop"
                  muted="muted">
             <source
               src="http://mushare-jp.oss-ap-northeast-1.aliyuncs.com/A_plate_playing_the_rhythm_of_the_music.mp4"
