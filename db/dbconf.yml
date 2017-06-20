@@ -1,6 +1,6 @@
 development:
     driver: mysql
-    open: root:w19920610@tcp(127.0.0.1:3306)/mushare_dev
+    open: root:w19920610@tcp(127.0.0.1:3306)/mushare_dev_new
     dialect: mysql
 
 production:
