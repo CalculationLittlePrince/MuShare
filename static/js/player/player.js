@@ -90,6 +90,7 @@ class AudioList extends MuComponent {
       .then(self.parseJSON)
       .then(function () {
         console.log("delete from play list");
+
         if (audioId === self.state.current.id) {
           self.next();
         }
@@ -149,7 +150,10 @@ class AudioList extends MuComponent {
               <div className="four wide column">{audio.artist}</div>
               <div className="four wide column">
                 <i className="remove icon"
-                   onClick={() => self.deleteAudioFromList(audio.id, index)}></i>
+                   onClick={(e) => {
+                     self.deleteAudioFromList(audio.id, index);
+                     e.preventBubble();
+                   }}></i>
               </div>
             </div>
           </div>
@@ -165,7 +169,10 @@ class AudioList extends MuComponent {
             <div className="four wide column">{audio.artist}</div>
             <div className="four wide column">
               <i className="remove icon"
-                 onClick={() => self.deleteAudioFromList(audio.id, index)}></i>
+                 onClick={(e) => {
+                   self.deleteAudioFromList(audio.id, index);
+                   e.stopPropagation();
+                 }}></i>
             </div>
           </div>
         </div>

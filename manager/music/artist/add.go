@@ -11,7 +11,7 @@ func (this *Artist) AddArtist(body *music.Artist) datatype.Response {
   tx := this.DB.Begin()
   artist.Name = body.Name
   artist.UserID = body.UserID
-  tx.Where("name = ?", body.Name).Find(&artist)
+  tx.Where("name = ? and user_id = ?", artist.Name, artist.UserID).Find(&artist)
   if artist.ID == 0 {
     if err := tx.Create(&artist).Error; err != nil {
       panic(err.Error())

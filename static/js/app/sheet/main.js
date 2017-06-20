@@ -32,7 +32,7 @@ class SheetInfo extends MuComponent {
                       <img className="ui avatar image"
                            src={this.props.sheetInfo.creatorAvatar}/>
                       <Link to={`/user/${this.props.sheetInfo.userId}`}
-                         className="username">{this.props.sheetInfo.creator}</Link>
+                            className="username">{this.props.sheetInfo.creator}</Link>
                       <span
                         className="modify-date">上次修改日期：{this.props.sheetInfo.lastModified}</span>
                     </div>
@@ -152,7 +152,7 @@ class UploadAudioModal extends MuComponent {
     }
     this.audio = {
       name: '',
-      artistId: -1,
+      artist: '',
       audioFile: null,
       duration: 0
     }
@@ -164,7 +164,6 @@ class UploadAudioModal extends MuComponent {
 
   clear() {
     this.audio = {
-      artistId: -1,
       name: '',
       audioFile: null,
       duration: 0
@@ -191,7 +190,6 @@ class UploadAudioModal extends MuComponent {
       .then(self.checkStatus)
       .then(self.parseJSON)
       .then(function (result) {
-        console.log(result.body);
         self.setState({
           artists: result.body
         });
@@ -216,26 +214,23 @@ class UploadAudioModal extends MuComponent {
     });
     co(function*() {
       try {
+        var artist = yield fetch('/api/music/artist/add', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Authorization': token
+          },
+          body: JSON.stringify({
+            name: self.audio.artist.toString(),
+          })
+        })
+          .then(self.checkStatus)
+          .then(self.parseJSON)
         var audio = yield uploadAudio(`audio-${guid()}`, self.audio.audioFile, token, function (progress) {
           self.setState({
             progress: parseInt(progress * 100)
           });
         });
-        var artist = null;
-        if (isNaN(parseInt(self.audio.artistId))) {
-          artist = yield fetch('/api/music/artist/add', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-              'Authorization': token
-            },
-            body: JSON.stringify({
-              name: self.audio.artistId,
-            })
-          })
-            .then(self.checkStatus)
-            .then(self.parseJSON)
-        }
         var result = yield fetch('/api/music/audio/add', {
           method: 'POST',
           credentials: 'same-origin',
@@ -305,9 +300,9 @@ class UploadAudioModal extends MuComponent {
     var self = this;
     $('#upload-audio-modal .form .dropdown').dropdown({
       allowAdditions: true,
-      onChange: function (artistId) {
-        console.log(artistId);
-        self.audio.artistId = artistId;
+      onChange: function (key, value) {
+        console.log(value);
+        self.audio.artist = value;
       }
     });
     this.loadArtists();
