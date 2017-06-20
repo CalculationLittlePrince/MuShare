@@ -163,11 +163,9 @@ class UploadAudioModal extends MuComponent {
   }
 
   clear() {
-    this.audio = {
-      name: '',
-      audioFile: null,
-      duration: 0
-    }
+    this.audio.name = '';
+    this.audio.audioFile = null;
+    this.audio.duration = 0;
     this.setState({
       filename: '',
       uploading: false,
@@ -204,7 +202,7 @@ class UploadAudioModal extends MuComponent {
     var token = $('#token').val();
     if (self.audio.audioFile === null ||
       self.audio.name === '' ||
-      self.audio.artistId === -1 ||
+      self.audio.artist === '' ||
       self.audio.duration === 0) {
       alert('some file is empty');
       return;
