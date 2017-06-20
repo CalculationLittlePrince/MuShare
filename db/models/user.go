@@ -19,7 +19,7 @@ type User struct {
   LastLoginAt int64       `gorm:"" json:"-"`
   Friends     []Friends   `gorm:"ForeignKey:UserID" json:"friends,omitempty"`
   Albums      []Album     `gorm:"ForeignKey:UserID" json:"albums,omitempty"`
-  Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets`
+  Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets"`
   Subscribe   []Subscribe `gorm:"ForeignKey:UserID" json:"subscribe,omitempty"`
   Friend      int         `sql:"-" json:"friend"`
   Token       string      `sql:"-" json:"token,omitempty"`
