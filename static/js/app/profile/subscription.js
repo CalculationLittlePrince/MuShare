@@ -15,7 +15,7 @@ class SheetCards extends MuComponent {
         <Link to={`/sheet/${sheet.id}`}
               className="card">
           <div className="image">
-            <img src={sheet.cover === '' ? '/image/avatar.png' : getURL(sheet.cover)}/>
+            <img src={sheet.cover === '' ? '/image/cover.jpg' : getURL(sheet.cover)}/>
           </div>
           <div className="content">
             <div className="description">

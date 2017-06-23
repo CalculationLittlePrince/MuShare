@@ -493,7 +493,7 @@ class SheetPage extends MuComponent {
         creator: '',
         creatorAvatar: '',
         lastModified: '',
-        cover: '/image/avatar.png',
+        cover: '/image/cover.jpg',
       },
       audioList: [],
       owner: true,
@@ -519,7 +519,7 @@ class SheetPage extends MuComponent {
         var sheetInfo = {
           userId: data.body.user.id,
           sheetName: data.body.name,
-          cover: data.body.cover === '' ? '/image/avatar.png' : getURL(data.body.cover),
+          cover: data.body.cover === '' ? '/image/cover.jpg' : getURL(data.body.cover),
           creator: data.body.user.name,
           creatorAvatar: data.body.user.avatar === '' ? '/image/avatar.png' : getURL(data.body.user.avatar),
           lastModified: dateformat(data.body.update_at * 1000),

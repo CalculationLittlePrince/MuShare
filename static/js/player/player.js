@@ -223,7 +223,7 @@ class AudioInfo extends MuComponent {
         <div className="ui segment cover">
           <div className="ui centered medium rounded">
             <img
-              src={this.state.audio.cover === '' ? '/image/avatar.png' : getURL(this.state.audio.cover)}
+              src={this.state.audio.cover === '' ? '/image/cover.jpg' : getURL(this.state.audio.cover)}
               alt=""/>
           </div>
           <div className="name">
@@ -501,6 +501,7 @@ class AudioController extends MuComponent {
                             window.removeEventListener("mousemove", self.volume);
                             window.removeEventListener("mouseup", mouseup);
                           }
+
                           window.addEventListener("mouseup", mouseup);
                         }}></div>
                     </div>
@@ -564,8 +565,14 @@ class Player extends MuComponent {
   }
 
   render() {
+    var bg = '';
+    if (this.state.bg === '') {
+      bg = 'url("/image/cover.jpg")';
+    } else {
+      bg = 'url("' + getURL(this.state.bg) + '")';
+    }
     var bgStyle = {
-      backgroundImage: 'url("' + getURL(this.state.bg) + '")'
+      backgroundImage: bg
     }
     return (
       <div className="player">

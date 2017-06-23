@@ -107,7 +107,7 @@ class Sheets extends MuComponent {
           data-id={sheet.id}>
           <div className="image">
             <img
-              src={sheet.cover === '' ? '/image/avatar.png' : getURL(sheet.cover)}/>
+              src={sheet.cover === '' ? '/image/cover.jpg' : getURL(sheet.cover)}/>
           </div>
           <div className="content">
             <div className="description">
